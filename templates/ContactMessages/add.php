@@ -6,12 +6,6 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Contact Messages'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
     <div class="column column-80">
         <div class="contactMessages form content">
             <?= $this->Form->create($contactMessage) ?>
@@ -23,7 +17,6 @@
                     echo $this->Form->control('last_name');
                     echo $this->Form->control('email');
                     echo $this->Form->control('category');
-                    echo $this->Form->control('status');
                     echo $this->Form->control('message');
                 ?>
             </fieldset>
