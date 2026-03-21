@@ -75,6 +75,17 @@ endif;
     <?= $this->fetch('script') ?>
 </head>
 <body>
+<div class="top-nav-links">
+
+    <?= $this->Html->link('Home', ['controller' => 'Pages', 'action' => 'display', 'home']) ?>
+    <?= $this->Html->link('Admin Dashboard', ['controller' => 'ContactMessages', 'action' => 'index']) ?>
+    <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
+    <?= $this->Html->link('Contact Us', ['controller' => 'ContactMessages', 'action' => 'add']) ?>
+    <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login']) ?>
+    <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']) ?>
+
+
+</div>
     <header>
         <div class="container text-center">
             <a href="https://cakephp.org/" target="_blank" rel="noopener">

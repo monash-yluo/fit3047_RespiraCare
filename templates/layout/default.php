@@ -41,6 +41,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="top-nav-links">
 <!--            生成每个controller的导航-->
             <?= $this->Html->link('Home', ['controller' => 'Pages', 'action' => 'display', 'home']) ?>
+            <?= $this->Html->link('Admin Dashboard', ['controller' => 'ContactMessages', 'action' => 'index']) ?>
             <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
             <?= $this->Html->link('Contact Us', ['controller' => 'ContactMessages', 'action' => 'add']) ?>
             <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login']) ?>

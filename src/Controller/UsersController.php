@@ -22,7 +22,7 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-         $this->Authentication->allowUnauthenticated(['login']);
+        $this->Authentication->allowUnauthenticated(['login', 'logout', 'resetPassword']);
     }
 
     /**
@@ -180,5 +180,43 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
+    public function resetPassword()
+    {
+        $this->request->allowMethod(['get', 'post']);
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            // 1. 基础验证：确保两次输入的新密码一致
+            if (empty($data['new_password']) || $data['new_password'] !== $data['confirm_new_password']) {
+                $this->Flash->error(__('New passwords do not match or are empty.'));
+                return;
+            }
+
+            // 2. 根据 first_name, last_name, email 查找用户
+            $user = $this->Users->find()
+                ->where([
+                    'first_name' => $data['first_name'],
+                    'last_name' => $data['last_name'],
+                    'email' => $data['email']
+                ])
+                ->first();
+
+            if ($user) {
+                // 3. 修改密码并保存
+                $user->password = $data['new_password'];
+
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('Your password has been reset successfully.'));
+                    return $this->redirect(['action' => 'login']);
+                }
+                $this->Flash->error(__('Unable to update the password. Please try again.'));
+            } else {
+                // 4. 用户信息不匹配
+                $this->Flash->error(__('User details do not match our records.'));
+            }
+        }
     }
 }
