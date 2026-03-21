@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property int $patient_id
  * @property int|null $clinician_id
  * @property string $message
- * @property \Cake\I18n\DateTime|null $sent_at
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
@@ -34,7 +33,6 @@ class Reminder extends Entity
         'patient_id' => true,
         'clinician_id' => true,
         'message' => true,
-        'sent_at' => true,
         'created' => true,
         'modified' => true,
         'patient' => true,

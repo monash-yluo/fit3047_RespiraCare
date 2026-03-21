@@ -18,7 +18,6 @@
                     <th><?= $this->Paginator->sort('email') ?></th>
                     <th><?= $this->Paginator->sort('category') ?></th>
                     <th><?= $this->Paginator->sort('status') ?></th>
-                    <th><?= $this->Paginator->sort('sent_at') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -34,7 +33,6 @@
                     <td><?= h($contactMessage->email) ?></td>
                     <td><?= h($contactMessage->category) ?></td>
                     <td><?= h($contactMessage->status) ?></td>
-                    <td><?= h($contactMessage->sent_at) ?></td>
                     <td><?= h($contactMessage->created) ?></td>
                     <td><?= h($contactMessage->modified) ?></td>
                     <td class="actions">

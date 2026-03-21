@@ -96,10 +96,6 @@ class ContactMessagesTable extends Table
             ->requirePresence('message', 'create')
             ->notEmptyString('message');
 
-        $validator
-            ->dateTime('sent_at')
-            ->allowEmptyDateTime('sent_at');
-
         return $validator;
     }
 

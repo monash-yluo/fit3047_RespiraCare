@@ -30,7 +30,6 @@
                     echo $this->Form->control('category');
                     echo $this->Form->control('status');
                     echo $this->Form->control('message');
-                    echo $this->Form->control('sent_at', ['empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

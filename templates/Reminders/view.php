@@ -31,10 +31,6 @@
                     <td><?= $this->Number->format($reminder->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Sent At') ?></th>
-                    <td><?= h($reminder->sent_at) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($reminder->created) ?></td>
                 </tr>

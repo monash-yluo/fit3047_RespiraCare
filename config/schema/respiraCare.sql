@@ -67,12 +67,10 @@ CREATE TABLE reminders (
     patient_id INT NOT NULL,
     clinician_id INT NULL,
     message TEXT NOT NULL,
-    sent_at DATETIME NULL,
     created DATETIME,
     modified DATETIME,
     FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
-    FOREIGN KEY (clinician_id) REFERENCES clinicians(id) ON DELETE SET NULL,
-    INDEX idx_reminder_sent (sent_at)
+    FOREIGN KEY (clinician_id) REFERENCES clinicians(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- 6. Contact Messages Table
@@ -85,7 +83,6 @@ CREATE TABLE contact_messages (
     category VARCHAR(100),
     status VARCHAR(50),
     message TEXT NOT NULL,
-    sent_at DATETIME NULL,
     created DATETIME,
     modified DATETIME,
     FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE SET NULL,

@@ -16,7 +16,6 @@ use Cake\ORM\Entity;
  * @property string|null $category
  * @property string|null $status
  * @property string $message
- * @property \Cake\I18n\DateTime|null $sent_at
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
@@ -41,7 +40,6 @@ class ContactMessage extends Entity
         'category' => true,
         'status' => true,
         'message' => true,
-        'sent_at' => true,
         'created' => true,
         'modified' => true,
         'patient' => true,

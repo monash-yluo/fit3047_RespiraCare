@@ -47,10 +47,6 @@
                     <td><?= $this->Number->format($contactMessage->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Sent At') ?></th>
-                    <td><?= h($contactMessage->sent_at) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($contactMessage->created) ?></td>
                 </tr>

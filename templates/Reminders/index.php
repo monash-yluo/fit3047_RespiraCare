@@ -14,7 +14,6 @@
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('patient_id') ?></th>
                     <th><?= $this->Paginator->sort('clinician_id') ?></th>
-                    <th><?= $this->Paginator->sort('sent_at') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -26,7 +25,6 @@
                     <td><?= $this->Number->format($reminder->id) ?></td>
                     <td><?= $reminder->hasValue('patient') ? $this->Html->link($reminder->patient->id, ['controller' => 'Patients', 'action' => 'view', $reminder->patient->id]) : '' ?></td>
                     <td><?= $reminder->hasValue('clinician') ? $this->Html->link($reminder->clinician->id, ['controller' => 'Clinicians', 'action' => 'view', $reminder->clinician->id]) : '' ?></td>
-                    <td><?= h($reminder->sent_at) ?></td>
                     <td><?= h($reminder->created) ?></td>
                     <td><?= h($reminder->modified) ?></td>
                     <td class="actions">

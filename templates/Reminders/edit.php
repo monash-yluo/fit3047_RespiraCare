@@ -27,7 +27,6 @@
                     echo $this->Form->control('patient_id', ['options' => $patients]);
                     echo $this->Form->control('clinician_id', ['options' => $clinicians, 'empty' => true]);
                     echo $this->Form->control('message');
-                    echo $this->Form->control('sent_at', ['empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
