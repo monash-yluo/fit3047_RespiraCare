@@ -48,5 +48,8 @@ class AppController extends Controller
          * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+
+        // load Authentication component
+        $this->loadComponent('Authentication.Authentication');
     }
 }
