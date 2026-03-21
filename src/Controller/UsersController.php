@@ -189,6 +189,24 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
+            // --- 1. 获取并校验 Turnstile Token ---
+            $token = $data['cf-turnstile-response'];
+
+            $http = new \Cake\Http\Client();
+            $response = $http->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                'secret' => Configure::read('Turnstile.secretKey'), // 改用 Configure::read('Turnstile.secretKey')
+                'response' => $token,
+                'remoteip' => $this->request->clientIp()
+            ]);
+
+            $outcome = $response->getJson();
+
+            // --- 2. 如果验证码校验失败 ---
+            if (!($outcome['success'] ?? false)) {
+                $this->Flash->error(__('CAPTCHA verification failed. Please try again.'));
+                return; // 停止执行，让用户停留在登录页
+            }
+
             // 1. 基础验证：确保两次输入的新密码一致
             if (empty($data['new_password']) || $data['new_password'] !== $data['confirm_new_password']) {
                 $this->Flash->error(__('New passwords do not match or are empty.'));
