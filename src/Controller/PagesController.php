@@ -31,6 +31,14 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        // Configure the login action to not require authentication, preventing
+        // a redirect loop.
+        $this->Authentication->addUnauthenticatedActions(['display']);
+    }
+
     /**
      * Displays a view
      *
