@@ -12,7 +12,7 @@
             <fieldset>
                 <legend><?= __('Add Contact Message') ?></legend>
                 <?php
-                    echo $this->Form->control('patient_id', ['options' => $patients, 'empty' => true]);
+                    echo $this->Form->control('patient_id', ['options' => $patients, 'empty' => true, 'label' => __('Patient ID (if have)')]);
                     echo $this->Form->control('first_name');
                     echo $this->Form->control('last_name');
                     echo $this->Form->control('email');

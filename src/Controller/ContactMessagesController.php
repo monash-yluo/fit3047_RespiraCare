@@ -10,6 +10,20 @@ namespace App\Controller;
  */
 class ContactMessagesController extends AppController
 {
+
+    /**
+     * Initialize controller
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->Authentication->allowUnauthenticated(['add']);
+    }
+
+
     /**
      * Index method
      *
