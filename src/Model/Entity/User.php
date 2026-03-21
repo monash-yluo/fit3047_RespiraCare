@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
@@ -51,4 +52,19 @@ class User extends Entity
     protected array $_hidden = [
         'password',
     ];
+
+    /**
+     * Automatically hashes the password before saving the entity.
+     *
+     * @param string $password The password to hash.
+     * @return string|null
+     */
+    protected function _setPassword(string $password): ?string
+    {
+        if (strlen($password) > 0) {
+            // Use the DefaultPasswordHasher from the Authentication plugin
+            return (new DefaultPasswordHasher())->hash($password);
+        }
+        return null;
+    }
 }
