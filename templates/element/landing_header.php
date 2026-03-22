@@ -30,9 +30,8 @@
                        class="<?= $currentPath === '/about' ? 'active' : '' ?>">About</a>
                 </li>
                 <li>
-                    <a href="<?= $this->Url->build('/contact') ?>"
+                    <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>"
                        class="<?= $currentPath === '/contact' ? 'active' : '' ?>">Contact</a>
-                    <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>">Contact</a>
                 </li>
                 <li>
                     <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"
