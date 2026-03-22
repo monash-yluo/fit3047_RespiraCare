@@ -17,18 +17,26 @@
         </a>
 
         <nav id="navmenu" class="navmenu">
+            <?php
+            $currentPath = $this->request->getPath();
+            ?>
             <ul>
                 <li>
-                    <a href="<?= $this->Url->build('/') ?>" class="active">Home</a>
+                    <a href="<?= $this->Url->build('/') ?>"
+                       class="<?= $currentPath === '/' ? 'active' : '' ?>">Home</a>
                 </li>
                 <li>
-                    <a href="<?= $this->Url->build('/about') ?>">About</a>
+                    <a href="<?= $this->Url->build('/about') ?>"
+                       class="<?= $currentPath === '/about' ? 'active' : '' ?>">About</a>
                 </li>
                 <li>
+                    <a href="<?= $this->Url->build('/contact') ?>"
+                       class="<?= $currentPath === '/contact' ? 'active' : '' ?>">Contact</a>
                     <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>">Contact</a>
                 </li>
                 <li>
-                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Login</a>
+                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"
+                       class="<?= ($this->request->getParam('controller') === 'Users' && $this->request->getParam('action') === 'login') ? 'active' : '' ?>">Login</a>
                 </li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

@@ -1697,16 +1697,6 @@ section,
   }
 }
 
-.contact:before {
-  content: "";
-  background: color-mix(in srgb, var(--background-color), transparent 30%);
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
 .contact .info-item+.info-item {
   margin-top: 40px;
 }
@@ -2134,6 +2124,38 @@ section,
 
 .login-title {
     color: #305BAB;
+}
+
+.message.error {
+    background-color: #fdf2f2;
+    color: #e74c3c;
+    border-left: 5px solid #e74c3c;
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.message.error::before {
+    content: "\F33A";
+    font-family: "bootstrap-icons";
+    font-size: 1.25rem;
+    margin-right: 0.75rem;
+}
+
+.message.error:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.message.hidden {
+    display: none !important;
 }
 
 body.dark .login-title {
