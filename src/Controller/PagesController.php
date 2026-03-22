@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -31,12 +32,16 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
-    public function beforeFilter(\Cake\Event\EventInterface $event): void
+    /**
+     * @param \Cake\Event\EventInterface $event
+     * @return void
+     */
+    public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
         // Configure the login action to not require authentication, preventing
         // a redirect loop.
-        $this->Authentication->addUnauthenticatedActions(['display']);
+        $this->Authentication->addUnauthenticatedActions(['display', 'home', 'about', 'contact']);
     }
 
     /**
@@ -77,5 +82,84 @@ class PagesController extends AppController
             }
             throw new NotFoundException();
         }
+    }
+
+    /**
+     * This function display the Landing Page
+     *
+     * @return void
+     */
+    public function home(): void
+    {
+        $specialists = [
+            [
+                // https://www.pexels.com/zh-cn/photo/5998474/
+                'name' => 'Dr. Sarah Jenkins',
+                'desc' => 'Specializing in chronic lung disease and proactive remote patient monitoring.',
+                'image_url' => 'sarah_jenkins.jpg',
+                'delay' => '100',
+            ],
+            [
+                // https://www.pexels.com/zh-cn/photo/6234600/
+                'name' => 'Dr. Marcus Johnson',
+                'desc' => 'Dedicated to improving patient outcomes through continuous virtual care.',
+                'image_url' => 'marcus_johnson.jpg',
+                'delay' => '200',
+            ],
+            [
+                // https://www.pexels.com/zh-cn/photo/5215024/
+                'name' => 'Dr. Emily Rostova',
+                'desc' => 'Focused on patient education, symptom relief, and personalised treatment plans.',
+                'image_url' => 'emily_rostova.jpg',
+                'delay' => '300',
+            ],
+        ];
+
+        $copdSteps = [
+            [
+                'number' => '1',
+                'title' => 'Log Daily Vitals:',
+                'description' =>
+                    'Easily record your oxygen saturation (SpO2), blood pressure,
+                    and respiratory rate from the comfort of home.',
+            ],
+            [
+                'number' => '2',
+                'title' => 'Track Symptoms:',
+                'description' =>
+                    'Confidentially update your physician on coughing,
+                    wheezing, or shortness of breath via our secure portal.',
+            ],
+            [
+                'number' => '3',
+                'title' => 'Receive Expert Care:',
+                'description' =>
+                    'Get personalised feedback, proactive
+                    treatment adjustments, and continuous monitoring.',
+            ],
+        ];
+
+        $this->set(compact('specialists', 'copdSteps'));
+    }
+
+    /**
+     * This function display the About Us Page
+     *
+     * @return void
+     */
+    public function about(): void
+    {
+    }
+
+    /**
+     * This function display the contact Page
+     *
+     * @return void
+     */
+    public function contact(): void
+    {
+        $contactMessagesTable = $this->fetchTable('ContactMessages');
+        $message = $contactMessagesTable->newEmptyEntity();
+        $this->set(compact('message'));
     }
 }
