@@ -1,6 +1,8 @@
 <?php
 
-/** @var \App\Model\Entity\ContactMessage $message */
+/** @var \App\Model\Entity\ContactMessage $contactMessage */
+
+use Cake\Core\Configure;
 
 $this->setLayout('landing');
 $this->assign('title', 'Contact Us | Respira Care');
@@ -25,8 +27,9 @@ $this->assign('title', 'Contact Us | Respira Care');
                         Whether you are a current patient experiencing issues with your vitals tracking,
                         or a new patient looking to join our remote monitoring program, our team is here to help.
                     </p>
+                    <?= $this->Flash->render() ?>
 
-                    <?= $this->Form->create($message, ['class' => 'needs-validation']) ?>
+                    <?= $this->Form->create($contactMessage, ['class' => 'needs-validation']) ?>
 
                     <div class="row gy-4">
                         <div class="col-md-6">
@@ -86,6 +89,13 @@ $this->assign('title', 'Contact Us | Respira Care');
                             ]) ?>
                         </div>
 
+                        <div class="mb-4">
+                            <div class="cf-turnstile"
+                                 data-sitekey="<?= h(Configure::read('Turnstile.siteKey')) ?>"
+                                 data-theme="light"
+                                 data-size="normal"></div>
+                        </div>
+
                         <div class="col-12 mt-4 text-center">
                             <?= $this->Form->button(__('Send Message'), [
                                 'class' => 'btn text-white fw-bold rounded-pill px-5 py-3 w-100 shadow-sm',
@@ -101,3 +111,5 @@ $this->assign('title', 'Contact Us | Respira Care');
         </div>
     </div>
 </section>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

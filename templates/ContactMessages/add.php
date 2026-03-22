@@ -23,15 +23,9 @@ use Cake\Core\Configure;
                     echo $this->Form->control('message');
                 ?>
             </fieldset>
-            <div class="cf-turnstile" data-sitekey="<?= Configure::read('Turnstile.siteKey') ?>" data-theme="light" data-size="normal"></div>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
 </div>
-<script
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-    async
-    defer
-></script>
 
