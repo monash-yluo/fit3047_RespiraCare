@@ -1,252 +1,161 @@
 <?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link      https://cakephp.org CakePHP(tm) Project
- * @since     0.10.0
- * @license   https://opensource.org/licenses/mit-license.php MIT License
- * @var \App\View\AppView $this
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
 
-$this->disableAutoLayout();
+/** @var array<array> $copdSteps */
+/** @var array<array> $specialists */
 
-$checkConnection = function (string $name) {
-    $error = null;
-    $connected = false;
-    try {
-        ConnectionManager::get($name)->getDriver()->connect();
-        // No exception means success
-        $connected = true;
-    } catch (Exception $connectionError) {
-        $error = $connectionError->getMessage();
-        if (method_exists($connectionError, 'getAttributes')) {
-            $attributes = $connectionError->getAttributes();
-            if (isset($attributes['message'])) {
-                $error .= '<br />' . $attributes['message'];
-            }
-        }
-        if ($name === 'debug_kit') {
-            $error = 'Try adding your current <b>top level domain</b> to the
-                <a href="https://book.cakephp.org/debugkit/5/en/index.html#configuration" target="_blank">DebugKit.safeTld</a>
-            config and reload.';
-            if (!in_array('sqlite', \PDO::getAvailableDrivers())) {
-                $error .= '<br />You need to install the PHP extension <code>pdo_sqlite</code> so DebugKit can work properly.';
-            }
-        }
-    }
-
-    return compact('connected', 'error');
-};
-
-if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace templates/Pages/home.php with your own version or re-enable debug mode.'
-    );
-endif;
-
+$this->setLayout('landing');
+$this->assign('title', 'Respira Care');
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        CakePHP: the rapid development PHP framework:
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake', 'home']) ?>
+<!-- Hero Section -->
+<section id="hero" class="hero section">
+    <div class="container">
+        <div class="row gy-4 justify-content-between align-items-center">
+            <div class="col-lg-6 order-lg-last hero-img text-center">
+                <?= $this->Html->image('landing-hero.png', [
+                    'class' => 'img-fluid',
+                    'alt' => 'RespiraCare Remote Monitoring Doctors',
+                    'style' => 'max-height: 400px;',
+                ]) ?>
+            </div>
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-</head>
-<body>
-<div class="top-nav-links">
-
-    <?= $this->Html->link('Home', ['controller' => 'Pages', 'action' => 'display', 'home']) ?>
-    <?= $this->Html->link('Admin Dashboard', ['controller' => 'ContactMessages', 'action' => 'index']) ?>
-    <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
-    <?= $this->Html->link('Contact Us', ['controller' => 'ContactMessages', 'action' => 'add']) ?>
-    <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login']) ?>
-    <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']) ?>
-
-
-</div>
-    <header>
-        <div class="container text-center">
-            <a href="https://cakephp.org/" target="_blank" rel="noopener">
-                <img alt="CakePHP" src="https://cakephp.org/v2/img/logos/CakePHP_Logo.svg" width="350" />
-            </a>
-            <h1>
-                Welcome to CakePHP <?= h(Configure::version()) ?> Chiffon (🍰)
-            </h1>
-        </div>
-    </header>
-    <main class="main">
-        <div class="container">
-            <div class="content">
-                <div class="row">
-                    <div class="column">
-                        <div class="message default text-center">
-                            <small>Please be aware that this page will not be shown if you turn off debug mode unless you replace templates/Pages/home.php with your own version.</small>
-                        </div>
-                        <div id="url-rewriting-warning" style="padding: 1rem; background: #fcebea; color: #cc1f1a; border-color: #ef5753;">
-                            <ul>
-                                <li class="bullet problem">
-                                    URL rewriting is not properly configured on your server.<br />
-                                    1) <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/installation.html#url-rewriting">Help me configure it</a><br />
-                                    2) <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/development/configuration.html#general-configuration">I don't / can't use URL rewriting</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <?php Debugger::checkSecurityKeys(); ?>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <h4>Environment</h4>
-                        <ul>
-                        <?php if (version_compare(PHP_VERSION, '8.1.0', '>=')) : ?>
-                            <li class="bullet success">Your version of PHP is 8.1.0 or higher (detected <?= PHP_VERSION ?>).</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your version of PHP is too low. You need PHP 8.1.0 or higher to use CakePHP (detected <?= PHP_VERSION ?>).</li>
-                        <?php endif; ?>
-
-                        <?php if (extension_loaded('mbstring')) : ?>
-                            <li class="bullet success">Your version of PHP has the mbstring extension loaded.</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your version of PHP does NOT have the mbstring extension loaded.</li>
-                        <?php endif; ?>
-
-                        <?php if (extension_loaded('openssl')) : ?>
-                            <li class="bullet success">Your version of PHP has the openssl extension loaded.</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your version of PHP does NOT have the openssl extension loaded.</li>
-                        <?php endif; ?>
-
-                        <?php if (extension_loaded('intl')) : ?>
-                            <li class="bullet success">Your version of PHP has the intl extension loaded.</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your version of PHP does NOT have the intl extension loaded.</li>
-                        <?php endif; ?>
-
-                        <?php if (ini_get('zend.assertions') !== '1') : ?>
-                            <li class="bullet problem">You should set <code>zend.assertions</code> to <code>1</code> in your <code>php.ini</code> for your development environment.</li>
-                        <?php endif; ?>
-                        </ul>
-                    </div>
-                    <div class="column">
-                        <h4>Filesystem</h4>
-                        <ul>
-                        <?php if (is_writable(TMP)) : ?>
-                            <li class="bullet success">Your tmp directory is writable.</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your tmp directory is NOT writable.</li>
-                        <?php endif; ?>
-
-                        <?php if (is_writable(LOGS)) : ?>
-                            <li class="bullet success">Your logs directory is writable.</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your logs directory is NOT writable.</li>
-                        <?php endif; ?>
-
-                        <?php $settings = Cache::getConfig('_cake_translations_'); ?>
-                        <?php if (!empty($settings)) : ?>
-                            <li class="bullet success">The <em><?= h($settings['className']) ?></em> is being used for core caching. To change the config edit config/app.php</li>
-                        <?php else : ?>
-                            <li class="bullet problem">Your cache is NOT working. Please check the settings in config/app.php</li>
-                        <?php endif; ?>
-                        </ul>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="column">
-                        <h4>Database</h4>
-                        <?php
-                        $result = $checkConnection('default');
-                        ?>
-                        <ul>
-                        <?php if ($result['connected']) : ?>
-                            <li class="bullet success">CakePHP is able to connect to the database.</li>
-                        <?php else : ?>
-                            <li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= h($result['error']) ?></li>
-                        <?php endif; ?>
-                        </ul>
-                    </div>
-                    <div class="column">
-                        <h4>DebugKit</h4>
-                        <ul>
-                        <?php if (Plugin::isLoaded('DebugKit')) : ?>
-                            <li class="bullet success">DebugKit is loaded.</li>
-                            <?php
-                            $result = $checkConnection('debug_kit');
-                            ?>
-                            <?php if ($result['connected']) : ?>
-                                <li class="bullet success">DebugKit can connect to the database.</li>
-                            <?php else : ?>
-                                <li class="bullet problem">There are configuration problems present which need to be fixed:<br /><?= $result['error'] ?></li>
-                            <?php endif; ?>
-                        <?php else : ?>
-                            <li class="bullet problem">DebugKit is <strong>not</strong> loaded.</li>
-                        <?php endif; ?>
-                        </ul>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="column links">
-                        <h3>Getting Started</h3>
-                        <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/">CakePHP Documentation</a>
-                        <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/tutorials-and-examples/cms/installation.html">The 20 min CMS Tutorial</a>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="column links">
-                        <h3>Help and Bug Reports</h3>
-                        <a target="_blank" rel="noopener" href="https://slack-invite.cakephp.org/">Slack</a>
-                        <a target="_blank" rel="noopener" href="https://github.com/cakephp/cakephp/issues">CakePHP Issues</a>
-                        <a target="_blank" rel="noopener" href="https://discourse.cakephp.org/">CakePHP Forum</a>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="column links">
-                        <h3>Docs and Downloads</h3>
-                        <a target="_blank" rel="noopener" href="https://api.cakephp.org/">CakePHP API</a>
-                        <a target="_blank" rel="noopener" href="https://bakery.cakephp.org">The Bakery</a>
-                        <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/">CakePHP Documentation</a>
-                        <a target="_blank" rel="noopener" href="https://plugins.cakephp.org">CakePHP plugins repo</a>
-                        <a target="_blank" rel="noopener" href="https://github.com/cakephp/">CakePHP Code</a>
-                        <a target="_blank" rel="noopener" href="https://github.com/FriendsOfCake/awesome-cakephp">CakePHP Awesome List</a>
-                        <a target="_blank" rel="noopener" href="https://www.cakephp.org">CakePHP</a>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="column links">
-                        <h3>Training and Certification</h3>
-                        <a target="_blank" rel="noopener" href="https://cakefoundation.org/">Cake Software Foundation</a>
-                        <a target="_blank" rel="noopener" href="https://training.cakephp.org/">CakePHP Training</a>
-                    </div>
+            <div class="col-lg-5 d-flex flex-column justify-content-center">
+                <h1 class="fs-2 mb-3">Your Dedicated Partner in <br><span>COPD Management</span></h1>
+                <p class="mb-4">
+                    Log your daily vitals, receive personalised reminders,
+                    and get expert respiratory support exactly when you need it.
+                </p>
+                <div class="d-flex">
+                    <a href="<?= $this->Url->build('/contact') ?>"
+                       class="btn text-white rounded-pill px-4 py-2 shadow-sm fw-bold"
+                       style="background-color: #305BAB; border: none; transition: 0.3s;">
+                        Contact Us
+                    </a>
                 </div>
             </div>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+</section>
+
+<!-- Process Section -->
+<section id="process" class="section dark-background">
+    <div class="container">
+        <div class="row mb-5" data-aos="fade-up">
+            <div class="col-12">
+                <h2 class="text-white fw-bold">Simple, Remote COPD Management</h2>
+            </div>
+        </div>
+
+        <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
+                <?php foreach ($copdSteps as $step) : ?>
+                    <div class="col-md-4 d-flex align-items-start">
+                        <div class="border border-2 border-white rounded-circle d-flex
+                            align-items-center justify-content-center me-3 flex-shrink-0"
+                            style="width: 50px; height: 50px; font-size: 1.25rem; font-weight: bold;">
+                            <?= h($step['number']) ?>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-white-50 lh-lg">
+                                <strong class="text-white"><?= h($step['title']) ?></strong>
+                                <?= h($step['description']) ?>
+                            </p>
+                        </div>
+                    </div>
+
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Section -->
+<section id="feature-details" class="feature-details section">
+    <div class="container">
+        <div class="row gy-4 align-items-center">
+
+            <div class="col-md-6 d-flex justify-content-center" data-aos="zoom-out" data-aos-delay="100">
+                <?= $this->Html->image('landing-feature.svg', [
+                    'class' => 'img-fluid',
+                    'alt' => 'RespiraCare Features Dashboard',
+                    'style' => 'max-height: 350px;',
+                ]) ?>
+            </div>
+
+            <div class="col-md-6 ps-md-5" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="fw-bold mb-4">Empowering Your Respiratory Health</h3>
+                <p>
+                    Managing Chronic Obstructive Pulmonary Disease shouldn't require constant
+                    hospital visits. RespiraCare brings the clinic to your living room.
+                </p>
+                <p>
+                    Our intuitive platform allows you to securely input your daily health data, providing your
+                    specialised care team with the real-time insights they need to monitor your condition.
+                </p>
+                <p>
+                    With automated reminders, we are dedicated to helping you stay proactive
+                    about your lung health and preventing flare-ups before they happen.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="doctors" class="section pt-0">
+
+    <div class="w-100 px-4 d-flex flex-column align-items-center text-center"
+         style="background-color: var(--light-accent-color); padding: 80px 0 120px 0;"
+         data-aos="fade-up">
+        <h2 class="text-white fw-bold mb-3">Meet Our Certified Specialists</h2>
+        <p class="text-white-50 col-lg-8 mb-0">
+            Our dedicated team of certified physicians and pulmonologists specialise in
+            advanced COPD management, ensuring you receive the highest standard of virtual respiratory care.
+        </p>
+    </div>
+
+    <div class="container position-relative"
+         style="margin-top: -80px; z-index: 2;">
+
+        <div class="row gy-4 dark-background py-5 rounded-top-2"
+             style="background-color: var(--background-color);  padding-inline: 96px;">
+            <?php foreach ($specialists as $doc) : ?>
+                <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="<?= h($doc['delay']) ?>">
+                    <div class="card h-100 text-center px-4 py-5 border-0 shadow text-dark rounded-3 lh-lg">
+
+                        <?= $this->Html->image($doc['image_url'], [
+                            'class' => 'image-loading-placeholder rounded-circle mx-auto mb-4 shadow-sm',
+                            'loading' => 'lazy',
+                            'alt' => $doc['name'],
+                            'style' => 'width: 120px; height: 120px; object-fit: cover;',
+                        ]) ?>
+
+                        <h5 class="fw-bold text-muted mb-1"><?= h($doc['name']) ?></h5>
+                        <p class="small text-muted mb-0"><?= h($doc['desc']) ?></p>
+
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="row align-items-center px-4 py-5 rounded-bottom-2"
+             style="background-color: var(--secondary-accent-color)">
+
+            <div class="col-md-8 mb-4 mb-md-0">
+                <p class="mb-0 lh-lg">
+                    Ready to take control of your COPD? Reach out to our team to learn more about how the RespiraCare
+                    platform can support your daily health journey. Whether you need help setting up your remote vitals
+                    monitoring, or have questions about connecting with our certified specialists, we are here to help.
+                </p>
+            </div>
+            <div class="col-md-4 d-flex flex-column align-self-end align-items-center">
+                <a href="<?= $this->Url->build('/contact') ?>"
+                   class="btn rounded-2 px-5 py-2 w-75 text-white dark-background"
+                   style="background-color: var(--background-color);">
+                    Enquire
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
