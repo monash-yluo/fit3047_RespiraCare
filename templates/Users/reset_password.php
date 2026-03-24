@@ -82,7 +82,7 @@ $this->assign('title', 'Reset Password | RespiraCare');
                     ]) ?>
 
                     <?= $this->Html->link(
-                        __('Login'),
+                        __('Back to Login'),
                         ['controller' => 'Users', 'action' => 'login'],
                         ['class' => 'text-decoration-none fw-semibold small', 'style' => 'color: #6390e3;'],
                     ) ?>

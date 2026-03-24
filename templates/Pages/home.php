@@ -26,7 +26,7 @@ $this->assign('title', 'Respira Care');
                     and get expert respiratory support exactly when you need it.
                 </p>
                 <div class="d-flex">
-                    <a href="<?= $this->Url->build('/contact') ?>"
+                    <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>"
                        class="btn text-white rounded-pill px-4 py-2 shadow-sm fw-bold"
                        style="background-color: #305BAB; border: none; transition: 0.3s;">
                         Contact Us
@@ -150,7 +150,7 @@ $this->assign('title', 'Respira Care');
                 </p>
             </div>
             <div class="col-md-4 d-flex flex-column align-self-end align-items-center">
-                <a href="<?= $this->Url->build('/contact') ?>"
+                <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>"
                    class="btn rounded-2 px-5 py-2 w-75 text-white dark-background"
                    style="background-color: var(--background-color);">
                     Enquire

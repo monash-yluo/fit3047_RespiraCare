@@ -23,6 +23,8 @@ use Cake\ORM\Entity;
  */
 class User extends Entity
 {
+    protected array $_virtual = ['full_name'];
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -65,6 +67,17 @@ class User extends Entity
             // Use the DefaultPasswordHasher from the Authentication plugin
             return (new DefaultPasswordHasher())->hash($password);
         }
+
         return null;
+    }
+
+    /**
+     * Get Full name of the user
+     *
+     * @return string
+     */
+    protected function _getFullName(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 }

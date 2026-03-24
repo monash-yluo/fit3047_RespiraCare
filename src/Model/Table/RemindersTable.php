@@ -53,7 +53,9 @@ class RemindersTable extends Table
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Clinicians', [
+            'className' => 'Users',
             'foreignKey' => 'clinician_id',
+            'joinType' => 'LEFT',
         ]);
     }
 

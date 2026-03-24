@@ -36,7 +36,7 @@ $this->assign('title', 'Contact Us | Respira Care');
                             <?= $this->Form->control('first_name', [
                                 'class' => 'form-control',
                                 'label' => ['text' => 'First Name', 'class' => 'fw-bold small text-muted mb-1'],
-                                'placeholder' => 'John',
+                                'placeholder' => 'first name...',
                                 'required' => true,
                             ]) ?>
                         </div>
@@ -45,7 +45,7 @@ $this->assign('title', 'Contact Us | Respira Care');
                             <?= $this->Form->control('last_name', [
                                 'class' => 'form-control',
                                 'label' => ['text' => 'Last Name', 'class' => 'fw-bold small text-muted mb-1'],
-                                'placeholder' => 'Doe',
+                                'placeholder' => 'last name...',
                                 'required' => true,
                             ]) ?>
                         </div>
@@ -55,7 +55,7 @@ $this->assign('title', 'Contact Us | Respira Care');
                                 'type' => 'email',
                                 'class' => 'form-control',
                                 'label' => ['text' => 'Email Address', 'class' => 'fw-bold small text-muted mb-1'],
-                                'placeholder' => 'john.doe@example.com',
+                                'placeholder' => 'email@example.com',
                                 'required' => true,
                             ]) ?>
                         </div>
