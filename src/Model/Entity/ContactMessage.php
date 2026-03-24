@@ -23,6 +23,7 @@ use Cake\ORM\Entity;
  */
 class ContactMessage extends Entity
 {
+    protected array $_virtual = ['full_name'];
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -44,4 +45,14 @@ class ContactMessage extends Entity
         'modified' => true,
         'patient' => true,
     ];
+
+    /**
+     * Get Full name of the user
+     *
+     * @return string
+     */
+    protected function _getFullName(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
+    }
 }

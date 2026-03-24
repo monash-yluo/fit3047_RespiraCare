@@ -158,8 +158,8 @@ class UsersController extends AppController
             $result = $this->Authentication->getResult(); // 这个只是获取结果真实的登录逻辑在中间页已经执行过了
             if ($result && $result->isValid()) {
                 $redirect = $this->request->getQuery('redirect', [
-                    'controller' => 'Users',
-                    'action' => 'index'
+                    'controller' => 'Admins',
+                    'action' => 'Dashboard'
                 ]);
                 return $this->redirect($redirect);
             }

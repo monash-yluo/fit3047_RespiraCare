@@ -33,7 +33,7 @@ $this->assign('title', 'About Us | Respira Care');
                     we provide real-time remote monitoring, personalised treatment adjustments, and total peace of mind.
                 </p>
 
-                <a href="<?= $this->Url->build('/contact') ?>"
+                <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>"
                    class="btn text-white rounded-pill px-5 py-3 shadow-sm fw-bold"
                    style="background-color: #305BAB; border: none; transition: 0.3s;">
                     Get in Touch
