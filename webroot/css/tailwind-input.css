@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Raleway",  sans-serif;
+    --nav-font: "Poppins",  sans-serif;
+}
+
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root {
+    --background-color: #ffffff; /* Background color for the entire website, including individual sections */
+    --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
+    --heading-color: #413e66; /* Color for headings, subheadings and title throughout the website */
+    --accent-color: #305BAB; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+    --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+    --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+    --light-accent-color: #659DF2;
+    --secondary-accent-color: #D6E6FF;
+}
+
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+    --nav-color: #413e66;  /* The default color of the main navmenu links */
+    --nav-hover-color: #305BAB; /* Applied to main navmenu links when they are hovered over or active */
+    --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
+    --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+    --nav-dropdown-color: #444444; /* Used for navigation links of the dropdown items in the navigation menu. */
+    --nav-dropdown-hover-color: #305BAB; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+}
+
+/* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
+
+.light-background {
+    --background-color: #f5f8fd;
+    --surface-color: #ffffff;
+}
+
+.dark-background {
+    --background-color: #305BAB;
+    --default-color: #ffffff;
+    --heading-color: #ffffff;
+    --surface-color: #413e66;
+    --contrast-color: #ffffff;
+    --light-accent-color: #659DF2;
+}
+
+body.dark {
+    --background-color: #121212;
+    --default-color: #e0e0e0;
+    --heading-color: #ffffff;
+    --accent-color: #4cc9f0;
+    --surface-color: #1e1e1e;
+    --contrast-color: #ffffff;
+
+    --nav-color: #e0e0e0;
+    --nav-hover-color: #4cc9f0;
+    --nav-mobile-background-color: #1e1e1e;
+    --nav-dropdown-background-color: #1e1e1e;
+    --nav-dropdown-color: #e0e0e0;
+    --nav-dropdown-hover-color: #4cc9f0;
+    --light-accent-color: #413e66;
+    --secondary-accent-color: #2C3F66;
+}
+
 .pagination {
     @apply flex items-center space-x-3 list-none m-0 p-0;
 }
@@ -21,4 +83,39 @@
 .pagination li.active a,
 .pagination li.active span {
     @apply bg-primary-800 dark:bg-primary-900 ring-2 ring-primary-300 dark:ring-primary-500;
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+    background-color: var(--background-color);
+    transition: all 0.6s ease-out;
+}
+
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid var(--accent-color);
+    border-top-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1s linear infinite;
+}
+
+@keyframes animate-preloader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

@@ -19,7 +19,7 @@ class AdminsController extends AppController
         $contactMessages = $this->paginate(
             $this->fetchTable('ContactMessages')->find(),
             [
-            'limit' => 20,
+            'limit' => 10,
             'order' => ['created' => 'desc'],
             ],
         );

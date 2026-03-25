@@ -127,7 +127,10 @@ class UsersController extends AppController
             $identity = $this->Authentication->getIdentity();
 //            \Cake\Error\debug($identity);
             if ($identity) {
-                return $this->redirect(['action' => 'index']); // 已登录
+                return $this->redirect([
+                    'controller' => 'Admins',
+                    'action' => 'Dashboard'
+                ]); // 已登录
             }
         }
 

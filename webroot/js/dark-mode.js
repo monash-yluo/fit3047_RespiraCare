@@ -40,5 +40,27 @@ themeToggleBtn.addEventListener('click', function() {
     }
 
     document.dispatchEvent(event);
-    
+
 });
+
+
+/**
+ * Preloader
+ */
+const preloader = document.querySelector('#preloader');
+
+if (preloader) {
+    // Check if the user has already "entered" the admin panel in this session
+    const hasLoaded = sessionStorage.getItem('admin_loaded');
+
+    if (hasLoaded) {
+        // If they have, remove the preloader immediately so they don't see the flash
+        preloader.remove();
+    } else {
+        // If it's the first time, wait for the full load, then set the flag
+        window.addEventListener('load', () => {
+            preloader.remove();
+            sessionStorage.setItem('admin_loaded', 'true');
+        });
+    }
+}
