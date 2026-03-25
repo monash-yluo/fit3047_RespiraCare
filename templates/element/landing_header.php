@@ -1,3 +1,8 @@
+<?php
+    // 1. get current login user's identity
+    // @Var \App\Model\Entity\User $identity
+?>
+
 <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
@@ -34,8 +39,25 @@
                        class="<?= $currentPath === '/contact' ? 'active' : '' ?>">Contact</a>
                 </li>
                 <li>
-                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"
-                       class="<?= ($this->request->getParam('controller') === 'Users' && $this->request->getParam('action') === 'login') ? 'active' : '' ?>">Login</a>
+                    <!-- 仅当用户未登录时显示 Login 链接 -->
+                    <?php if (!$identity): ?>
+                        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"
+                           class="<?= ($this->request->getParam('controller') === 'Users' && $this->request->getParam('action') === 'login') ? 'active' : '' ?>">Login</a>
+                    <?php endif; ?>
+                </li>
+                <li>
+                    <!-- 如果是admin 登录 显示dashboard 链接 -->
+                    <?php if ($identity && $identity->role === 'admin'): ?>
+                        <a href="<?= $this->Url->build(['controller' => 'Admins', 'action' => 'dashboard']) ?>"
+                           class="<?= ($this->request->getParam('controller') === 'Admins' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Admin Dashboard</a>
+                    <?php endif; ?>
+                </li>
+                <li>
+                    <!-- 仅当用户已登录时显示 Logout 链接 -->
+                    <?php if ($identity): ?>
+                        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>"
+                           class="<?= ($this->request->getParam('controller') === 'Users' && $this->request->getParam('action') === 'logout') ? 'active' : '' ?>">Logout</a>
+                    <?php endif; ?>
                 </li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
