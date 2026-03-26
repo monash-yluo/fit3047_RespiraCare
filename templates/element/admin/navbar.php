@@ -4,8 +4,6 @@
  -->
 
 <?php
-$identity = $this->request->getAttribute('identity');
-
 $userName = $identity ? $identity->get('full_name') : 'Admin User';
 $userEmail = $identity ? $identity->get('email') : 'admin@respiracare.com';
 $userId = $identity ? $identity->get('id') : null;
