@@ -1,0 +1,26 @@
+{
+  "name": "respiracare",
+  "version": "1.0.0",
+  "description": "![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=5.x) [![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app) [![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tailwindcss -i ./webroot/css/tailwind-input.css -o ./webroot/css/admin-app.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.infotech.monash.edu/UGIE/ugie-2026/team188/team188-onboarding-project"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "flowbite": "^4.0.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.19"
+  }
+}
