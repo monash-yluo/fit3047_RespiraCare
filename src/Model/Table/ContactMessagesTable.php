@@ -66,13 +66,13 @@ class ContactMessagesTable extends Table
 
         $validator
             ->scalar('first_name')
-            ->maxLength('first_name', 255)
+            ->maxLength('first_name', 50)
             ->requirePresence('first_name', 'create')
             ->notEmptyString('first_name');
 
         $validator
             ->scalar('last_name')
-            ->maxLength('last_name', 255)
+            ->maxLength('last_name', 50)
             ->requirePresence('last_name', 'create')
             ->notEmptyString('last_name');
 
@@ -84,7 +84,8 @@ class ContactMessagesTable extends Table
         $validator
             ->scalar('category')
             ->maxLength('category', 100)
-            ->allowEmptyString('category');
+            ->allowEmptyString('category')
+            ->notEmptyString('category');
 
         $validator
             ->scalar('status')

@@ -199,8 +199,9 @@ $this->assign('title', 'Dashboard Overview');
                                             [
                                                 'escape' => false,
                                                 'confirm' => __(
-                                                    'Are you sure you want to delete # {0}?',
-                                                    $contactMessage->id,
+                                                    'Are you sure you want to delete {0} {1}\'s contact message?',
+                                                    $contactMessage->first_name,
+                                                    $contactMessage->last_name,
                                                 ),
                                                 'class' => 'inline-flex items-center px-3 py-2 text-sm font-medium
                                                 text-center text-white bg-red-700 rounded-lg hover:bg-red-800
