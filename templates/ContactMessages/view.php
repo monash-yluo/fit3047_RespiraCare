@@ -22,7 +22,7 @@ $this->assign('title', 'Contact Messages');
                 Message from <?= h($contactMessage->first_name . ' ' . $contactMessage->last_name) ?>
             </h1>
             <div class="flex space-x-2">
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contactMessage->id], [
+                <?= $this->Html->link(__('Change Status'), ['action' => 'changeStatus', $contactMessage->id], [
                     'class' => 'text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
                 ]) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
