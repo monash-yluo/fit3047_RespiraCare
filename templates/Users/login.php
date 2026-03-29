@@ -11,9 +11,9 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
 
 <section class="min-vh-100 d-flex align-items-center py-5">
     <div class="container my-5">
-        <div class="row align-items-center gy-5">
+        <div class="row align-items-stretch">
 
-            <div class="col-lg-5 pe-lg-5" data-aos="fade-right">
+            <div class="col-lg-5 pe-lg-5 pt-5" data-aos="fade-right">
 
                 <h2 class="fw-bold mb-4 login-title">
                     RespiraCare Administrator <br>Sign In
@@ -70,7 +70,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
                 <?= $this->Form->end() ?>
             </div>
 
-            <div class="col-lg-7 d-none d-lg-block text-center rounded-circle bg-white p-4"
+            <div class="col-lg-7 d-none d-lg-flex align-items-center text-center rounded-circle bg-white p-4 pt-5"
                  data-aos="fade-left">
                 <?= $this->Html->image('admin-login-vector.png', [
                     'class' => 'img-fluid',
