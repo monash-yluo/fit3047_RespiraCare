@@ -104,7 +104,7 @@ $this->assign('title', 'Dashboard Overview');
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
 
-                        <?php if ($contactMessages->isEmpty()) : ?>
+                        <?php if ($contactMessages->items()->isEmpty()): ?>
                             <tr>
                                 <td
                                     colspan="5"
