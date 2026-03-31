@@ -114,7 +114,7 @@ class ContactMessagesController extends AppController
             $this->Flash->error(__('The contact message could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Admins', 'action' => 'dashboard']);
     }
 
     public function contact()
