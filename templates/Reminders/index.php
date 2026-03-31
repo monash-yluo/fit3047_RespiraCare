@@ -12,8 +12,8 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('patient_id') ?></th>
-                    <th><?= $this->Paginator->sort('clinician_id') ?></th>
+                    <th><?= $this->Paginator->sort('receiver_id') ?></th>
+                    <th><?= $this->Paginator->sort('sender_id') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -23,8 +23,8 @@
                 <?php foreach ($reminders as $reminder): ?>
                 <tr>
                     <td><?= $this->Number->format($reminder->id) ?></td>
-                    <td><?= $reminder->hasValue('patient') ? $this->Html->link($reminder->patient->id, ['controller' => 'Patients', 'action' => 'view', $reminder->patient->id]) : '' ?></td>
-                    <td><?= $reminder->hasValue('clinician') ? $this->Html->link($reminder->clinician->id, ['controller' => 'Clinicians', 'action' => 'view', $reminder->clinician->id]) : '' ?></td>
+                    <td><?= $reminder->hasValue('receiver') ? $this->Html->link($reminder->receiver->first_name, ['controller' => 'Users', 'action' => 'view', $reminder->receiver->id]) : '' ?></td>
+                    <td><?= $reminder->hasValue('sender') ? $this->Html->link($reminder->sender->first_name, ['controller' => 'Users', 'action' => 'view', $reminder->sender->id]) : '' ?></td>
                     <td><?= h($reminder->created) ?></td>
                     <td><?= h($reminder->modified) ?></td>
                     <td class="actions">

@@ -18,7 +18,7 @@ class RemindersController extends AppController
     public function index()
     {
         $query = $this->Reminders->find()
-            ->contain(['Patients', 'Clinicians']);
+            ->contain(['Receivers', 'Senders']);
         $reminders = $this->paginate($query);
 
         $this->set(compact('reminders'));
@@ -33,7 +33,7 @@ class RemindersController extends AppController
      */
     public function view($id = null)
     {
-        $reminder = $this->Reminders->get($id, contain: ['Patients', 'Clinicians']);
+        $reminder = $this->Reminders->get($id, contain: ['Receivers', 'Senders']);
         $this->set(compact('reminder'));
     }
 
@@ -54,9 +54,9 @@ class RemindersController extends AppController
             }
             $this->Flash->error(__('The reminder could not be saved. Please, try again.'));
         }
-        $patients = $this->Reminders->Patients->find('list', limit: 200)->all();
-        $clinicians = $this->Reminders->Clinicians->find('list', limit: 200)->all();
-        $this->set(compact('reminder', 'patients', 'clinicians'));
+        $receivers = $this->Reminders->Receivers->find('list', limit: 200)->all();
+        $senders = $this->Reminders->Senders->find('list', limit: 200)->all();
+        $this->set(compact('reminder', 'receivers', 'senders'));
     }
 
     /**
@@ -78,9 +78,9 @@ class RemindersController extends AppController
             }
             $this->Flash->error(__('The reminder could not be saved. Please, try again.'));
         }
-        $patients = $this->Reminders->Patients->find('list', limit: 200)->all();
-        $clinicians = $this->Reminders->Clinicians->find('list', limit: 200)->all();
-        $this->set(compact('reminder', 'patients', 'clinicians'));
+        $receivers = $this->Reminders->Receivers->find('list', limit: 200)->all();
+        $senders = $this->Reminders->Senders->find('list', limit: 200)->all();
+        $this->set(compact('reminder', 'receivers', 'senders'));
     }
 
     /**

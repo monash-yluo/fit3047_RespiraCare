@@ -19,12 +19,12 @@
             <h3><?= h($reminder->id) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Patient') ?></th>
-                    <td><?= $reminder->hasValue('patient') ? $this->Html->link($reminder->patient->id, ['controller' => 'Patients', 'action' => 'view', $reminder->patient->id]) : '' ?></td>
+                    <th><?= __('Receiver') ?></th>
+                    <td><?= $reminder->hasValue('receiver') ? $this->Html->link($reminder->receiver->first_name, ['controller' => 'Users', 'action' => 'view', $reminder->receiver->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Clinician') ?></th>
-                    <td><?= $reminder->hasValue('clinician') ? $this->Html->link($reminder->clinician->id, ['controller' => 'Clinicians', 'action' => 'view', $reminder->clinician->id]) : '' ?></td>
+                    <th><?= __('Sender') ?></th>
+                    <td><?= $reminder->hasValue('sender') ? $this->Html->link($reminder->sender->first_name, ['controller' => 'Users', 'action' => 'view', $reminder->sender->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

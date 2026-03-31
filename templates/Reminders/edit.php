@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Reminder $reminder
- * @var string[]|\Cake\Collection\CollectionInterface $patients
- * @var string[]|\Cake\Collection\CollectionInterface $clinicians
+ * @var string[]|\Cake\Collection\CollectionInterface $receivers
+ * @var string[]|\Cake\Collection\CollectionInterface $senders
  */
 ?>
 <div class="row">
@@ -24,8 +24,8 @@
             <fieldset>
                 <legend><?= __('Edit Reminder') ?></legend>
                 <?php
-                    echo $this->Form->control('patient_id', ['options' => $patients]);
-                    echo $this->Form->control('clinician_id', ['options' => $clinicians, 'empty' => true]);
+                    echo $this->Form->control('receiver_id', ['options' => $receivers]);
+                    echo $this->Form->control('sender_id', ['options' => $senders, 'empty' => true]);
                     echo $this->Form->control('message');
                 ?>
             </fieldset>

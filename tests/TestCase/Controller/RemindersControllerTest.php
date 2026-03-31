@@ -23,8 +23,8 @@ class RemindersControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.Reminders',
-        'app.Patients',
-        'app.Clinicians',
+        'app.Receivers',
+        'app.Senders',
     ];
 
     /**

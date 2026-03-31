@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\BookingsTable&\Cake\ORM\Association\HasMany $Bookings
  * @property \App\Model\Table\PatientsTable&\Cake\ORM\Association\HasMany $Patients
- * @property \App\Model\Table\RemindersTable&\Cake\ORM\Association\HasMany $Reminders
  *
  * @method \App\Model\Entity\Clinician newEmptyEntity()
  * @method \App\Model\Entity\Clinician newEntity(array $data, array $options = [])
@@ -58,9 +57,6 @@ class CliniciansTable extends Table
             'foreignKey' => 'clinician_id',
         ]);
         $this->hasMany('Patients', [
-            'foreignKey' => 'clinician_id',
-        ]);
-        $this->hasMany('Reminders', [
             'foreignKey' => 'clinician_id',
         ]);
     }
