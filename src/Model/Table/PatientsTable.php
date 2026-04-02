@@ -17,7 +17,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\BookingsTable&\Cake\ORM\Association\HasMany $Bookings
  * @property \App\Model\Table\ContactMessagesTable&\Cake\ORM\Association\HasMany $ContactMessages
  * @property \App\Model\Table\PatientMeasurementsTable&\Cake\ORM\Association\HasMany $PatientMeasurements
- * @property \App\Model\Table\RemindersTable&\Cake\ORM\Association\HasMany $Reminders
  * @property \App\Model\Table\SymptomLogsTable&\Cake\ORM\Association\HasMany $SymptomLogs
  *
  * @method \App\Model\Entity\Patient newEmptyEntity()
@@ -71,9 +70,6 @@ class PatientsTable extends Table
             'foreignKey' => 'patient_id',
         ]);
         $this->hasMany('PatientMeasurements', [
-            'foreignKey' => 'patient_id',
-        ]);
-        $this->hasMany('Reminders', [
             'foreignKey' => 'patient_id',
         ]);
         $this->hasMany('SymptomLogs', [

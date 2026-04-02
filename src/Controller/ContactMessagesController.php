@@ -114,7 +114,7 @@ class ContactMessagesController extends AppController
             $this->Flash->error(__('The contact message could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Admins', 'action' => 'dashboard']);
     }
 
     public function contact()
@@ -153,5 +153,14 @@ class ContactMessagesController extends AppController
 
         $patients = $this->ContactMessages->Patients->find('list', limit: 200)->all();
         $this->set(compact('contactMessage', 'patients'));
+    }
+
+    public function changeStatus($id = null)
+    {
+        $contactMessage = $this->ContactMessages->get($id);
+        $contactMessage->status = $contactMessage->status === 'open' ? 'close' : 'open';
+        $this->ContactMessages->save($contactMessage);
+        $this->Flash->success(__('The status of the contact message has been changed.'));
+        return $this->redirect(['action' => 'view', $id]);
     }
 }

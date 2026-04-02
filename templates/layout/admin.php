@@ -10,11 +10,11 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
 
-<?= $this->element('Admin/navbar') ?>
+<?= $this->element('admin/navbar') ?>
 
 <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
 
-    <?= $this->element('Admin/sidebar') ?>
+    <?= $this->element('admin/sidebar') ?>
 
     <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
@@ -25,7 +25,7 @@
             <?= $this->fetch('content') ?>
         </main>
 
-        <?= $this->element('Admin/footer') ?>
+        <?= $this->element('admin/footer') ?>
     </div>
 
 </div>

@@ -150,7 +150,6 @@
                             <th><?= __('Category') ?></th>
                             <th><?= __('Status') ?></th>
                             <th><?= __('Message') ?></th>
-                            <th><?= __('Sent At') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -164,7 +163,6 @@
                             <td><?= h($contactMessage->category) ?></td>
                             <td><?= h($contactMessage->status) ?></td>
                             <td><?= h($contactMessage->message) ?></td>
-                            <td><?= h($contactMessage->sent_at) ?></td>
                             <td><?= h($contactMessage->created) ?></td>
                             <td><?= h($contactMessage->modified) ?></td>
                             <td class="actions">
@@ -244,9 +242,9 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Clinician Id') ?></th>
+                            <th><?= __('Receiver Id') ?></th>
+                            <th><?= __('Sender Id') ?></th>
                             <th><?= __('Message') ?></th>
-                            <th><?= __('Sent At') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -254,9 +252,9 @@
                         <?php foreach ($patient->reminders as $reminder) : ?>
                         <tr>
                             <td><?= h($reminder->id) ?></td>
-                            <td><?= h($reminder->clinician_id) ?></td>
+                            <td><?= h($reminder->receiver_id) ?></td>
+                            <td><?= h($reminder->sender_id) ?></td>
                             <td><?= h($reminder->message) ?></td>
-                            <td><?= h($reminder->sent_at) ?></td>
                             <td><?= h($reminder->created) ?></td>
                             <td><?= h($reminder->modified) ?></td>
                             <td class="actions">

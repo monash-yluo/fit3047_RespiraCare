@@ -10,8 +10,11 @@ class AdminsController extends AppController
      */
     public function dashboard(): void
     {
+        $currentUserId = $this->Authentication->getIdentity()->get('id');
+
         $reminders = $this->fetchTable('Reminders')->find()
-            ->contain(['Patients', 'Clinicians'])
+            ->contain(['Senders'])
+            ->where(['Reminders.receiver_id' => $currentUserId])
             ->orderBy(['Reminders.created' => 'DESC'])
             ->limit(5)
             ->all();

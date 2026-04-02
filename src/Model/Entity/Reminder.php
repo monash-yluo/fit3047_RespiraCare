@@ -9,14 +9,14 @@ use Cake\ORM\Entity;
  * Reminder Entity
  *
  * @property int $id
- * @property int $patient_id
- * @property int|null $clinician_id
+ * @property int $receiver_id
+ * @property int|null $sender_id
  * @property string $message
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
- * @property \App\Model\Entity\Patient $patient
- * @property \App\Model\Entity\Clinician $clinician
+ * @property \App\Model\Entity\User $receiver
+ * @property \App\Model\Entity\User $sender
  */
 class Reminder extends Entity
 {
@@ -30,12 +30,12 @@ class Reminder extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'patient_id' => true,
-        'clinician_id' => true,
+        'receiver_id' => true,
+        'sender_id' => true,
         'message' => true,
         'created' => true,
         'modified' => true,
-        'patient' => true,
-        'clinician' => true,
+        'receiver' => true,
+        'sender' => true,
     ];
 }

@@ -11,8 +11,8 @@ use Cake\Validation\Validator;
 /**
  * Reminders Model
  *
- * @property \App\Model\Table\PatientsTable&\Cake\ORM\Association\BelongsTo $Patients
- * @property \App\Model\Table\CliniciansTable&\Cake\ORM\Association\BelongsTo $Clinicians
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Receivers
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Senders
  *
  * @method \App\Model\Entity\Reminder newEmptyEntity()
  * @method \App\Model\Entity\Reminder newEntity(array $data, array $options = [])
@@ -48,14 +48,14 @@ class RemindersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Patients', [
-            'foreignKey' => 'patient_id',
+        $this->belongsTo('Receivers', [
+            'foreignKey' => 'receiver_id',
+            'className' => 'Users',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Clinicians', [
+        $this->belongsTo('Senders', [
+            'foreignKey' => 'sender_id',
             'className' => 'Users',
-            'foreignKey' => 'clinician_id',
-            'joinType' => 'LEFT',
         ]);
     }
 
@@ -68,12 +68,12 @@ class RemindersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('patient_id')
-            ->notEmptyString('patient_id');
+            ->integer('receiver_id')
+            ->notEmptyString('receiver_id');
 
         $validator
-            ->integer('clinician_id')
-            ->allowEmptyString('clinician_id');
+            ->integer('sender_id')
+            ->allowEmptyString('sender_id');
 
         $validator
             ->scalar('message')
@@ -92,8 +92,8 @@ class RemindersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['patient_id'], 'Patients'), ['errorField' => 'patient_id']);
-        $rules->add($rules->existsIn(['clinician_id'], 'Clinicians'), ['errorField' => 'clinician_id']);
+        $rules->add($rules->existsIn(['receiver_id'], 'Receivers'), ['errorField' => 'receiver_id']);
+        $rules->add($rules->existsIn(['sender_id'], 'Senders'), ['errorField' => 'sender_id']);
 
         return $rules;
     }

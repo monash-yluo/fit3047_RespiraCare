@@ -128,9 +128,9 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Patient Id') ?></th>
+                            <th><?= __('Receiver Id') ?></th>
+                            <th><?= __('Sender Id') ?></th>
                             <th><?= __('Message') ?></th>
-                            <th><?= __('Sent At') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -138,9 +138,9 @@
                         <?php foreach ($clinician->reminders as $reminder) : ?>
                         <tr>
                             <td><?= h($reminder->id) ?></td>
-                            <td><?= h($reminder->patient_id) ?></td>
+                            <td><?= h($reminder->receiver_id) ?></td>
+                            <td><?= h($reminder->sender_id) ?></td>
                             <td><?= h($reminder->message) ?></td>
-                            <td><?= h($reminder->sent_at) ?></td>
                             <td><?= h($reminder->created) ?></td>
                             <td><?= h($reminder->modified) ?></td>
                             <td class="actions">

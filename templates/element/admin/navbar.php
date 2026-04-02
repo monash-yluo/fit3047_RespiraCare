@@ -166,8 +166,8 @@ $userId = $identity ? $identity->get('id') : null;
                                     <div class="w-full pl-3">
                                         <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
                                             <span class="font-semibold text-gray-900 dark:text-white">
-                                                <?= $reminder->clinician_id ?
-                                                    h($reminder->clinician->full_name) :
+                                                <?= $reminder->sender ?
+                                                    h($reminder->sender->full_name) :
                                                     'System' ?>
                                             </span>: <?= h($reminder->message) ?>
                                         </div>
