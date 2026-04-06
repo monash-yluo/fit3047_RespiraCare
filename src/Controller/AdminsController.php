@@ -10,15 +10,6 @@ class AdminsController extends AppController
      */
     public function dashboard(): void
     {
-        $currentUserId = $this->Authentication->getIdentity()->get('id');
-
-        $reminders = $this->fetchTable('Reminders')->find()
-            ->contain(['Senders'])
-            ->where(['Reminders.receiver_id' => $currentUserId])
-            ->orderBy(['Reminders.created' => 'DESC'])
-            ->limit(5)
-            ->all();
-
         $contactMessages = $this->paginate(
             $this->fetchTable('ContactMessages')->find(),
             [
@@ -27,6 +18,6 @@ class AdminsController extends AppController
             ],
         );
 
-        $this->set(compact('reminders', 'contactMessages'));
+        $this->set(compact('contactMessages'));
     }
 }

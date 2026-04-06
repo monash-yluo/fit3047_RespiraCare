@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
-use Cake\Http\Response;
+use Cake\Http\Client;
 
 /**
  * Users Controller
@@ -28,7 +28,7 @@ class UsersController extends AppController
     /**
      * Index method
      *
-     * @return Response|null|void Renders view
+     * @return \Cake\Http\Response|null|void Renders view
      */
     public function index()
     {
@@ -42,10 +42,10 @@ class UsersController extends AppController
      * View method
      *
      * @param string|null $id User id.
-     * @return Response|null|void Renders view
+     * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $user = $this->Users->get($id, contain: []);
         $this->set(compact('user'));
@@ -54,7 +54,7 @@ class UsersController extends AppController
     /**
      * Add method
      *
-     * @return Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -75,10 +75,10 @@ class UsersController extends AppController
      * Edit method
      *
      * @param string|null $id User id.
-     * @return Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $user = $this->Users->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -97,10 +97,10 @@ class UsersController extends AppController
      * Delete method
      *
      * @param string|null $id User id.
-     * @return Response|null Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
@@ -113,10 +113,31 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    protected function _roleRedirect($role)
+    {
+        if ($role === 'admin') {
+            return $this->redirect(
+                [
+                    'controller' => 'Admins',
+                    'action' => 'dashboard',
+                ],
+            ); // admin
+        } elseif ($role === 'patient') {
+            return $this->redirect(
+                [
+                    'controller' => 'PatientPortals',
+                    'action' => 'dashboard',
+                ],
+            ); // Patient
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Login method
      *
-     * @return Response|null|void Redirects on successful login, renders view otherwise.
+     * @return \Cake\Http\Response|null|void Redirects on successful login, renders view otherwise.
      */
     public function login()
     {
@@ -125,34 +146,26 @@ class UsersController extends AppController
         if ($this->request->is('get')) {
             // 0. 先用 getIdentity 看用户是不是之前就登录过了 (Session 还在)
             $identity = $this->Authentication->getIdentity();
-//            \Cake\Error\debug($identity);
+
             if ($identity) {
-                if ($identity->role === 'admin') {
-                    return $this->redirect(
-                        [
-                            'controller' => 'Admins',
-                            'action' => 'Dashboard'
-                        ]); // admin已登录
+                $redirect = $this->_roleRedirect($identity->role);
+                if ($redirect) {
+                    return $redirect;
                 } else {
-                    return $this->redirect(
-                        [
-                            'controller' => 'Users',
-                            'action' => 'index'
-                        ]); // user已登录
+                    $this->Authentication->logout();
                 }
             }
         }
-
 
         if ($this->request->is('post')) {
             // --- 1. 获取并校验 Turnstile Token ---
             $token = $this->request->getData('cf-turnstile-response');
 
-            $http = new \Cake\Http\Client();
+            $http = new Client();
             $response = $http->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
                 'secret' => Configure::read('Turnstile.secretKey'), // 改用 Configure::read('Turnstile.secretKey')
                 'response' => $token,
-                'remoteip' => $this->request->clientIp()
+                'remoteip' => $this->request->clientIp(),
             ]);
 
             $outcome = $response->getJson();
@@ -163,17 +176,20 @@ class UsersController extends AppController
                 $this->Flash->error(__('CAPTCHA verification failed. Please try again.'));
                 // 关键：如果插件已经因为账号密码对而登录了，这里必须强制登出
                 $this->Authentication->logout();
+
                 return; // 停止执行，让用户停留在登录页
             }
 
             // --- 3. 验证码通过后，再判断账号密码是否正确 ---
             $result = $this->Authentication->getResult(); // 这个只是获取结果真实的登录逻辑在中间页已经执行过了
             if ($result && $result->isValid()) {
-                $redirect = $this->request->getQuery('redirect', [
-                    'controller' => 'Admins',
-                    'action' => 'Dashboard'
-                ]);
-                return $this->redirect($redirect);
+                $redirect = $this->_roleRedirect($result->getData()->role);
+
+                if ($redirect) {
+                    return $redirect;
+                } else {
+                    $this->Authentication->logout();
+                }
             }
 
             // 如果账号密码错误
@@ -204,11 +220,11 @@ class UsersController extends AppController
             // --- 1. 获取并校验 Turnstile Token ---
             $token = $data['cf-turnstile-response'];
 
-            $http = new \Cake\Http\Client();
+            $http = new Client();
             $response = $http->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
                 'secret' => Configure::read('Turnstile.secretKey'), // 改用 Configure::read('Turnstile.secretKey')
                 'response' => $token,
-                'remoteip' => $this->request->clientIp()
+                'remoteip' => $this->request->clientIp(),
             ]);
 
             $outcome = $response->getJson();
@@ -216,12 +232,14 @@ class UsersController extends AppController
             // --- 2. 如果验证码校验失败 ---
             if (!($outcome['success'] ?? false)) {
                 $this->Flash->error(__('CAPTCHA verification failed. Please try again.'));
+
                 return; // 停止执行，让用户停留在登录页
             }
 
             // 1. 基础验证：确保两次输入的新密码一致
             if (empty($data['new_password']) || $data['new_password'] !== $data['confirm_new_password']) {
                 $this->Flash->error(__('New passwords do not match or are empty.'));
+
                 return;
             }
 
@@ -230,7 +248,7 @@ class UsersController extends AppController
                 ->where([
                     'first_name' => $data['first_name'],
                     'last_name' => $data['last_name'],
-                    'email' => $data['email']
+                    'email' => $data['email'],
                 ])
                 ->first();
 
@@ -240,6 +258,7 @@ class UsersController extends AppController
 
                 if ($this->Users->save($user)) {
                     $this->Flash->success(__('Your password has been reset successfully.'));
+
                     return $this->redirect(['action' => 'login']);
                 }
                 $this->Flash->error(__('Unable to update the password. Please try again.'));

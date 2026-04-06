@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
@@ -54,11 +55,28 @@ class AppController extends Controller
         $this->loadComponent('Authentication.Authentication');
     }
 
+    /**
+     * beforeFilter callback.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     */
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
 
         $identity = $this->Authentication->getIdentity();
-        $this->set(compact('identity'));
+        $reminders = null;
+
+        if ($identity) {
+            $reminders = $this->fetchTable('Reminders')->find()
+                ->contain(['Senders'])
+                ->where(['Reminders.receiver_id' => $identity->get('id')])
+                ->orderBy(['Reminders.created' => 'DESC'])
+                ->limit(5)
+                ->all();
+        }
+
+        $this->set(compact('identity', 'reminders'));
     }
 }
