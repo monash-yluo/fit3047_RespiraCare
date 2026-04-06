@@ -199,6 +199,13 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Logout method.
+     *
+     * Logs the current user out and redirects them to the login page.
+     *
+     * @return \Cake\Http\Response|null Redirects to the login page.
+     */
     public function logout()
     {
         $result = $this->Authentication->getResult();
@@ -210,6 +217,15 @@ class UsersController extends AppController
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 
+    /**
+     * Reset password method.
+     *
+     * Allows a user to reset their password after verifying their identity
+     * through first name, last name, and email. It also includes
+     * CAPTCHA verification to prevent abuse.
+     *
+     * @return \Cake\Http\Response|null|void Redirects on successful password reset, otherwise renders the view.
+     */
     public function resetPassword()
     {
         $this->request->allowMethod(['get', 'post']);

@@ -22,8 +22,12 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
                 <div class="alert alert-info small py-3 mb-4 shadow-sm border-0 rounded-3"
                      style="background-color: #E0E8F5; color: #305BAB;">
                     <strong><i class="bi bi-info-circle me-1"></i> Testing Credentials:</strong><br>
-                    Email: admin@respiracare.com<br>
-                    Password: 123
+
+                    Admin Email: admin@respiracare.com<br>
+                    Password: 123<br>
+
+                    Patient Email: john.patient@example.com<br>
+                    Password: 123<br>
                 </div>
 
                 <?= $this->Flash->render() ?>

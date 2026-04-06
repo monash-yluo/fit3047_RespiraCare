@@ -10,5 +10,14 @@ class PatientPortalsController extends AppController
      */
     public function dashboard(): void
     {
+        $patientMeasurements = $this->paginate(
+            $this->fetchTable('PatientMeasurements')->find(),
+            [
+                'limit' => 10,
+                'order' => ['measured_at' => 'desc'],
+            ],
+        );
+
+        $this->set(compact('patientMeasurements'));
     }
 }
