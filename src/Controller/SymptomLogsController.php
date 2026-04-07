@@ -102,4 +102,24 @@ class SymptomLogsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function patientIndex()
+    {
+        $patientId = $this->getPatientId();
+
+        if (!$patientId) {
+            $this->Flash->error(__('Patient profile not found.'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
+
+        $query = $this->SymptomLogs->find()
+            ->where(['patient_id' => $patientId]);
+
+        $symptomLogs = $this->paginate($query, [
+            'limit' => 10,
+            'order' => ['started_at' => 'desc']
+        ]);
+
+        $this->set(compact('symptomLogs'));
+    }
 }

@@ -79,4 +79,29 @@ class AppController extends Controller
 
         $this->set(compact('identity', 'reminders'));
     }
+
+    /**
+     * 通用工具方法：获取当前登录用户的 Patient ID
+     * * @return int|null 返回 Patient ID，如果未找到则返回 null
+     */
+    protected function getPatientId(): ?int
+    {
+        // 1. 获取当前登录账户的 User ID
+        $identity = $this->Authentication->getIdentity();
+        if (!$identity) {
+            return null;
+        }
+
+        $userId = $identity->get('id');
+
+        // 2. 查找关联的 Patient
+        // 使用 getTableLocator 确保在任何 Controller 都能加载 Patients 表
+        $patient = $this->getTableLocator()->get('Patients')
+            ->find()
+            ->where(['user_id' => $userId])
+            ->select(['id']) // 只取 ID 提高效率
+            ->first();
+
+        return $patient ? (int)$patient->id : null;
+    }
 }
