@@ -53,6 +53,13 @@
                     <?php endif; ?>
                 </li>
                 <li>
+                    <!-- 如果是patient 登录 显示dashboard 链接 -->
+                    <?php if ($identity && $identity->role === 'patient'): ?>
+                        <a href="<?= $this->Url->build(['controller' => 'PatientPortals', 'action' => 'dashboard']) ?>"
+                           class="<?= ($this->request->getParam('controller') === 'PatientPortals' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Dashboard</a>
+                    <?php endif; ?>
+                </li>
+                <li>
                     <!-- 仅当用户已登录时显示 Logout 链接 -->
                     <?php if ($identity): ?>
                         <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>"
