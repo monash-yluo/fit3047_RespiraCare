@@ -12,19 +12,19 @@
         </a>
     </li>
 
-    <li>
-        <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'index']) ?>"
-           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700">
-            <svg
-                class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
-            </svg>
-            <span class="ml-3">Measurements</span>
-        </a>
-    </li>
+<!--    <li>-->
+<!--        <a href="--><?php //= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'index']) ?><!--"-->
+<!--           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700">-->
+<!--            <svg-->
+<!--                class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"-->
+<!--                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"-->
+<!--                viewBox="0 0 24 24">-->
+<!--                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
+<!--                      d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>-->
+<!--            </svg>-->
+<!--            <span class="ml-3">Measurements</span>-->
+<!--        </a>-->
+<!--    </li>-->
 
     <li>
         <a href="<?= $this->Url->build(['controller' => 'SymptomLogs', 'action' => 'add']) ?>"

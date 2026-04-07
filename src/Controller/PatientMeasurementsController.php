@@ -133,4 +133,28 @@ class PatientMeasurementsController extends AppController
         }
         $this->set(compact('patientMeasurement'));
     }
+
+    public function patientView(?string $id = null)
+    {
+        // 1. 获取当前登录账户的 User ID
+        $currentUserId = $this->Authentication->getIdentity()->get('id');
+
+        // 2. 在查询时，通过 Patients 表做 Inner Join 过滤
+        // 确保这条测量记录所属的 Patient，其对应的 user_id 是当前登录者
+        $patientMeasurement = $this->PatientMeasurements->find()
+            ->where(['PatientMeasurements.id' => $id])
+            ->contain(['Patients' => function ($q) use ($currentUserId) {
+                return $q->where(['Patients.user_id' => $currentUserId]);
+            }])
+            ->first();
+
+        // 3. 安全检查
+        // 如果查询结果为空，或者关联的 Patient 没查到（说明 user_id 不匹配）
+        if (!$patientMeasurement || !$patientMeasurement->patient) {
+            $this->Flash->error(__('You are not authorized to view this record.'));
+            return $this->redirect(['controller' => 'PatientPortals', 'action' => 'dashboard']);
+        }
+
+        $this->set(compact('patientMeasurement'));
+    }
 }
