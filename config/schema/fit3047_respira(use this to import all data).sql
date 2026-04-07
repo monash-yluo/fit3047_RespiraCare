@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2026 at 08:16 PM
+-- Generation Time: Apr 07, 2026 at 11:32 PM
 -- Server version: 11.8.6-MariaDB
 -- PHP Version: 8.4.16
 
@@ -274,6 +274,7 @@ CREATE TABLE `symptom_logs`
     `id`          int(11) NOT NULL,
     `patient_id`  int(11) NOT NULL,
     `description` text     DEFAULT NULL,
+    `severity`    int(11) NOT NULL DEFAULT 1,
     `logged_at`   datetime NOT NULL,
     `notes`       text     DEFAULT NULL,
     `created`     datetime DEFAULT NULL,
@@ -284,10 +285,10 @@ CREATE TABLE `symptom_logs`
 -- Dumping data for table `symptom_logs`
 --
 
-INSERT INTO `symptom_logs` (`id`, `patient_id`, `description`, `logged_at`, `notes`, `created`, `modified`)
-VALUES (1, 2, 'Feeling tight in the chest after climbing stairs.', '2026-03-20 10:00:00',
+INSERT INTO `symptom_logs` (`id`, `patient_id`, `description`, `severity`, `logged_at`, `notes`, `created`, `modified`)
+VALUES (1, 2, 'Feeling tight in the chest after climbing stairs.', 1, '2026-03-20 10:00:00',
         'Symptoms resolved after rest.', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-       (2, 3, 'Continuous coughing during the night.', '2026-03-20 03:00:00', 'Did not use emergency inhaler.',
+       (2, 3, 'Continuous coughing during the night.', 1, '2026-03-20 03:00:00', 'Did not use emergency inhaler.',
         '2026-03-21 15:02:11', '2026-03-21 15:02:11');
 
 -- --------------------------------------------------------
@@ -300,19 +301,17 @@ CREATE TABLE `symptom_logs_symptom_types`
 (
     `id`              int(11) NOT NULL,
     `symptom_log_id`  int(11) NOT NULL,
-    `symptom_type_id` int(11) NOT NULL,
-    `severity`        int(11) DEFAULT NULL,
-    `present`         tinyint(1) NOT NULL DEFAULT 1
+    `symptom_type_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
 -- Dumping data for table `symptom_logs_symptom_types`
 --
 
-INSERT INTO `symptom_logs_symptom_types` (`id`, `symptom_log_id`, `symptom_type_id`, `severity`, `present`)
-VALUES (1, 1, 3, 3, 1),
-       (2, 1, 1, 2, 1),
-       (3, 2, 4, 4, 1);
+INSERT INTO `symptom_logs_symptom_types` (`id`, `symptom_log_id`, `symptom_type_id`)
+VALUES (2, 1, 1),
+       (1, 1, 3),
+       (3, 2, 4);
 
 -- --------------------------------------------------------
 

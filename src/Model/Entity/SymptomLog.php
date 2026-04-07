@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $patient_id
  * @property string|null $description
+ * @property int $severity
  * @property \Cake\I18n\DateTime $logged_at
  * @property string|null $notes
  * @property \Cake\I18n\DateTime|null $created
@@ -33,6 +34,7 @@ class SymptomLog extends Entity
     protected array $_accessible = [
         'patient_id' => true,
         'description' => true,
+        'severity' => true,
         'logged_at' => true,
         'notes' => true,
         'created' => true,

@@ -113,7 +113,8 @@ class SymptomLogsController extends AppController
         }
 
         $query = $this->SymptomLogs->find()
-            ->where(['patient_id' => $patientId]);
+            ->where(['patient_id' => $patientId])
+            ->contain(['SymptomTypes']);
 
         $symptomLogs = $this->paginate($query, [
             'limit' => 10,

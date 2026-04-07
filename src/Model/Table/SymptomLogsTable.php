@@ -76,6 +76,10 @@ class SymptomLogsTable extends Table
             ->allowEmptyString('description');
 
         $validator
+            ->integer('severity')
+            ->notEmptyString('severity');
+
+        $validator
             ->dateTime('logged_at')
             ->requirePresence('logged_at', 'create')
             ->notEmptyDateTime('logged_at');
