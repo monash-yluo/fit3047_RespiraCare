@@ -129,6 +129,13 @@ class UsersController extends AppController
                     'action' => 'dashboard',
                 ],
             ); // Patient
+        } elseif ($role === 'clinician') {
+            return $this->redirect(
+                [
+                    'controller' => 'ClinicianPortals',
+                    'action' => 'dashboard',
+                ],
+            ); // Clinician
         } else {
             return null;
         }
