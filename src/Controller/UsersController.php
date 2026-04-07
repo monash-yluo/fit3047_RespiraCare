@@ -113,7 +113,7 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    protected function _roleRedirect($role)
+    public function roleRedirect($role)
     {
         if ($role === 'admin') {
             return $this->redirect(
@@ -148,7 +148,7 @@ class UsersController extends AppController
             $identity = $this->Authentication->getIdentity();
 
             if ($identity) {
-                $redirect = $this->_roleRedirect($identity->role);
+                $redirect = $this->roleRedirect($identity->role);
                 if ($redirect) {
                     return $redirect;
                 } else {
@@ -183,7 +183,7 @@ class UsersController extends AppController
             // --- 3. 验证码通过后，再判断账号密码是否正确 ---
             $result = $this->Authentication->getResult(); // 这个只是获取结果真实的登录逻辑在中间页已经执行过了
             if ($result && $result->isValid()) {
-                $redirect = $this->_roleRedirect($result->getData()->role);
+                $redirect = $this->roleRedirect($result->getData()->role);
 
                 if ($redirect) {
                     return $redirect;

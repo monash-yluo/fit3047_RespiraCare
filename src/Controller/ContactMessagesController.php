@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Http\Client;
 
 /**
  * ContactMessages Controller
@@ -12,7 +13,6 @@ use Cake\Core\Configure;
  */
 class ContactMessagesController extends AppController
 {
-
     /**
      * Initialize controller
      *
@@ -24,7 +24,6 @@ class ContactMessagesController extends AppController
 
         $this->Authentication->allowUnauthenticated(['contact']);
     }
-
 
     /**
      * Index method
@@ -47,7 +46,7 @@ class ContactMessagesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $contactMessage = $this->ContactMessages->get($id, contain: ['Patients']);
         $this->set(compact('contactMessage'));
@@ -81,7 +80,7 @@ class ContactMessagesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $contactMessage = $this->ContactMessages->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -104,7 +103,7 @@ class ContactMessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $contactMessage = $this->ContactMessages->get($id);
@@ -114,7 +113,7 @@ class ContactMessagesController extends AppController
             $this->Flash->error(__('The contact message could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['controller' => 'Admins', 'action' => 'dashboard']);
+        return $this->redirect($this->referer());
     }
 
     public function contact()
@@ -122,15 +121,14 @@ class ContactMessagesController extends AppController
         $contactMessage = $this->ContactMessages->newEmptyEntity();
 
         if ($this->request->is('post')) {
-
             // --- 1. 获取并校验 Turnstile Token ---
             $token = $this->request->getData('cf-turnstile-response');
 
-            $http = new \Cake\Http\Client();
+            $http = new Client();
             $response = $http->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
                 'secret' => Configure::read('Turnstile.secretKey'), // 改用 Configure::read('Turnstile.secretKey')
                 'response' => $token,
-                'remoteip' => $this->request->clientIp()
+                'remoteip' => $this->request->clientIp(),
             ]);
 
             $outcome = $response->getJson();
@@ -161,6 +159,7 @@ class ContactMessagesController extends AppController
         $contactMessage->status = $contactMessage->status === 'open' ? 'close' : 'open';
         $this->ContactMessages->save($contactMessage);
         $this->Flash->success(__('The status of the contact message has been changed.'));
+
         return $this->redirect(['action' => 'view', $id]);
     }
 }

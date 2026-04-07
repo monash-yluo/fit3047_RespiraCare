@@ -29,7 +29,7 @@ $this->assign('title', 'Dashboard Overview');
                 </span>
             </div>
             <div class="items-center sm:flex">
-                <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'add']) ?>"
+                <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'patientAdd']) ?>"
                    class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2"
                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -65,36 +65,43 @@ $this->assign('title', 'Dashboard Overview');
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 <?= $this->Paginator->sort('measure_at', 'Measurement Time') ?>
                             </th>
-                            <th
-                                scope="col"
-                                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <?= $this->Paginator->sort('spo2', 'SPO2') ?>
-                            </th>
-                            <th
-                                scope="col"
-                                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <?= $this->Paginator->sort('heart_rate', 'Heart Rate') ?>
-                            </th>
+<!--                            体温-->
                             <th
                                 scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 <?= $this->Paginator->sort('temperature', 'Temperature C') ?>
                             </th>
+<!--                            心跳-->
+                            <th
+                                scope="col"
+                                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                <?= $this->Paginator->sort('heart_rate', 'Heart Rate') ?>
+                            </th>
+<!--                            呼吸频率-->
                             <th
                                 scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 <?= $this->Paginator->sort('respiratory_rate', 'Respiratory Rate') ?>
                             </th>
-                            <th
-                                scope="col"
-                                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <?= $this->Paginator->sort('peak_flow', 'Peak Flow L/min') ?>
-                            </th>
+<!--                            血压-->
                             <th
                                 scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 <?= $this->Paginator->sort('blood_pressure_systolic', 'Blood Pressure') ?>
                             </th>
+<!--                            血氧-->
+                            <th
+                                scope="col"
+                                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                <?= $this->Paginator->sort('spo2', 'SPO2') ?>
+                            </th>
+<!--                            呼吸流量-->
+                            <th
+                                scope="col"
+                                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                <?= $this->Paginator->sort('peak_flow', 'Peak Flow L/min') ?>
+                            </th>
+<!--                            备注-->
                             <th
                                 scope="col"
                                 class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -129,7 +136,7 @@ $this->assign('title', 'Dashboard Overview');
                                             .586 13H4"></path>
                                     </svg>
                                     <p class="text-lg font-medium text-gray-900 dark:text-white">No messages yet</p>
-                                    <p class="text-sm">When someone submits a contact form, it will appear here.</p>
+                                    <p class="text-sm">Add a measurement to get started.</p>
                                 </td>
                             </tr>
                         <?php else : ?>
@@ -158,7 +165,7 @@ $this->assign('title', 'Dashboard Overview');
                                     <td
                                         class="p-4 text-base font-medium text-gray-900
                                         dark:text-white max-w-[100px] truncate">
-                                        <?= h($patientMeasurement->spo2) ?>
+                                        <?= h($patientMeasurement->temperature . ' °C') ?>
                                     </td>
 
                                     <td
@@ -170,13 +177,19 @@ $this->assign('title', 'Dashboard Overview');
                                     <td
                                         class="p-4 text-base font-medium text-gray-900
                                         dark:text-white max-w-[100px] truncate">
-                                        <?= h($patientMeasurement->temperature . ' °C') ?>
+                                        <?= h($patientMeasurement->respiratory_rate . ' bpm') ?>
                                     </td>
 
                                     <td
                                         class="p-4 text-base font-medium text-gray-900
                                         dark:text-white max-w-[100px] truncate">
-                                        <?= h($patientMeasurement->respiratory_rate . ' bpm') ?>
+                                        <?= h($patientMeasurement->blood_pressure_systolic . '/' . $patientMeasurement->blood_pressure_diastolic) ?>
+                                    </td>
+
+                                    <td
+                                        class="p-4 text-base font-medium text-gray-900
+                                        dark:text-white max-w-[100px] truncate">
+                                        <?= h($patientMeasurement->spo2) ?>
                                     </td>
 
                                     <td
@@ -185,11 +198,6 @@ $this->assign('title', 'Dashboard Overview');
                                         <?= h($patientMeasurement->peak_flow . ' L/min') ?>
                                     </td>
 
-                                    <td
-                                        class="p-4 text-base font-medium text-gray-900
-                                        dark:text-white max-w-[100px] truncate">
-                                        <?= h($patientMeasurement->blood_pressure_systolic . '/' . $patientMeasurement->blood_pressure_diastolic) ?>
-                                    </td>
 
                                     <td
                                         class="p-4 text-base font-medium text-gray-900
@@ -216,7 +224,7 @@ $this->assign('title', 'Dashboard Overview');
                                         <?= $this->Form->postLink(
                                             '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>',
                                             [
-                                                'controller' => 'ContactMessages',
+                                                'controller' => 'PatientMeasurements',
                                                 'action' => 'delete', $patientMeasurement->id,
                                             ],
                                             [

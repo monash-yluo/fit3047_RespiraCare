@@ -31,7 +31,7 @@ class PatientMeasurementsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: ['Patients']);
         $this->set(compact('patientMeasurement'));
@@ -65,7 +65,7 @@ class PatientMeasurementsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -88,16 +88,49 @@ class PatientMeasurementsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $patientMeasurement = $this->PatientMeasurements->get($id);
         if ($this->PatientMeasurements->delete($patientMeasurement)) {
-            $this->Flash->success(__('The patient measurement has been deleted.'));
+            $this->Flash->success(__('The measurement has been deleted.'));
         } else {
-            $this->Flash->error(__('The patient measurement could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The measurement could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect($this->referer());
+    }
+
+    public function patientAdd()
+    {
+        $patientMeasurement = $this->PatientMeasurements->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
+
+            // 1. 获取当前登录 User 的 ID
+            $userId = $this->Authentication->getIdentity()->get('id');
+
+            // 2. 通过 user_id 找到对应的 patient 记录
+            $patient = $this->PatientMeasurements->Patients->find()
+                ->select(['id'])
+                ->where(['user_id' => $userId])
+                ->first();
+
+            if ($patient) {
+                // 3. 将真正的 patient_id 赋值
+                $patientMeasurement->patient_id = $patient->id;
+
+                if ($this->PatientMeasurements->save($patientMeasurement)) {
+                    $this->Flash->success(__('The measurement data has been successfully saved.'));
+                    return $this->redirect(['controller' => 'PatientPortals', 'action' => 'dashboard']);
+                }
+            } else {
+                $this->Flash->error(__('Patient profile not found. Please contact the administrator.'));
+            }
+
+            $this->Flash->error(__('Failed to save. Please try again.'));
+        }
+        $this->set(compact('patientMeasurement'));
     }
 }

@@ -6,6 +6,8 @@
  * @var string $headers 传入的表头 HTML 字符串
  * @var string $rows 传入的行数据 HTML 字符串
  * @var string $emptyMessage 数据为空时的提示
+ *
+ * AI 提取的, 但好像用不了
  */
 ?>
 <div class="flex flex-col">
