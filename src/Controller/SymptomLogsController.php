@@ -150,4 +150,26 @@ class SymptomLogsController extends AppController
         $symptomTypes = $this->SymptomLogs->SymptomTypes->find('list', limit: 200)->all();
         $this->set(compact('symptomLog', 'symptomTypes'));
     }
+
+    public function patientView(?string $id = null)
+    {
+        $patientId = $this->getPatientId();
+        if (!$patientId) {
+            $this->Flash->error(__('Patient profile not found.'));
+            return $this->redirect(['controller' => 'PatientPortals', 'action' => 'index']);
+        }
+        
+        $symptomLog = $this->SymptomLogs->find()
+            ->where(['SymptomLogs.id' => $id, 'SymptomLogs.patient_id' => $patientId])
+            ->contain(['SymptomTypes'])
+            ->first();
+
+        if (!$symptomLog) {
+            $this->Flash->error(__('Symptom log not found.'));
+            return $this->redirect(['action' => 'patientIndex']);
+        }
+
+        $this->set(compact('symptomLog'));
+    }
+    
 }

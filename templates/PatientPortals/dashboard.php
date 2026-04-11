@@ -3,7 +3,7 @@
  * Patient Portal Dashboard
  * @var \Cake\View\View $this
  * @var \Cake\Datasource\EntityInterface $identity
- * @var \Cake\Datasource\EntityInterface $patientMeasurements
+ * @var \Cake\Datasource\ResultSetInterface $patientMeasurements
  */
 
 $this->setLayout('patient');
