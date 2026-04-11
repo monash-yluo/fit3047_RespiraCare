@@ -31,7 +31,7 @@ class SymptomLogsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients', 'SymptomTypes']);
         $this->set(compact('symptomLog'));
@@ -66,7 +66,7 @@ class SymptomLogsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $symptomLog = $this->SymptomLogs->get($id, contain: ['SymptomTypes']);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -90,7 +90,7 @@ class SymptomLogsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $symptomLog = $this->SymptomLogs->get($id);
@@ -109,6 +109,7 @@ class SymptomLogsController extends AppController
 
         if (!$patientId) {
             $this->Flash->error(__('Patient profile not found.'));
+
             return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
         }
 
@@ -118,9 +119,35 @@ class SymptomLogsController extends AppController
 
         $symptomLogs = $this->paginate($query, [
             'limit' => 10,
-            'order' => ['started_at' => 'desc']
+            'order' => ['started_at' => 'desc'],
         ]);
 
         $this->set(compact('symptomLogs'));
+    }
+
+    public function patientAdd()
+    {
+        $symptomLog = $this->SymptomLogs->newEmptyEntity();
+
+        $patientId = $this->getPatientId();
+        if (!$patientId) {
+            $this->Flash->error(__('Patient profile not found.'));
+            return $this->redirect(['controller' => 'PatientPortals', 'action' => 'index']);
+        }
+
+        if ($this->request->is('post')) {
+            $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
+            $symptomLog->patient_id = $patientId;
+
+            if ($this->SymptomLogs->save($symptomLog)) {
+                $this->Flash->success(__('The symptom log has been saved.'));
+
+                return $this->redirect(['action' => 'patientIndex']);
+            }
+            $this->Flash->error(__('The symptom log could not be saved. Please, try again.'));
+        }
+
+        $symptomTypes = $this->SymptomLogs->SymptomTypes->find('list', limit: 200)->all();
+        $this->set(compact('symptomLog', 'symptomTypes'));
     }
 }

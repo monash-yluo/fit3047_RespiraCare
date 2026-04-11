@@ -46,7 +46,7 @@ $getSeverityProps = function($severity) {
         <div>
             <?= $this->Html->link(
                 __('Log New Symptom'),
-                ['action' => 'add'],
+                ['action' => 'patientAdd'],
                 ['class' => 'inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-primary-700 rounded-lg hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 transition-colors']
             ) ?>
         </div>
