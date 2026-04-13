@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Patient Portal Dashboard
  * @var \Cake\View\View $this
  * @var \Cake\Datasource\EntityInterface $identity
- * @var \Cake\Datasource\ResultSetInterface $patientMeasurements
+ * @var iterable<\PatientMeasurement> $patientMeasurements
  */
 
 $this->setLayout('patient');
@@ -116,7 +117,7 @@ $this->assign('title', 'Dashboard Overview');
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
 
-                        <?php if ($patientMeasurements->isEmpty()) : ?>
+                        <?php if ($patientMeasurements->items()->isEmpty()) : ?>
                             <tr>
                                 <td colspan="10" class="p-8 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800">
                                     <svg class="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
