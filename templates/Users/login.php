@@ -36,7 +36,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
 
                 <div class="mb-4">
                     <?= $this->Form->control('email', [
-                        'class' => 'form-control form-control-lg shadow-sm',
+                        'class' => 'form-control form-control-lg shadow-sm fs-6',
                         'label' => ['text' => 'Administrator ID (Email)', 'class' => 'fw-bold small mb-2'],
                         'required' => true,
                         'autofocus' => true,
@@ -45,7 +45,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
 
                 <div class="mb-4">
                     <?= $this->Form->control('password', [
-                        'class' => 'form-control form-control-lg shadow-sm',
+                        'class' => 'form-control form-control-lg shadow-sm fs-6',
                         'label' => ['text' => 'Password', 'class' => 'fw-bold small mb-2'],
                         'required' => true,
                     ]) ?>
