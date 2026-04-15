@@ -14,7 +14,7 @@ $this->assign('title', 'Manage Patients');
         'title' => 'Manage Patients',
         'description' => 'View, add, and manage patient records and clinician assignments.',
         'actionLabel' => __('New Patient'),
-        'actionUrl' => ['action' => 'add']
+        'actionUrl' => ['action' => 'add'],
     ]) ?>
 
     <?php $this->start('table_content'); ?>
@@ -57,11 +57,11 @@ $this->assign('title', 'Manage Patients');
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($patients->isEmpty()): ?>
+    <?php if ($patients->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'colspan' => 10,
             'title' => 'No patients found',
-            'message' => 'There are currently no patient records in the system.'
+            'message' => 'There are currently no patient records in the system.',
         ]) ?>
     <?php else : ?>
         <?php foreach ($patients as $patient) : ?>
@@ -82,7 +82,7 @@ $this->assign('title', 'Manage Patients');
                         <?= $this->Html->link(
                             h($patient->user->first_name),
                             ['controller' => 'Users', 'action' => 'view', $patient->user->id],
-                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
+                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">No User</span>
@@ -94,7 +94,7 @@ $this->assign('title', 'Manage Patients');
                         <?= $this->Html->link(
                             'Clinician #' . $patient->clinician->id,
                             ['controller' => 'Clinicians', 'action' => 'view', $patient->clinician->id],
-                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
+                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">Unassigned</span>
@@ -129,7 +129,7 @@ $this->assign('title', 'Manage Patients');
                             'escape' => false,
                             'title' => __('View'),
                             'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800',
-                        ]
+                        ],
                     ) ?>
 
                     <?= $this->Html->link(
@@ -139,7 +139,7 @@ $this->assign('title', 'Manage Patients');
                             'escape' => false,
                             'title' => __('Edit'),
                             'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white rounded-lg bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-800',
-                        ]
+                        ],
                     ) ?>
 
                     <?= $this->Form->postLink(
@@ -150,7 +150,7 @@ $this->assign('title', 'Manage Patients');
                             'title' => __('Delete'),
                             'confirm' => __('Are you sure you want to delete patient record #{0}?', $patient->id),
                             'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900',
-                        ]
+                        ],
                     ) ?>
                 </td>
             </tr>

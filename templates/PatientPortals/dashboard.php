@@ -3,7 +3,7 @@
  * Patient Portal Dashboard
  * @var \Cake\View\View $this
  * @var \Cake\Datasource\EntityInterface $identity
- * @var \Cake\Datasource\ResultSetInterface $patientMeasurements
+ * @var iterable<\PatientMeasurement> $patientMeasurements
  */
 
 $this->setLayout('patient');
@@ -113,7 +113,7 @@ $this->assign('title', 'Dashboard Overview');
     </thead>
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
 
-    <?php if ($patientMeasurements->isEmpty()) : ?>
+    <?php if ($patientMeasurements->items()->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No records found',
             'message' => 'Start by uploading your first health measurement.',

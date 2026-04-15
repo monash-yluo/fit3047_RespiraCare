@@ -14,7 +14,7 @@ $this->assign('title', 'System Reminders');
         'title' => 'System Reminders',
         'description' => 'View and manage automated health data reminders and communications.',
         'actionLabel' => __('New Reminder'),
-        'actionUrl' => ['action' => 'add']
+        'actionUrl' => ['action' => 'add'],
     ]) ?>
 
     <?php $this->start('table_content'); ?>
@@ -48,10 +48,10 @@ $this->assign('title', 'System Reminders');
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($reminders->isEmpty()): ?>
+    <?php if ($reminders->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No reminders found',
-            'message' => 'Automated reminders have not been scheduled yet.'
+            'message' => 'Automated reminders have not been scheduled yet.',
         ]) ?>
     <?php else : ?>
         <?php foreach ($reminders as $reminder) : ?>
@@ -72,7 +72,7 @@ $this->assign('title', 'System Reminders');
                         <?= $this->Html->link(
                             h($reminder->receiver->first_name),
                             ['controller' => 'Users', 'action' => 'view', $reminder->receiver->id],
-                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
+                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">No Receiver</span>
@@ -84,7 +84,7 @@ $this->assign('title', 'System Reminders');
                         <?= $this->Html->link(
                             h($reminder->sender->first_name),
                             ['controller' => 'Users', 'action' => 'view', $reminder->sender->id],
-                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
+                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">No Sender</span>
@@ -107,7 +107,7 @@ $this->assign('title', 'System Reminders');
                             'escape' => false,
                             'title' => __('View'),
                             'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800',
-                        ]
+                        ],
                     ) ?>
 
                     <?= $this->Form->postLink(
@@ -118,7 +118,7 @@ $this->assign('title', 'System Reminders');
                             'title' => __('Delete'),
                             'confirm' => __('Are you sure you want to delete reminder #{0}?', $reminder->id),
                             'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900',
-                        ]
+                        ],
                     ) ?>
                 </td>
             </tr>

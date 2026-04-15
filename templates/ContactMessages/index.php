@@ -10,8 +10,8 @@ $this->assign('title', 'Contact Messages');
 /**
  * Status Badge Logic
  */
-$getStatusClass = function($status) {
-    return match(strtolower($status)) {
+$getStatusClass = function ($status) {
+    return match (strtolower($status)) {
         'new', 'pending' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
         'replied', 'resolved' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
         'urgent' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
@@ -26,7 +26,7 @@ $getStatusClass = function($status) {
         'title' => 'Contact Messages',
         'description' => 'Monitor and manage inquiries from patients and external users.',
         'actionLabel' => __('New Message'),
-        'actionUrl' => ['action' => 'add']
+        'actionUrl' => ['action' => 'add'],
     ]) ?>
 
     <?php $this->start('table_content'); ?>
@@ -63,10 +63,10 @@ $getStatusClass = function($status) {
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($contactMessages->isEmpty()): ?>
+    <?php if ($contactMessages->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No messages found',
-            'message' => 'Incoming inquiries will appear here.'
+            'message' => 'Incoming inquiries will appear here.',
         ]) ?>
     <?php else : ?>
         <?php foreach ($contactMessages as $contactMessage) : ?>
@@ -81,7 +81,7 @@ $getStatusClass = function($status) {
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?= h($contactMessage->first_name . ' ' . $contactMessage->last_name) ?>
-                    <?php if ($contactMessage->hasValue('patient')): ?>
+                    <?php if ($contactMessage->hasValue('patient')) : ?>
                         <span class="block text-xs text-primary-600 dark:text-primary-400 italic">Patient ID: <?= $contactMessage->patient->id ?></span>
                     <?php endif; ?>
                 </td>
@@ -110,8 +110,8 @@ $getStatusClass = function($status) {
                         ['action' => 'view', $contactMessage->id],
                         [
                             'escape' => false,
-                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700'
-                        ]
+                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700',
+                        ],
                     ) ?>
 
                     <?= $this->Html->link(
@@ -119,8 +119,8 @@ $getStatusClass = function($status) {
                         ['action' => 'edit', $contactMessage->id],
                         [
                             'escape' => false,
-                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-white rounded-lg bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-500 dark:hover:bg-yellow-600'
-                        ]
+                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-white rounded-lg bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-500 dark:hover:bg-yellow-600',
+                        ],
                     ) ?>
 
                     <?= $this->Form->postLink(
@@ -129,8 +129,8 @@ $getStatusClass = function($status) {
                         [
                             'escape' => false,
                             'confirm' => __('Delete message from {0}?', $contactMessage->first_name),
-                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800'
-                        ]
+                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800',
+                        ],
                     ) ?>
                 </td>
             </tr>

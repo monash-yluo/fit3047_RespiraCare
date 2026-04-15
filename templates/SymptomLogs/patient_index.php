@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\ResultSetInterface $symptomLogs
+ * @var iterable<\SymptomLog> $symptomLogs
  */
 $this->setLayout('patient');
 $this->assign('title', 'Symptom History');
@@ -73,7 +73,7 @@ $getSeverityProps = function($severity) {
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($symptomLogs->isEmpty()): ?>
+    <?php if ($symptomLogs->items()->isEmpty()): ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No records found',
             'message' => 'You haven\'t recorded any symptoms yet.'
