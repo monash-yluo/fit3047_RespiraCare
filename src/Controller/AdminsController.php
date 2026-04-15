@@ -3,13 +3,19 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Exception\NotFoundException;
+
 class AdminsController extends AppController
 {
-    /**
-     * @return void
-     */
-    public function dashboard(): void
+
+    public function dashboard()
     {
+        $identity = $this->Authentication->getIdentity();
+
+        if ($identity->get('role') !== 'admin') {
+            throw new NotFoundException('Page not found');
+        }
+
         $contactMessages = $this->paginate(
             $this->fetchTable('ContactMessages')->find(),
             [

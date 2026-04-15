@@ -3,15 +3,26 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Exception\NotFoundException;
+
 class PatientPortalsController extends AppController
 {
+
     /**
      * @return void
      */
     public function dashboard()
     {
+        parent::initialize();
+
+        $identity = $this->Authentication->getIdentity();
+
+        if ($identity->get('role') !== 'patient') {
+            throw new NotFoundException('Page not found');
+        }
+
         // 1. 获取当前登录账户的 User ID
-        $userId = $this->Authentication->getIdentity()->get('id');
+        $userId = $identity->get('id');
 
         // 2. 找到该 User 关联的 Patient 记录
         $patient = $this->fetchTable('Patients')
