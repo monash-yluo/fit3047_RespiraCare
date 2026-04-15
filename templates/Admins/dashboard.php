@@ -15,9 +15,6 @@ $this->assign('title', 'Dashboard Overview');
         'description' => 'Manage incoming contact messages.',
     ]) ?>
 
-    <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3 mb-4">
-    </div>
-
     <?php $this->start('table_content'); ?>
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>

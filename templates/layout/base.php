@@ -18,9 +18,11 @@
 
     <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
-            <div class="px-4 pt-4">
-                <?= $this->Flash->render() ?>
-            </div>
+            <?php if ($this->getRequest()->getSession()->check('Flash.flash')) : ?>
+                <div class="px-4 pt-4">
+                    <?= $this->Flash->render() ?>
+                </div>
+            <?php endif; ?>
 
             <?= $this->fetch('content') ?>
         </main>
