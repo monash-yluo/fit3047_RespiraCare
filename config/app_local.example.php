@@ -47,10 +47,10 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'my_app',
-            'password' => 'secret',
+            'username' => 'respiracare_db',
+            'password' => 'password',
 
-            'database' => 'my_app',
+            'database' => 'respiracare_db',
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
