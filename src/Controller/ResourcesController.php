@@ -43,6 +43,8 @@ class ResourcesController extends AppController
      */
     public function add()
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $resource = $this->Resources->newEmptyEntity();
         if ($this->request->is('post')) {
             $resource = $this->Resources->patchEntity($resource, $this->request->getData());
@@ -65,6 +67,8 @@ class ResourcesController extends AppController
      */
     public function edit($id = null)
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $resource = $this->Resources->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $resource = $this->Resources->patchEntity($resource, $this->request->getData());
@@ -87,6 +91,8 @@ class ResourcesController extends AppController
      */
     public function delete($id = null)
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $this->request->allowMethod(['post', 'delete']);
         $resource = $this->Resources->get($id);
         if ($this->Resources->delete($resource)) {

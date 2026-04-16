@@ -32,6 +32,11 @@ class ContactMessagesController extends AppController
      */
     public function index()
     {
+        $this->checkRole(['admin']);
+
+        $query = $this->ContactMessages->find()
+            ->contain(['Patients']);
+
         $query = $this->ContactMessages->find()
             ->contain(['Patients']);
         $contactMessages = $this->paginate($query);
@@ -48,6 +53,10 @@ class ContactMessagesController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
+        $contactMessage = $this->ContactMessages->get($id, contain: ['Patients']);
+
         $contactMessage = $this->ContactMessages->get($id, contain: ['Patients']);
         $this->set(compact('contactMessage'));
     }
@@ -82,6 +91,8 @@ class ContactMessagesController extends AppController
      */
     public function edit(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $contactMessage = $this->ContactMessages->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
@@ -105,6 +116,8 @@ class ContactMessagesController extends AppController
      */
     public function delete(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $this->request->allowMethod(['post', 'delete']);
         $contactMessage = $this->ContactMessages->get($id);
         if ($this->ContactMessages->delete($contactMessage)) {

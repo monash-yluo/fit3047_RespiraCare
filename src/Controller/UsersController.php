@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\Http\Client;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Users Controller
@@ -31,7 +32,9 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function index()
-    {
+    {   
+        $this->checkRole(['admin']);
+
         $query = $this->Users->find();
         $users = $this->paginate($query);
 
@@ -47,7 +50,14 @@ class UsersController extends AppController
      */
     public function view(?string $id = null)
     {
+        $identity = $this->Authentication->getIdentity();
+
         $user = $this->Users->get($id, contain: []);
+
+        if ($identity->get('role') !== 'admin' && $identity->get('id') !== $user->id) {
+            throw new NotFoundException('Page not found');
+        }
+
         $this->set(compact('user'));
     }
 
@@ -58,6 +68,8 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $this->checkRole(['admin']);
+
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -80,6 +92,8 @@ class UsersController extends AppController
      */
     public function edit(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $user = $this->Users->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -102,6 +116,8 @@ class UsersController extends AppController
      */
     public function delete(?string $id = null)
     {
+        $this->checkRole(['admin']);
+        
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
