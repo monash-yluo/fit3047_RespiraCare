@@ -19,6 +19,18 @@ class RemindersController extends AppController
     {
         $query = $this->Reminders->find()
             ->contain(['Receivers', 'Senders']);
+        
+        // Only admins can see all reminders, others can only see their own
+        $identity = $this->request->getAttribute('identity');
+        if ($identity && $identity->role !== 'admin') {
+            $query->where([
+                'OR' => [
+                    'receiver_id' => $identity->id,
+                    'sender_id' => $identity->id,
+                ]
+            ]);
+        }
+        
         $reminders = $this->paginate($query);
 
         $this->set(compact('reminders'));
