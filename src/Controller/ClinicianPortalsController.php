@@ -13,10 +13,6 @@ class ClinicianPortalsController extends AppController
      */
     public function dashboard()
     {
-        $identity = $this->Authentication->getIdentity();
-
-        if ($identity->get('role') !== 'clinician') {
-            throw new NotFoundException('Page not found');
-        }
+        $this->checkRole(['clinician']);
     }
 }

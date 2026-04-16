@@ -105,6 +105,8 @@ class SymptomLogsController extends AppController
 
     public function patientIndex()
     {
+        $this->checkRole(['patient']);
+
         $patientId = $this->getPatientId();
 
         if (!$patientId) {
@@ -127,6 +129,8 @@ class SymptomLogsController extends AppController
 
     public function patientAdd()
     {
+        $this->checkRole(['patient']);
+
         $symptomLog = $this->SymptomLogs->newEmptyEntity();
 
         $patientId = $this->getPatientId();
@@ -153,6 +157,8 @@ class SymptomLogsController extends AppController
 
     public function patientView(?string $id = null)
     {
+        $this->checkRole(['patient']);
+        
         $patientId = $this->getPatientId();
         if (!$patientId) {
             $this->Flash->error(__('Patient profile not found.'));

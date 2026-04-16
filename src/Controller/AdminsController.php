@@ -10,11 +10,7 @@ class AdminsController extends AppController
 
     public function dashboard()
     {
-        $identity = $this->Authentication->getIdentity();
-
-        if ($identity->get('role') !== 'admin') {
-            throw new NotFoundException('Page not found');
-        }
+        $this->checkRole(['admin']);
 
         $contactMessages = $this->paginate(
             $this->fetchTable('ContactMessages')->find(),

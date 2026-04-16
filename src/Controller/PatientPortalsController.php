@@ -13,6 +13,8 @@ class PatientPortalsController extends AppController
      */
     public function dashboard()
     {
+        $this->checkRole(['patient']);
+
         parent::initialize();
 
         $identity = $this->Authentication->getIdentity();

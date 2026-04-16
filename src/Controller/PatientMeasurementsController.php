@@ -103,6 +103,9 @@ class PatientMeasurementsController extends AppController
 
     public function patientAdd()
     {
+        # 1. 权限检查：确保当前用户是患者
+        $this->checkRole(['patient']);
+
         $patientMeasurement = $this->PatientMeasurements->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -136,6 +139,8 @@ class PatientMeasurementsController extends AppController
 
     public function patientView(?string $id = null)
     {
+        $this->checkRole(['patient']);
+
         // 1. 获取当前登录账户的 User ID
         $currentUserId = $this->Authentication->getIdentity()->get('id');
 

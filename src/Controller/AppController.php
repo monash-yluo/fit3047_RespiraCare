@@ -19,6 +19,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Application Controller
@@ -103,5 +104,14 @@ class AppController extends Controller
             ->first();
 
         return $patient ? (int)$patient->id : null;
+    }
+
+    protected function checkRole(array $requiredRole)
+    {
+        $identity = $this->Authentication->getIdentity();
+
+        if (!$identity || !in_array($identity->get('role'), $requiredRole)) {
+            throw new NotFoundException('Page not found');
+        }
     }
 }
