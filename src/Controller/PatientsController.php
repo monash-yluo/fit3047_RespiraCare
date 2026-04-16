@@ -102,4 +102,27 @@ class PatientsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function clinicianIndex()
+    {
+        $identity = $this->request->getAttribute('identity');
+        $this->checkRole(['clinician']);
+        
+        $clinicianId = $this->getClinicianId();
+        
+        if ($clinicianId) {
+            // Get own patients
+            $myPatientsQuery = $this->Patients->find()
+                ->where(['clinician_id' => $clinicianId])
+                ->contain(['Users', 'Clinicians.Users']);
+            $myPatients = $this->paginate($myPatientsQuery, ['scope' => 'myPatients']);
+            
+            // Get all patients
+            $allPatientsQuery = $this->Patients->find()
+                ->contain(['Users', 'Clinicians.Users']);
+            $allPatients = $this->paginate($allPatientsQuery, ['scope' => 'allPatients']);
+            
+            $this->set(compact('myPatients', 'allPatients'));
+        }
+    }
 }

@@ -16,7 +16,7 @@ $this->assign('title', 'Dashboard Overview');
 <div class="px-4 pt-6">
 
     <?= $this->element('table/page_header', [
-        'title' => 'Clinician Dashboard',
+        'title' => 'Hi, ' . h($identity->first_name) . ' ' . h($identity->last_name) . '!',
         'description' => 'View your assigned patients and patient health data.',
     ]) ?>
 
