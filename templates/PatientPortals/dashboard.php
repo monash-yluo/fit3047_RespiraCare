@@ -6,7 +6,7 @@
  * @var iterable<\PatientMeasurement> $patientMeasurements
  */
 
-$this->setLayout('patient');
+$this->setLayout($identity->role);
 $this->assign('title', 'Dashboard Overview');
 
 ?>

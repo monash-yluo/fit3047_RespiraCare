@@ -4,7 +4,7 @@
  * @var \Cake\Datasource\ResultSetInterface<\App\Model\Entity\Patient> $patients
  */
 
-$this->setLayout('admin');
+$this->setLayout($identity->role);
 $this->assign('title', 'Manage Patients');
 ?>
 

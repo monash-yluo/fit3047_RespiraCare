@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
  */
 
-$this->setLayout('patient');
+$this->setLayout($identity->role);
 $this->assign('title', 'Add New Measurement');
 ?>
 

@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
  */
-$this->setLayout('patient');
+$this->setLayout($identity->role);
 $this->assign('title', 'Measurement Details');
 
 // 定义正常值范围（医学参考值）

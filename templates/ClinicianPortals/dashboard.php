@@ -5,7 +5,7 @@
  * @var \Cake\Datasource\EntityInterface $identity
  */
 
-$this->setLayout('clinician');
+$this->setLayout($identity->role);
 $this->assign('title', 'Dashboard Overview');
 
 ?>

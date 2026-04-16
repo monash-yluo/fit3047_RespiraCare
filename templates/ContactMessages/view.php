@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\ContactMessage $contactMessage
  */
 
-$this->setLayout('admin');
+$this->setLayout($identity->role);
 $this->assign('title', 'Contact Messages');
 //$this->Breadcrumbs->add('Contact Messages', ['action' => 'index']);
 //$this->Breadcrumbs->add('Message Details');

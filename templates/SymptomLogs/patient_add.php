@@ -5,7 +5,7 @@
  * @var \Cake\Collection\CollectionInterface|string[] $symptomTypes
  */
 
-$this->setLayout('patient');
+$this->setLayout($identity->role);
 $this->assign('title', 'Log New Symptom');
 ?>
 

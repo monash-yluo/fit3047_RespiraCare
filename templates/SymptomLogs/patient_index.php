@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var iterable<\SymptomLog> $symptomLogs
  */
-$this->setLayout('patient');
+$this->setLayout($identity->role);
 $this->assign('title', 'Symptom History');
 
 // 严重程度映射 (1-5 分级)

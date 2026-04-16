@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\SymptomLog $symptomLog
  */
-$this->setLayout('patient');
+$this->setLayout($identity->role);
 $this->assign('title', 'Symptom Details');
 
 // 严重程度映射 (1-5 分级)
