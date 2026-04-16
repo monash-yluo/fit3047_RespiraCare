@@ -15,6 +15,40 @@ $this->assign('title', 'Dashboard Overview');
         'description' => 'Manage incoming contact messages.',
     ]) ?>
 
+    <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3 mb-4">
+
+        <?php for ($i = 0; $i < 3; $i++) : ?>
+            <div
+                class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm
+                sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+
+                <div class="w-full">
+                    <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">[KPI -- TBC]</h3>
+                    <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">
+                        [Number -- TBC]
+                    </span>
+                    <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+                    <span class="flex items-center mr-1.5 text-sm text-green-500">
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                fill-rule="evenodd"
+                                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11
+                                5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        [% -- TBC]
+                    </span>
+                        Since last month
+                    </p>
+                </div>
+            </div>
+        <?php endfor; ?>
+
+    </div>
+
     <?php $this->start('table_content'); ?>
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>
@@ -128,38 +162,4 @@ $this->assign('title', 'Dashboard Overview');
 
 </div>
 
-<div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3 mb-4">
 
-    <!--
-        <?php for ($i = 0; $i < 3; $i++) : ?>
-            <div
-                class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm
-                sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-
-                <div class="w-full">
-                    <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">[KPI -- TBC]</h3>
-                    <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">
-                        [Number -- TBC]
-                    </span>
-                    <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
-                    <span class="flex items-center mr-1.5 text-sm text-green-500">
-                        <svg
-                            class="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                fill-rule="evenodd"
-                                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11
-                                5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        [% -- TBC]
-                    </span>
-                        Since last month
-                    </p>
-                </div>
-            </div>
-        <?php endfor; ?>
-        -->
-
-</div>

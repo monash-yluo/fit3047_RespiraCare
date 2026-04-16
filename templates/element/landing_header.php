@@ -49,7 +49,7 @@
                     <!-- 如果是admin 登录 显示dashboard 链接 -->
                     <?php if ($identity && $identity->role === 'admin'): ?>
                         <a href="<?= $this->Url->build(['controller' => 'Admins', 'action' => 'dashboard']) ?>"
-                           class="<?= ($this->request->getParam('controller') === 'Admins' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Admin Dashboard</a>
+                           class="<?= ($this->request->getParam('controller') === 'Admins' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Dashboard</a>
                     <?php endif; ?>
                 </li>
                 <li>
