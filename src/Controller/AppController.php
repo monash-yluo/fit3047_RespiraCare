@@ -106,6 +106,23 @@ class AppController extends Controller
         return $patient ? (int)$patient->id : null;
     }
 
+    protected function getClinicianId(): ?int
+    {
+        $identity = $this->Authentication->getIdentity();
+        if (!$identity) {
+            return null;
+        }
+        $userId = $identity->get('id');
+
+        $clinician = $this->getTableLocator()->get('Clinicians')
+            ->find()
+            ->where(['user_id' => $userId])
+            ->select(['id'])
+            ->first();
+
+        return $clinician ? (int)$clinician->id : null;
+    }
+
     protected function checkRole(array $requiredRole)
     {
         $identity = $this->Authentication->getIdentity();
