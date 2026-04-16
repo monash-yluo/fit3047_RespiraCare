@@ -60,6 +60,13 @@
                     <?php endif; ?>
                 </li>
                 <li>
+                    <!-- 如果是clinician 登录 显示dashboard 链接 -->
+                    <?php if ($identity && $identity->role === 'clinician'): ?>
+                        <a href="<?= $this->Url->build(['controller' => 'ClinicianPortals', 'action' => 'dashboard']) ?>"
+                           class="<?= ($this->request->getParam('controller') === 'ClinicianPortals' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Dashboard</a>
+                    <?php endif; ?>
+                </li>
+                <li>
                     <!-- 仅当用户已登录时显示 Logout 链接 -->
                     <?php if ($identity): ?>
                         <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>"

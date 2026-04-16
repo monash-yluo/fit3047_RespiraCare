@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  */
@@ -20,13 +21,16 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
                 </h2>
 
                 <div class="alert alert-info small py-3 mb-4 shadow-sm border-0 rounded-3"
-                     style="background-color: #E0E8F5; color: #305BAB;">
+                    style="background-color: #E0E8F5; color: #305BAB;">
                     <strong><i class="bi bi-info-circle me-1"></i> Testing Credentials:</strong><br>
 
                     Admin Email: admin@respiracare.com<br>
                     Password: 123<br>
 
                     Patient Email: john.patient@example.com<br>
+                    Password: 123<br>
+
+                    Clinician Email: alice.clinician@respiracare.com<br>
                     Password: 123<br>
                 </div>
 
@@ -53,9 +57,9 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
 
                 <div class="mb-4">
                     <div class="cf-turnstile"
-                         data-sitekey="<?= h(Configure::read('Turnstile.siteKey')) ?>"
-                         data-theme="light"
-                         data-size="normal"></div>
+                        data-sitekey="<?= h(Configure::read('Turnstile.siteKey')) ?>"
+                        data-theme="light"
+                        data-size="normal"></div>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between mt-2">
@@ -75,7 +79,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
             </div>
 
             <div class="col-lg-7 d-none d-lg-flex align-items-center text-center rounded-circle bg-white p-4 pt-5"
-                 data-aos="fade-left">
+                data-aos="fade-left">
                 <?= $this->Html->image('admin-login-vector.png', [
                     'class' => 'img-fluid',
                     'alt' => 'RespiraCare Administrator Dashboard',
