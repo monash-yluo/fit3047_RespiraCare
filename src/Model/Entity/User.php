@@ -15,9 +15,11 @@ use Cake\ORM\Entity;
  * @property string $email
  * @property string $password
  * @property string $role
+ * @property string|null $image_path
+ * @property string|null $phone
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
- *
+ * 
  * @property \App\Model\Entity\Clinician $clinician
  * @property \App\Model\Entity\Patient $patient
  */
@@ -40,6 +42,8 @@ class User extends Entity
         'email' => true,
         'password' => true,
         'role' => true,
+        'image_path' => true,
+        'phone' => true,
         'created' => true,
         'modified' => true,
         'clinician' => true,
