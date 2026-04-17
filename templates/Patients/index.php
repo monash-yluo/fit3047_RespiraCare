@@ -90,9 +90,9 @@ $this->assign('title', 'Manage Patients');
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
-                    <?php if ($patient->hasValue('clinician')) : ?>
+                    <?php if ($patient->hasValue('clinician') && $patient->clinician->hasValue('user')) : ?>
                         <?= $this->Html->link(
-                            'Clinician #' . $patient->clinician->id,
+                            h($patient->clinician->user->first_name . ' ' . $patient->clinician->user->last_name),
                             ['controller' => 'Clinicians', 'action' => 'view', $patient->clinician->id],
                             ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
@@ -110,7 +110,7 @@ $this->assign('title', 'Manage Patients');
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[120px]">
-                    <?= h($patient->phone) ?>
+                    <?= $patient->hasValue('user') ? h($patient->user->phone) : '' ?>
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white hidden xl:table-cell">

@@ -18,7 +18,7 @@ class PatientsController extends AppController
     public function index()
     {
         $query = $this->Patients->find()
-            ->contain(['Users', 'Clinicians']);
+            ->contain(['Users', 'Clinicians.Users']);
         $patients = $this->paginate($query);
 
         $this->set(compact('patients'));

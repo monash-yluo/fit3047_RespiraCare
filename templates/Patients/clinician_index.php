@@ -94,7 +94,7 @@ $this->assign('title', 'Manage Patients');
                     </td>
 
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[120px]">
-                        <?= h($patient->phone) ?>
+                        <?= $patient->hasValue('user') ? h($patient->user->phone) : '' ?>
                     </td>
 
                     <td class="p-4 space-x-2 whitespace-nowrap">
@@ -212,7 +212,7 @@ $this->assign('title', 'Manage Patients');
                     </td>
 
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[120px]">
-                        <?= h($patient->phone) ?>
+                        <?= $patient->hasValue('user') ? h($patient->user->phone) : '' ?>
                     </td>
 
                     <td class="p-4 space-x-2 whitespace-nowrap">

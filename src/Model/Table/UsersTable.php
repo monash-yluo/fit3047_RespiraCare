@@ -85,7 +85,8 @@ class UsersTable extends Table
             ->scalar('role')
             ->maxLength('role', 50)
             ->requirePresence('role', 'create')
-            ->notEmptyString('role');
+            ->notEmptyString('role')
+            ->inList('role', ['admin', 'clinician', 'patient'], __('Role must be admin, clinician, or patient'));
 
         $validator
             ->scalar('image_path')
