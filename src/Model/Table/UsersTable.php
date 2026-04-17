@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Event\EventInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -79,7 +80,8 @@ class UsersTable extends Table
             ->scalar('password')
             ->maxLength('password', 255)
             ->requirePresence('password', 'create')
-            ->notEmptyString('password');
+            ->notEmptyString('password')
+            ->allowEmptyString('password', 'update');
 
         $validator
             ->scalar('role')
@@ -87,10 +89,6 @@ class UsersTable extends Table
             ->requirePresence('role', 'create')
             ->notEmptyString('role')
             ->inList('role', ['admin', 'clinician', 'patient'], __('Role must be admin, clinician, or patient'));
-
-        $validator
-            ->scalar('image_path')
-            ->allowEmptyString('image_path');
 
         $validator
             ->scalar('phone')
@@ -112,5 +110,18 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
 
         return $rules;
+    }
+
+    /**
+     * Handle before delete event - delete associated image file
+     */
+    public function beforeDelete(EventInterface $event, \Cake\Datasource\EntityInterface $entity)
+    {
+        if (!empty($entity->image_path)) {
+            $imagePath = WWW_ROOT . ltrim($entity->image_path, '/');
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
     }
 }

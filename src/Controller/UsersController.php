@@ -72,7 +72,32 @@ class UsersController extends AppController
 
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            
+            // Handle file upload
+            if (isset($data['image_path'])) {
+                $file = $data['image_path'];
+                // Check if it's an uploaded file with actual content
+                if (is_object($file) && method_exists($file, 'getClientFilename') && !empty($file->getClientFilename()) && $file->getSize() > 0) {
+                    try {
+                        $uploadDir = WWW_ROOT . 'img' . DS . 'users' . DS;
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+                        $filename = time() . '_' . $file->getClientFilename();
+                        $file->moveTo($uploadDir . $filename);
+                        $data['image_path'] = '/img/users/' . $filename;
+                    } catch (\Exception $e) {
+                        $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                } else {
+                    unset($data['image_path']);
+                }
+            }
+            
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
@@ -96,7 +121,32 @@ class UsersController extends AppController
 
         $user = $this->Users->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            
+            // Handle file upload
+            if (isset($data['image_path'])) {
+                $file = $data['image_path'];
+                // Check if it's an uploaded file with actual content
+                if (is_object($file) && method_exists($file, 'getClientFilename') && !empty($file->getClientFilename()) && $file->getSize() > 0) {
+                    try {
+                        $uploadDir = WWW_ROOT . 'img' . DS . 'users' . DS;
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+                        $filename = time() . '_' . $file->getClientFilename();
+                        $file->moveTo($uploadDir . $filename);
+                        $data['image_path'] = '/img/users/' . $filename;
+                    } catch (\Exception $e) {
+                        $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                } else {
+                    unset($data['image_path']);
+                }
+            }
+            
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
