@@ -31,7 +31,6 @@ class PatientsTableTest extends TestCase
         'app.Bookings',
         'app.ContactMessages',
         'app.PatientMeasurements',
-        'app.Reminders',
         'app.SymptomLogs',
     ];
 
