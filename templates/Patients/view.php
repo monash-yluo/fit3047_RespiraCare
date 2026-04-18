@@ -9,18 +9,11 @@ $this->assign('title', 'Patient Profile');
 ?>
 
 <div class="px-4 pt-6">
-
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Patient Profile</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                View patient information, health measurements, and symptom history.
-            </p>
-        </div>
-        <div class="flex space-x-3">
-            <?= $this->element('button/back_button') ?>
-        </div>
-    </div>
+    <?= $this->element('table/page_header', [
+        'title' => 'Patient Profile',
+        'description' => 'View patient information, health measurements, and symptom history.',
+        'showBack' => true
+    ]) ?>
 
     <!-- Patient Information Card -->
     <div class="grid grid-cols-1 gap-4 mb-6 xl:grid-cols-2 2xl:grid-cols-3">

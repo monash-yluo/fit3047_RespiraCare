@@ -24,17 +24,11 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
 ?>
 
 <div class="px-4 pt-6">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Measurement Details</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                Recorded on <?= $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY') ?> at <?= $this->Time->format($patientMeasurement->measured_at, 'HH:mm') ?>
-            </p>
-        </div>
-        <div class="flex space-x-3">
-            <?= $this->element('button/back_button') ?>
-        </div>
-    </div>
+    <?= $this->element('table/page_header', [
+        'title' => 'Measurement Details',
+        'description' => 'Recorded on ' . $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY') . ' at ' . $this->Time->format($patientMeasurement->measured_at, 'HH:mm'),
+        'showBack' => true
+    ]) ?>
 
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div class="xl:col-span-2 space-y-6">
