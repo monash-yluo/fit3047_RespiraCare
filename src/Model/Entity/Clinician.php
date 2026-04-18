@@ -16,7 +16,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Booking[] $bookings
  * @property \App\Model\Entity\Patient[] $patients
- * @property \App\Model\Entity\Reminder[] $reminders
  */
 class Clinician extends Entity
 {
@@ -36,6 +35,5 @@ class Clinician extends Entity
         'user' => true,
         'bookings' => true,
         'patients' => true,
-        'reminders' => true,
     ];
 }
