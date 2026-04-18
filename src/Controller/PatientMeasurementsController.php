@@ -33,7 +33,7 @@ class PatientMeasurementsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $patientMeasurement = $this->PatientMeasurements->get($id, contain: ['Patients']);
+        $patientMeasurement = $this->PatientMeasurements->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']]]);
         $this->set(compact('patientMeasurement'));
     }
 

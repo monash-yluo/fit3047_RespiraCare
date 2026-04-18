@@ -101,18 +101,9 @@ $this->assign('title', 'Edit User');
                 <h3 class="mb-4 text-lg font-semibold dark:text-white">Actions</h3>
                 <div class="space-y-4">
                     <div class="flex flex-col space-y-4">
-                        <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            Update User
-                        </button>
-                        <?= $this->Form->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $user->id],
-                            ['confirm' => __('Are you sure you want to delete this user?'), 'class' => 'py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-red-600 dark:text-white dark:border-red-600 dark:hover:text-white dark:hover:bg-red-700 text-center']
-                        ) ?>
-                        <?= $this->Html->link(__('Back to List'),
-                            ['action' => 'index'],
-                            ['class' => 'py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 text-center']
-                        ) ?>
+                        <?= $this->element('button/blue_button', ['label' => 'Update User']) ?>
+                        <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $user->id], 'confirm' => __('Are you sure you want to delete this user?')]) ?>
+                        <?= $this->element('button/grey_button', ['label' => 'Back to List', 'smartBack' => true]) ?>
                     </div>
                 </div>
             </div>

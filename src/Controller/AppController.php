@@ -82,12 +82,13 @@ class AppController extends Controller
     }
 
     /**
-     * 通用工具方法：获取当前登录用户的 Patient ID
-     * * @return int|null 返回 Patient ID，如果未找到则返回 null
+     * Generic utility method to retrieve the Patient ID of the currently logged-in user.
+     *
+     * @return int|null The Patient ID, or null if not found
      */
     protected function getPatientId(): ?int
     {
-        // 1. 获取当前登录账户的 User ID
+        // 1. Get the User ID of the currently logged-in account
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             return null;
@@ -95,12 +96,12 @@ class AppController extends Controller
 
         $userId = $identity->get('id');
 
-        // 2. 查找关联的 Patient
-        // 使用 getTableLocator 确保在任何 Controller 都能加载 Patients 表
+        // 2. Find the associated Patient
+        // Use getTableLocator to ensure loading the Patients table in any Controller
         $patient = $this->getTableLocator()->get('Patients')
             ->find()
             ->where(['user_id' => $userId])
-            ->select(['id']) // 只取 ID 提高效率
+            ->select(['id']) // Only select ID to improve efficiency
             ->first();
 
         return $patient ? (int)$patient->id : null;
