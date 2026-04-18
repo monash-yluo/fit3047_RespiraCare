@@ -33,6 +33,8 @@ class PatientMeasurementsController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']]]);
         $this->set(compact('patientMeasurement'));
     }
