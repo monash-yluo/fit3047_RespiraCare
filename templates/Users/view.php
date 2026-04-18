@@ -7,16 +7,13 @@
 
 $this->setLayout($identity->role);
 $this->assign('title', 'User Profile');
-
-$back_url = ['controller' => 'Users', 'action' => 'index'];
 ?>
 
 <div class="px-4 pt-6">
     <?= $this->element('table/page_header', [
         'title' => 'User Profile',
         'description' => 'View user account information and details.',
-        'actionLabel' => 'Back',
-        'actionUrl' => $back_url
+        'showBack' => true,
     ]) ?>
 
     <!-- User Information Card -->
