@@ -10,16 +10,11 @@ $this->assign('title', 'Edit User');
 ?>
 
 <div class="px-4 pt-6">
-    <div class="mb-4">
-        <div class="flex items-center justify-between">
-            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                Edit User
-            </h1>
-        </div>
-        <div class="mt-2">
-            <p class="text-sm text-gray-500 dark:text-gray-400">Update the user account information below.</p>
-        </div>
-    </div>
+    <?= $this->element('table/page_header', [
+        'title' => 'Edit User',
+        'description' => 'Modify user account information and details.',
+        'showBack' => true,
+    ]) ?>
 
     <?= $this->Form->create($user, ['type' => 'file']) ?>
 
@@ -152,7 +147,6 @@ $this->assign('title', 'Edit User');
                     <div class="flex flex-col space-y-4">
                         <?= $this->element('button/blue_button', ['label' => 'Update User', 'iconType' => 'edit']) ?>
                         <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $user->id], 'confirm' => __('Are you sure you want to delete this user?'), 'iconType' => 'delete']) ?>
-                        <?= $this->element('button/grey_button', ['label' => 'Back to List', 'smartBack' => true]) ?>
                     </div>
                 </div>
             </div>
