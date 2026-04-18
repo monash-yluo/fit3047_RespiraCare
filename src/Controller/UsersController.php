@@ -52,10 +52,43 @@ class UsersController extends AppController
     {
         $identity = $this->Authentication->getIdentity();
 
+        // 先获取基本用户信息
         $user = $this->Users->get($id, contain: []);
 
         if ($identity->get('role') !== 'admin' && $identity->get('id') !== $user->id) {
             throw new NotFoundException('Page not found');
+        }
+
+        // 根据用户的 role 加载相关关联数据
+        if ($user->role === 'patient') {
+            // 使用 Patients 表加载患者信息
+            $patientsTable = $this->fetchTable('Patients');
+            $patient = $patientsTable->find()
+                ->where(['Patients.user_id' => $user->id])
+                ->first();
+            
+            if ($patient) {
+                // 如果有分配的 clinician，加载 clinician 信息
+                if (!empty($patient->clinician_id)) {
+                    $cliniciansTable = $this->fetchTable('Clinicians');
+                    $clinician = $cliniciansTable->find()
+                        ->where(['Clinicians.id' => $patient->clinician_id])
+                        ->contain(['Users'])
+                        ->first();
+                    $patient->clinician = $clinician;
+                }
+                $user->patient = $patient;
+            }
+        } elseif ($user->role === 'clinician') {
+            // 使用 Clinicians 表加载临床医生信息
+            $cliniciansTable = $this->fetchTable('Clinicians');
+            $clinician = $cliniciansTable->find()
+                ->where(['Clinicians.user_id' => $user->id])
+                ->first();
+            
+            if ($clinician) {
+                $user->clinician = $clinician;
+            }
         }
 
         $this->set(compact('user'));
