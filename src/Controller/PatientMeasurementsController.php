@@ -111,43 +111,39 @@ class PatientMeasurementsController extends AppController
         $patientMeasurement = $this->PatientMeasurements->newEmptyEntity();
         $actualPatientId = null;
 
+        $identity = $this->Authentication->getIdentity();
+
+        if ($identity->role === 'admin') {
+            // Admin 从参数中获取 patient_id
+            $actualPatientId = $patientId ?? $this->request->getData('patient_id');
+        } else {
+            // Patient 从登录用户自动查询
+            $actualPatientId = $this->getPatientId();
+        }
+
+        if (!$actualPatientId) {
+            $this->Flash->error(__('Patient profile not found.'));
+            if ($identity->role === 'admin') {
+                return $this->redirect(['controller' => 'Patients', 'action' => 'view', $patientId]);
+            } else {
+                return $this->redirect(['controller' => 'PatientsPortals', 'action' => 'dashboard']);
+            }
+        }
+
         if ($this->request->is('post')) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
+            $patientMeasurement->patient_id = $actualPatientId;
 
-            $identity = $this->Authentication->getIdentity();
-            
-            // 根据角色决定如何获取 patient_id
-            if ($identity->role === 'admin') {
-                // Admin 从参数中获取 patient_id
-                $actualPatientId = $patientId ?? $this->request->getData('patient_id');
-            } else {
-                // Patient 从登录用户自动查询
-                $userId = $identity->get('id');
-                $patient = $this->PatientMeasurements->Patients->find()
-                    ->select(['id'])
-                    ->where(['user_id' => $userId])
-                    ->first();
+            if ($this->PatientMeasurements->save($patientMeasurement)) {
+                $this->Flash->success(__('The measurement data has been successfully saved.'));
 
-                $actualPatientId = $patient?->id;
-            }
-
-            if ($actualPatientId) {
-                $patientMeasurement->patient_id = $actualPatientId;
-
-                if ($this->PatientMeasurements->save($patientMeasurement)) {
-                    $this->Flash->success(__('The measurement data has been successfully saved.'));
-                    
-                    // 根据角色返回不同的重定向
-                    if ($identity->role === 'admin') {
-                        return $this->redirect(['controller' => 'Patients', 'action' => 'view', $actualPatientId]);
-                    } else {
-                        return $this->redirect(['controller' => 'PatientPortals', 'action' => 'dashboard']);
-                    }
+                $this->Flash->error(__('Patient profile not found.'));
+                if ($identity->role === 'admin') {
+                    return $this->redirect(['controller' => 'Patients', 'action' => 'view', $patientId]);
+                } else {
+                    return $this->redirect(['controller' => 'PatientsPortals', 'action' => 'dashboard']);
                 }
-            } else {
-                $this->Flash->error(__('Patient not found. Please try again.'));
             }
-
             $this->Flash->error(__('Failed to save. Please try again.'));
         }
         

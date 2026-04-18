@@ -80,8 +80,8 @@ $this->assign('title', 'Manage Patients');
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?php if ($patient->hasValue('user')) : ?>
                         <?= $this->Html->link(
-                            h($patient->user->first_name),
-                            ['controller' => 'Users', 'action' => 'view', $patient->user->id],
+                            h($patient->user->first_name . ' ' . $patient->user->last_name),
+                            ['controller' => 'Patients', 'action' => 'view', $patient->id],
                             ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
                     <?php else : ?>
