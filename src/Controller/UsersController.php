@@ -107,6 +107,28 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             
+            // Extract patient data before patching entity
+            $patientData = [];
+            $role = $data['role'] ?? null;
+            
+            if ($role === 'patient') {
+                // Store patient data separately
+                if (!empty($data['patient_dob'])) {
+                    $patientData['dob'] = $data['patient_dob'];
+                }
+                if (!empty($data['patient_sex'])) {
+                    $patientData['sex'] = $data['patient_sex'];
+                }
+                if (!empty($data['patient_notes'])) {
+                    $patientData['notes'] = $data['patient_notes'];
+                }
+                
+                // Remove patient data from user data
+                unset($data['patient_dob']);
+                unset($data['patient_sex']);
+                unset($data['patient_notes']);
+            }
+            
             // Handle file upload
             if (isset($data['image_path'])) {
                 $file = $data['image_path'];
@@ -132,6 +154,35 @@ class UsersController extends AppController
             
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                // If role is patient, create patient record
+                if ($role === 'patient') {
+                    $patientsTable = $this->fetchTable('Patients');
+                    $patient = $patientsTable->newEmptyEntity();
+                    $patientData['user_id'] = $user->id;
+                    
+                    $patient = $patientsTable->patchEntity($patient, $patientData);
+                    if (!$patientsTable->save($patient)) {
+                        // If patient creation fails, delete the created user
+                        $this->Users->delete($user);
+                        $this->Flash->error(__('Failed to create patient record. User has been reverted.'));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                }
+                if ($role === 'clinician') {
+                    $cliniciansTable = $this->fetchTable('Clinicians');
+                    $clinician = $cliniciansTable->newEmptyEntity();
+                    $clinician->user_id = $user->id;
+                    
+                    if (!$cliniciansTable->save($clinician)) {
+                        // If clinician creation fails, delete the created user
+                        $this->Users->delete($user);
+                        $this->Flash->error(__('Failed to create clinician record. User has been reverted.'));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                }
+                
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
