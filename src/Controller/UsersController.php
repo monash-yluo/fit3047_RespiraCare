@@ -123,6 +123,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
             
+            // If password is empty, don't update it
+            if (empty($data['password'])) {
+                unset($data['password']);
+            }
+            
             // Handle file upload
             if (isset($data['image_path'])) {
                 $file = $data['image_path'];
@@ -154,6 +159,10 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
+        
+        // Clear password field so form doesn't display the hash
+        unset($user->password);
+        
         $this->set(compact('user'));
     }
 
