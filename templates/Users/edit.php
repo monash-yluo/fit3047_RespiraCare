@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
@@ -80,18 +81,66 @@ $this->assign('title', 'Edit User');
 
                     <div class="sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <?= $this->Form->control('role', [
-                            'type' => 'select',
-                            'options' => [
+                        <div class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <?php
+                            $roleLabels = [
                                 'admin' => 'Administrator',
                                 'clinician' => 'Clinician',
                                 'patient' => 'Patient'
-                            ],
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
-                            'label' => false,
-                            'required' => true
-                        ]) ?>
+                            ];
+                            echo $roleLabels[$user->role] ?? $user->role;
+                            ?>
+                        </div>
+                        <?= $this->Form->hidden('role') ?>
                     </div>
+
+                    <!-- Patient Additional Information Section -->
+                    <?php if ($user->role === 'patient'): ?>
+                        <div class="sm:col-span-2">
+                            <h4 class="mb-4 text-md font-semibold dark:text-white border-t pt-4">Patient Information</h4>
+
+                            <div class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Birth</label>
+                                    <?= $this->Form->date('patient_dob', [
+                                        'value' => isset($user->patient) ? $user->patient->dob : null,
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400'
+                                    ]) ?>
+                                </div>
+
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
+                                    <?= $this->Form->select('patient_sex', [
+                                        '' => '-- Select Gender --',
+                                        'Male' => 'Male',
+                                        'Female' => 'Female',
+                                    ], [
+                                        'value' => isset($user->patient) ? $user->patient->sex : '',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400'
+                                    ]) ?>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assigned Clinician</label>
+                                    <?= $this->Form->select('patient_clinician_id', $clinicians, [
+                                        'empty' => '-- No Clinician Assigned --',
+                                        'value' => isset($user->patient) ? $user->patient->clinician_id : '',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400'
+                                    ]) ?>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
+                                    <?= $this->Form->textarea('patient_notes', [
+                                        'value' => isset($user->patient) ? $user->patient->notes : '',
+                                        'placeholder' => 'Enter any additional notes about the patient',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                                        'rows' => 4
+                                    ]) ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

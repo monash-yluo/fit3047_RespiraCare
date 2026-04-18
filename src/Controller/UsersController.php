@@ -122,11 +122,15 @@ class UsersController extends AppController
                 if (!empty($data['patient_notes'])) {
                     $patientData['notes'] = $data['patient_notes'];
                 }
+                if (!empty($data['patient_clinician_id'])) {
+                    $patientData['clinician_id'] = $data['patient_clinician_id'];
+                }
                 
                 // Remove patient data from user data
                 unset($data['patient_dob']);
                 unset($data['patient_sex']);
                 unset($data['patient_notes']);
+                unset($data['patient_clinician_id']);
             }
             
             // Handle file upload
@@ -189,7 +193,19 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        
+        // Load clinicians list for patient clinician assignment
+        $clinicians = [];
+        $cliniciansTable = $this->fetchTable('Clinicians');
+        $cliniciansList = $cliniciansTable->find()
+            ->contain(['Users'])
+            ->all();
+        
+        foreach ($cliniciansList as $clinician) {
+            $clinicians[$clinician->id] = $clinician->user->first_name . ' ' . $clinician->user->last_name;
+        }
+        
+        $this->set(compact('user', 'clinicians'));
     }
 
     /**
@@ -204,8 +220,47 @@ class UsersController extends AppController
         $this->checkRole(['admin']);
 
         $user = $this->Users->get($id, contain: []);
+        
+        // Load patient data if user is a patient
+        if ($user->role === 'patient') {
+            $patientsTable = $this->fetchTable('Patients');
+            $patient = $patientsTable->find()
+                ->where(['Patients.user_id' => $user->id])
+                ->first();
+            
+            if ($patient) {
+                $user->patient = $patient;
+            }
+        }
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
+            
+            // Extract patient data before patching entity
+            $patientData = [];
+            
+            if ($user->role === 'patient') {
+                // Store patient data separately
+                if (!empty($data['patient_dob'])) {
+                    $patientData['dob'] = $data['patient_dob'];
+                }
+                if (!empty($data['patient_sex'])) {
+                    $patientData['sex'] = $data['patient_sex'];
+                }
+                if (!empty($data['patient_notes'])) {
+                    $patientData['notes'] = $data['patient_notes'];
+                }
+                // Handle clinician_id - can be empty/null
+                if (isset($data['patient_clinician_id'])) {
+                    $patientData['clinician_id'] = !empty($data['patient_clinician_id']) ? $data['patient_clinician_id'] : null;
+                }
+                
+                // Remove patient data from user data
+                unset($data['patient_dob']);
+                unset($data['patient_sex']);
+                unset($data['patient_notes']);
+                unset($data['patient_clinician_id']);
+            }
             
             // If password is empty, don't update it
             if (empty($data['password'])) {
@@ -237,6 +292,14 @@ class UsersController extends AppController
             
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                // Save patient data if exists
+                if (isset($user->patient) && !empty($patientData)) {
+                    $patientsTable = $this->fetchTable('Patients');
+                    $patient = $user->patient;
+                    $patient = $patientsTable->patchEntity($patient, $patientData);
+                    $patientsTable->save($patient);
+                }
+                
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -247,7 +310,20 @@ class UsersController extends AppController
         // Clear password field so form doesn't display the hash
         unset($user->password);
         
-        $this->set(compact('user'));
+        // Load clinicians list for patient clinician assignment
+        $clinicians = [];
+        if ($user->role === 'patient') {
+            $cliniciansTable = $this->fetchTable('Clinicians');
+            $cliniciansList = $cliniciansTable->find()
+                ->contain(['Users'])
+                ->all();
+            
+            foreach ($cliniciansList as $clinician) {
+                $clinicians[$clinician->id] = $clinician->user->first_name . ' ' . $clinician->user->last_name;
+            }
+        }
+        
+        $this->set(compact('user', 'clinicians'));
     }
 
     /**
