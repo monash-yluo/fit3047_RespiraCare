@@ -33,7 +33,7 @@ class SymptomLogsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients', 'SymptomTypes']);
+        $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']], 'SymptomTypes']);
         $this->set(compact('symptomLog'));
     }
 

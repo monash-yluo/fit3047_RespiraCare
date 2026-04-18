@@ -91,7 +91,16 @@ $this->assign('title', 'Patient Profile');
 
     <!-- Health Measurements Section -->
     <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Health Measurements</h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Health Measurements</h2>
+            <?php if ($identity->role === 'admin') : ?>
+                <?= $this->Html->link(
+                    '<svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Add Measurement',
+                    ['controller' => 'PatientMeasurements', 'action' => 'patientAdd', $patient->id],
+                    ['escape' => false, 'class' => 'inline-flex items-center px-3 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700']
+                ) ?>
+            <?php endif; ?>
+        </div>
         
         <?php $this->start('table_content'); ?>
         <thead class="bg-gray-100 dark:bg-gray-700">
@@ -215,7 +224,16 @@ $this->assign('title', 'Patient Profile');
 
     <!-- Symptom Logs Section -->
     <div>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Symptom History</h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Symptom History</h2>
+            <?php if ($identity->role === 'admin') : ?>
+                <?= $this->Html->link(
+                    '<svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Add Symptom',
+                    ['controller' => 'SymptomLogs', 'action' => 'patientAdd', $patient->id],
+                    ['escape' => false, 'class' => 'inline-flex items-center px-3 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700']
+                ) ?>
+            <?php endif; ?>
+        </div>
         
         <?php $this->start('table_content'); ?>
         <thead class="bg-gray-100 dark:bg-gray-700">

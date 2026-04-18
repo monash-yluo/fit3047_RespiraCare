@@ -161,7 +161,7 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
                     </div>
                 </div>
 
-                <?php if ($identity->role === 'admin' || $identity->role === 'clinician'): ?>
+                <?php if ($identity->role === 'admin'): ?>
                     <hr class="my-6 border-gray-100 dark:border-gray-700">
                     <div class="flex flex-col space-y-3">
                         <?= $this->element('button/blue_button', ['label' => 'Edit', 'url' => ['action' => 'edit', $patientMeasurement->id]]) ?>
