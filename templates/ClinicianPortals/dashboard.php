@@ -89,7 +89,11 @@ $this->assign('title', 'Dashboard Overview');
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?php if ($patient->hasValue('user')) : ?>
-                        <?= h($patient->user->first_name . ' ' . $patient->user->last_name) ?>
+                        <?= $this->Html->link(
+                            h($patient->user->first_name . ' ' . $patient->user->last_name),
+                            ['controller' => 'Patients', 'action' => 'view', $patient->id],
+                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
+                        ) ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">No User</span>
                     <?php endif; ?>
