@@ -70,9 +70,9 @@ $this->assign('title', 'Contact Us | Respira Care');
                                 ],
                                 'options' => [
                                     'General Inquiry' => 'General Inquiry',
-                                    'Platform Support' => 'Platform Support (App/Website Issues)',
-                                    'Medical Concern' => 'Medical Concern / Symptom Update',
-                                    'New Patient Enrollment' => 'New Patient Enrollment',
+                                    'Technical Support' => 'Platform Support (App/Website Issues)',
+                                    'Billing' => 'Billing Concern',
+                                    'Feedback' => 'Feedback',
                                 ],
                                 'empty' => 'Please select a category...',
                             ]) ?>

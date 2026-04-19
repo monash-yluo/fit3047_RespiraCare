@@ -41,6 +41,7 @@ class ContactMessage extends Entity
         'category' => true,
         'status' => true,
         'message' => true,
+        'notes' => true,
         'created' => true,
         'modified' => true,
         'patient' => true,

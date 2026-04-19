@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\Http\Client;
+use Cake\Http\Response;
 
 /**
  * ContactMessages Controller
@@ -152,7 +153,20 @@ class ContactMessagesController extends AppController
             }
             // --- 3. 如果验证码校验成功 ---
             else {
-                $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData());
+                // Search for Patient Associated with the email
+                $data = $this->request->getData();
+                $patient = $this->ContactMessages->Patients->find()
+                    ->innerJoinWith('Users')
+                    ->where(['Users.email' => $data['email']])
+                    ->first();
+
+                $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $data);
+
+                // If patient exist, assign the patient to the submission
+                if ($patient) {
+                    $contactMessage->patient_id = $patient->id;
+                }
+
                 if ($this->ContactMessages->save($contactMessage)) {
                     $this->Flash->success(__('The contact message has been saved.'));
 
@@ -166,12 +180,30 @@ class ContactMessagesController extends AppController
         $this->set(compact('contactMessage', 'patients'));
     }
 
-    public function changeStatus($id = null)
+    /**
+     * @param $id
+     * @return \Cake\Http\Response|null
+     */
+    public function changeStatus($id = null): ?Response
     {
+        // Fetch the entity
+        $this->checkRole(['admin']);
         $contactMessage = $this->ContactMessages->get($id);
-        $contactMessage->status = $contactMessage->status === 'open' ? 'close' : 'open';
-        $this->ContactMessages->save($contactMessage);
-        $this->Flash->success(__('The status of the contact message has been changed.'));
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $contactMessage = $this->ContactMessages->patchEntity($contactMessage, $this->request->getData(), [
+                'fields' => ['status', 'notes'],
+            ]);
+
+            // Save the entity
+            if ($this->ContactMessages->save($contactMessage)) {
+                $this->Flash->success(__('Changes saved successfully.'));
+
+                return $this->redirect(['action' => 'view', $id]);
+            }
+
+            $this->Flash->error(__('Unable to update the message. Please, try again.'));
+        }
 
         return $this->redirect(['action' => 'view', $id]);
     }

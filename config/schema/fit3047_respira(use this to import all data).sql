@@ -113,8 +113,9 @@ CREATE TABLE `contact_messages`
     `last_name`  varchar(255) NOT NULL,
     `email`      varchar(255) NOT NULL,
     `category`   varchar(100) DEFAULT NULL,
-    `status`     varchar(50)  DEFAULT 'open',
+    `status`     varchar(50)  DEFAULT 'new',
     `message`    text         NOT NULL,
+    `notes`      text         DEFAULT NULL,
     `created`    datetime     DEFAULT NULL,
     `modified`   datetime     DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
