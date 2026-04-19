@@ -65,6 +65,14 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/pages/*', 'Pages::display');
 
         /*
+         * Disable Edit for Contact Messages
+         */
+        $builder->redirect(
+            '/contact-messages/edit/*',
+            ['controller' => 'ContactMessages', 'action' => 'index'],
+            ['status' => 301],
+        );
+        /*
          * Connect catchall routes for all controllers.
          *
          * The `fallbacks` method is a shortcut for
