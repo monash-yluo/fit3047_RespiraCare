@@ -131,11 +131,6 @@ $this->assign('title', 'Dashboard Overview');
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                    <?php //= $this->Time->format($patientMeasurement->measured_at, 'dd/MM/yyyy') ?>
-                    <!-- <div class="text-xs font-normal text-gray-500">-->
-                    <?php //= $this->Time->format($patientMeasurement->measured_at, 'HH:mm') ?>
-                    <!--</div>-->
-
                     <div class="text-sm font-semibold text-gray-900 dark:text-white">
                         <?= $this->Time->format($patientMeasurement->measured_at, 'dd MMM, YYYY') ?>
                     </div>

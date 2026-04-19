@@ -35,11 +35,11 @@ $this->assign('title', 'System Reminders');
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('sender_id', 'Sender') ?>
         </th>
-        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden lg:table-cell">
-            <?= $this->Paginator->sort('created', 'Created') ?>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+            <?= $this->Paginator->sort('message', 'Message') ?>
         </th>
-        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden xl:table-cell">
-            <?= $this->Paginator->sort('modified', 'Modified') ?>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden lg:table-cell">
+            <?= $this->Paginator->sort('modified', 'Time') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= __('Actions') ?>
@@ -91,11 +91,11 @@ $this->assign('title', 'System Reminders');
                     <?php endif; ?>
                 </td>
 
-                <td class="p-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white hidden lg:table-cell">
-                    <?= $this->Time->format($reminder->created, 'MMM d, yyyy') ?>
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[300px]">
+                    <?= h($reminder->message) ?>
                 </td>
 
-                <td class="p-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white hidden xl:table-cell">
+                <td class="p-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white hidden lg:table-cell">
                     <?= $this->Time->format($reminder->modified, 'MMM d, yyyy') ?>
                 </td>
 

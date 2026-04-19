@@ -104,11 +104,6 @@ class PatientsTable extends Table
             ->allowEmptyString('sex');
 
         $validator
-            ->scalar('phone')
-            ->maxLength('phone', 50)
-            ->allowEmptyString('phone');
-
-        $validator
             ->scalar('notes')
             ->allowEmptyString('notes');
 

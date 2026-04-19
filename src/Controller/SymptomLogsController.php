@@ -33,7 +33,7 @@ class SymptomLogsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients', 'SymptomTypes']);
+        $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']], 'SymptomTypes']);
         $this->set(compact('symptomLog'));
     }
 
@@ -127,32 +127,52 @@ class SymptomLogsController extends AppController
         $this->set(compact('symptomLogs'));
     }
 
-    public function patientAdd()
+    public function patientAdd(?string $patientId = null)
     {
-        $this->checkRole(['patient']);
+        # 权限检查：允许 admin 和 patient
+        $this->checkRole(['admin', 'patient']);
 
         $symptomLog = $this->SymptomLogs->newEmptyEntity();
+        $actualPatientId = null;
 
-        $patientId = $this->getPatientId();
-        if (!$patientId) {
+        $identity = $this->Authentication->getIdentity();
+
+        if ($identity->role === 'admin') {
+            // Admin 从参数中获取 patient_id
+            $actualPatientId = $patientId ?? $this->request->getData('patient_id');
+        } else {
+            // Patient 从登录用户自动查询
+            $actualPatientId = $this->getPatientId();
+        }
+
+        if (!$actualPatientId) {
             $this->Flash->error(__('Patient profile not found.'));
-            return $this->redirect(['controller' => 'PatientPortals', 'action' => 'index']);
+            if ($identity->role === 'admin') {
+                return $this->redirect(['controller' => 'Patients', 'action' => 'index']);
+            } else {
+                return $this->redirect(['controller' => 'SymptomLogs', 'action' => 'patientIndex']);
+            }
         }
 
         if ($this->request->is('post')) {
             $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
-            $symptomLog->patient_id = $patientId;
+            $symptomLog->patient_id = $actualPatientId;
 
             if ($this->SymptomLogs->save($symptomLog)) {
                 $this->Flash->success(__('The symptom log has been saved.'));
 
-                return $this->redirect(['action' => 'patientIndex']);
+                // 根据角色返回不同的重定向
+                if ($identity->role === 'admin') {
+                    return $this->redirect(['controller' => 'Patients', 'action' => 'view', $actualPatientId]);
+                } else {
+                    return $this->redirect(['controller' => 'SymptomLogs', 'action' => 'patientIndex']);
+                }
             }
             $this->Flash->error(__('The symptom log could not be saved. Please, try again.'));
         }
 
         $symptomTypes = $this->SymptomLogs->SymptomTypes->find('list', limit: 200)->all();
-        $this->set(compact('symptomLog', 'symptomTypes'));
+        $this->set(compact('symptomLog', 'symptomTypes', 'patientId'));
     }
 
     public function patientView(?string $id = null)

@@ -18,7 +18,7 @@ class PatientsController extends AppController
     public function index()
     {
         $query = $this->Patients->find()
-            ->contain(['Users', 'Clinicians']);
+            ->contain(['Users', 'Clinicians.Users']);
         $patients = $this->paginate($query);
 
         $this->set(compact('patients'));
@@ -33,7 +33,7 @@ class PatientsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $patient = $this->Patients->get($id, contain: ['Users', 'Clinicians', 'AiInsights', 'Bookings', 'ContactMessages', 'PatientMeasurements', 'Reminders', 'SymptomLogs']);
+        $patient = $this->Patients->get($id, contain: ['Users', 'Clinicians.Users', 'PatientMeasurements', 'SymptomLogs' => ['SymptomTypes']]);
         $this->set(compact('patient'));
     }
 
@@ -101,5 +101,28 @@ class PatientsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function clinicianIndex()
+    {
+        $identity = $this->request->getAttribute('identity');
+        $this->checkRole(['clinician']);
+        
+        $clinicianId = $this->getClinicianId();
+        
+        if ($clinicianId) {
+            // Get own patients
+            $myPatientsQuery = $this->Patients->find()
+                ->where(['clinician_id' => $clinicianId])
+                ->contain(['Users', 'Clinicians.Users']);
+            $myPatients = $this->paginate($myPatientsQuery, ['scope' => 'myPatients']);
+            
+            // Get all patients
+            $allPatientsQuery = $this->Patients->find()
+                ->contain(['Users', 'Clinicians.Users']);
+            $allPatients = $this->paginate($allPatientsQuery, ['scope' => 'allPatients']);
+            
+            $this->set(compact('myPatients', 'allPatients'));
+        }
     }
 }

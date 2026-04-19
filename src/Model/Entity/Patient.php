@@ -13,7 +13,6 @@ use Cake\ORM\Entity;
  * @property int|null $clinician_id
  * @property \Cake\I18n\Date|null $dob
  * @property string|null $sex
- * @property string|null $phone
  * @property string|null $notes
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
@@ -24,7 +23,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Booking[] $bookings
  * @property \App\Model\Entity\ContactMessage[] $contact_messages
  * @property \App\Model\Entity\PatientMeasurement[] $patient_measurements
- * @property \App\Model\Entity\Reminder[] $reminders
  * @property \App\Model\Entity\SymptomLog[] $symptom_logs
  */
 class Patient extends Entity
@@ -43,7 +41,6 @@ class Patient extends Entity
         'clinician_id' => true,
         'dob' => true,
         'sex' => true,
-        'phone' => true,
         'notes' => true,
         'created' => true,
         'modified' => true,
@@ -53,7 +50,6 @@ class Patient extends Entity
         'bookings' => true,
         'contact_messages' => true,
         'patient_measurements' => true,
-        'reminders' => true,
         'symptom_logs' => true,
     ];
 }

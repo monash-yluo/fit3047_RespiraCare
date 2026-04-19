@@ -52,10 +52,43 @@ class UsersController extends AppController
     {
         $identity = $this->Authentication->getIdentity();
 
+        // 先获取基本用户信息
         $user = $this->Users->get($id, contain: []);
 
         if ($identity->get('role') !== 'admin' && $identity->get('id') !== $user->id) {
             throw new NotFoundException('Page not found');
+        }
+
+        // 根据用户的 role 加载相关关联数据
+        if ($user->role === 'patient') {
+            // 使用 Patients 表加载患者信息
+            $patientsTable = $this->fetchTable('Patients');
+            $patient = $patientsTable->find()
+                ->where(['Patients.user_id' => $user->id])
+                ->first();
+            
+            if ($patient) {
+                // 如果有分配的 clinician，加载 clinician 信息
+                if (!empty($patient->clinician_id)) {
+                    $cliniciansTable = $this->fetchTable('Clinicians');
+                    $clinician = $cliniciansTable->find()
+                        ->where(['Clinicians.id' => $patient->clinician_id])
+                        ->contain(['Users'])
+                        ->first();
+                    $patient->clinician = $clinician;
+                }
+                $user->patient = $patient;
+            }
+        } elseif ($user->role === 'clinician') {
+            // 使用 Clinicians 表加载临床医生信息
+            $cliniciansTable = $this->fetchTable('Clinicians');
+            $clinician = $cliniciansTable->find()
+                ->where(['Clinicians.user_id' => $user->id])
+                ->first();
+            
+            if ($clinician) {
+                $user->clinician = $clinician;
+            }
         }
 
         $this->set(compact('user'));
@@ -72,15 +105,107 @@ class UsersController extends AppController
 
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            
+            // Extract patient data before patching entity
+            $patientData = [];
+            $role = $data['role'] ?? null;
+            
+            if ($role === 'patient') {
+                // Store patient data separately
+                if (!empty($data['patient_dob'])) {
+                    $patientData['dob'] = $data['patient_dob'];
+                }
+                if (!empty($data['patient_sex'])) {
+                    $patientData['sex'] = $data['patient_sex'];
+                }
+                if (!empty($data['patient_notes'])) {
+                    $patientData['notes'] = $data['patient_notes'];
+                }
+                if (!empty($data['patient_clinician_id'])) {
+                    $patientData['clinician_id'] = $data['patient_clinician_id'];
+                }
+                
+                // Remove patient data from user data
+                unset($data['patient_dob']);
+                unset($data['patient_sex']);
+                unset($data['patient_notes']);
+                unset($data['patient_clinician_id']);
+            }
+            
+            // Handle file upload
+            if (isset($data['image_path'])) {
+                $file = $data['image_path'];
+                // Check if it's an uploaded file with actual content
+                if (is_object($file) && method_exists($file, 'getClientFilename') && !empty($file->getClientFilename()) && $file->getSize() > 0) {
+                    try {
+                        $uploadDir = WWW_ROOT . 'img' . DS . 'users' . DS;
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+                        $filename = time() . '_' . $file->getClientFilename();
+                        $file->moveTo($uploadDir . $filename);
+                        $data['image_path'] = '/img/users/' . $filename;
+                    } catch (\Exception $e) {
+                        $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                } else {
+                    unset($data['image_path']);
+                }
+            }
+            
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                // If role is patient, create patient record
+                if ($role === 'patient') {
+                    $patientsTable = $this->fetchTable('Patients');
+                    $patient = $patientsTable->newEmptyEntity();
+                    $patientData['user_id'] = $user->id;
+                    
+                    $patient = $patientsTable->patchEntity($patient, $patientData);
+                    if (!$patientsTable->save($patient)) {
+                        // If patient creation fails, delete the created user
+                        $this->Users->delete($user);
+                        $this->Flash->error(__('Failed to create patient record. User has been reverted.'));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                }
+                if ($role === 'clinician') {
+                    $cliniciansTable = $this->fetchTable('Clinicians');
+                    $clinician = $cliniciansTable->newEmptyEntity();
+                    $clinician->user_id = $user->id;
+                    
+                    if (!$cliniciansTable->save($clinician)) {
+                        // If clinician creation fails, delete the created user
+                        $this->Users->delete($user);
+                        $this->Flash->error(__('Failed to create clinician record. User has been reverted.'));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                }
+                
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        
+        // Load clinicians list for patient clinician assignment
+        $clinicians = [];
+        $cliniciansTable = $this->fetchTable('Clinicians');
+        $cliniciansList = $cliniciansTable->find()
+            ->contain(['Users'])
+            ->all();
+        
+        foreach ($cliniciansList as $clinician) {
+            $clinicians[$clinician->id] = $clinician->user->first_name . ' ' . $clinician->user->last_name;
+        }
+        
+        $this->set(compact('user', 'clinicians'));
     }
 
     /**
@@ -95,16 +220,110 @@ class UsersController extends AppController
         $this->checkRole(['admin']);
 
         $user = $this->Users->get($id, contain: []);
+        
+        // Load patient data if user is a patient
+        if ($user->role === 'patient') {
+            $patientsTable = $this->fetchTable('Patients');
+            $patient = $patientsTable->find()
+                ->where(['Patients.user_id' => $user->id])
+                ->first();
+            
+            if ($patient) {
+                $user->patient = $patient;
+            }
+        }
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            
+            // Extract patient data before patching entity
+            $patientData = [];
+            
+            if ($user->role === 'patient') {
+                // Store patient data separately
+                if (!empty($data['patient_dob'])) {
+                    $patientData['dob'] = $data['patient_dob'];
+                }
+                if (!empty($data['patient_sex'])) {
+                    $patientData['sex'] = $data['patient_sex'];
+                }
+                if (!empty($data['patient_notes'])) {
+                    $patientData['notes'] = $data['patient_notes'];
+                }
+                // Handle clinician_id - can be empty/null
+                if (isset($data['patient_clinician_id'])) {
+                    $patientData['clinician_id'] = !empty($data['patient_clinician_id']) ? $data['patient_clinician_id'] : null;
+                }
+                
+                // Remove patient data from user data
+                unset($data['patient_dob']);
+                unset($data['patient_sex']);
+                unset($data['patient_notes']);
+                unset($data['patient_clinician_id']);
+            }
+            
+            // If password is empty, don't update it
+            if (empty($data['password'])) {
+                unset($data['password']);
+            }
+            
+            // Handle file upload
+            if (isset($data['image_path'])) {
+                $file = $data['image_path'];
+                // Check if it's an uploaded file with actual content
+                if (is_object($file) && method_exists($file, 'getClientFilename') && !empty($file->getClientFilename()) && $file->getSize() > 0) {
+                    try {
+                        $uploadDir = WWW_ROOT . 'img' . DS . 'users' . DS;
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+                        $filename = time() . '_' . $file->getClientFilename();
+                        $file->moveTo($uploadDir . $filename);
+                        $data['image_path'] = '/img/users/' . $filename;
+                    } catch (\Exception $e) {
+                        $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
+                        $this->set(compact('user'));
+                        return;
+                    }
+                } else {
+                    unset($data['image_path']);
+                }
+            }
+            
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                // Save patient data if exists
+                if (isset($user->patient) && !empty($patientData)) {
+                    $patientsTable = $this->fetchTable('Patients');
+                    $patient = $user->patient;
+                    $patient = $patientsTable->patchEntity($patient, $patientData);
+                    $patientsTable->save($patient);
+                }
+                
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        
+        // Clear password field so form doesn't display the hash
+        unset($user->password);
+        
+        // Load clinicians list for patient clinician assignment
+        $clinicians = [];
+        if ($user->role === 'patient') {
+            $cliniciansTable = $this->fetchTable('Clinicians');
+            $cliniciansList = $cliniciansTable->find()
+                ->contain(['Users'])
+                ->all();
+            
+            foreach ($cliniciansList as $clinician) {
+                $clinicians[$clinician->id] = $clinician->user->first_name . ' ' . $clinician->user->last_name;
+            }
+        }
+        
+        $this->set(compact('user', 'clinicians'));
     }
 
     /**

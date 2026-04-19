@@ -39,10 +39,13 @@ $this->assign('title', 'Manage Users');
             <?= $this->Paginator->sort('email', 'Email') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+            <?= $this->Paginator->sort('phone', 'Phone') ?>
+        </th>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('role', 'Role') ?>
         </th>
-        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden xl:table-cell">
-            <?= $this->Paginator->sort('created', 'Created') ?>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+            <?= $this->Paginator->sort('image_path', 'Image') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= __('Actions') ?>
@@ -83,13 +86,26 @@ $this->assign('title', 'Manage Users');
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <?= h($user->phone ?? '-') ?>
+                </td>
+
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
                                 <?= h($user->role) ?>
                             </span>
                 </td>
 
-                <td class="p-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white hidden xl:table-cell">
-                    <?= $this->Time->format($user->created, 'MMM d, yyyy') ?>
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <?php if ($user->image_path): ?>
+                        <img src="<?= h($user->image_path) ?>" alt="User Image" class="w-8 h-8 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display:none;">
+                            <svg class="w-8 h-8 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    <?php else: ?>
+                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    <?php endif; ?>
                 </td>
 
                 <td class="p-4 space-x-2 whitespace-nowrap">

@@ -28,7 +28,6 @@ class CliniciansTableTest extends TestCase
         'app.Users',
         'app.Bookings',
         'app.Patients',
-        'app.Reminders',
     ];
 
     /**
