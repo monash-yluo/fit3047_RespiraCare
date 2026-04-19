@@ -70,7 +70,7 @@ $this->assign('title', 'System Reminders');
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?php if ($reminder->hasValue('receiver')) : ?>
                         <?= $this->Html->link(
-                            h($reminder->receiver->first_name),
+                            h($reminder->receiver->full_name),
                             ['controller' => 'Users', 'action' => 'view', $reminder->receiver->id],
                             ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>
@@ -82,7 +82,7 @@ $this->assign('title', 'System Reminders');
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?php if ($reminder->hasValue('sender')) : ?>
                         <?= $this->Html->link(
-                            h($reminder->sender->first_name),
+                            h($reminder->sender->full_name),
                             ['controller' => 'Users', 'action' => 'view', $reminder->sender->id],
                             ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                         ) ?>

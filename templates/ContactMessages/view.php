@@ -12,13 +12,22 @@ $this->assign('title', 'Contact Messages');
     <div class="mb-4">
         <div class="flex items-center justify-between">
             <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                Message from <?= h($contactMessage->first_name . ' ' . $contactMessage->last_name) ?>
+                Message from
+                <?php if ($contactMessage->patient_id) : ?>
+                    <?= $this->Html->link(
+                        $contactMessage->full_name,
+                        ['controller' => 'Patients', 'action' => 'view', $contactMessage->patient_id],
+                        ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
+                    ) ?>
+                <?php else : ?>
+                    <?= h($contactMessage->full_name) ?>
+                <?php endif; ?>
             </h1>
             <div class="flex space-x-2">
                 <?= $this->Html->link(
                     __('Back'),
                     $this->request->referer(),
-                    ['class' => 'text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5']
+                    ['class' => 'text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5'],
                 ) ?>
 
                 <?= $this->Form->button(__('Save Changes'), [
@@ -29,7 +38,7 @@ $this->assign('title', 'Contact Messages');
 
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
                     'confirm' => __('Are you sure you want to delete this message?'),
-                    'class' => 'text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900'
+                    'class' => 'text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900',
                 ]) ?>
             </div>
         </div>
@@ -37,7 +46,7 @@ $this->assign('title', 'Contact Messages');
 
     <?= $this->Form->create($contactMessage, [
         'url' => ['action' => 'changeStatus', $contactMessage->id],
-        'id' => 'main-edit-form'
+        'id' => 'main-edit-form',
     ]) ?>
 
         <div class="grid grid-cols-1 gap-4 xl:grid-cols-3 items-stretch">
@@ -56,7 +65,7 @@ $this->assign('title', 'Contact Messages');
                                         'new' => 'New',
                                         'pending' => 'Pending',
                                         'replied' => 'Replied',
-                                        'closed' => 'Closed'
+                                        'closed' => 'Closed',
                                     ],
                                     'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500',
                                 ]) ?>
@@ -95,7 +104,7 @@ $this->assign('title', 'Contact Messages');
                         'label' => false,
                         'placeholder' => 'Add staff notes here...',
                         'rows' => 4,
-                        'class' => 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
+                        'class' => 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500',
                     ]) ?>
                 </div>
             </div>

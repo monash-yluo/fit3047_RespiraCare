@@ -55,9 +55,6 @@ class ContactMessagesController extends AppController
     public function view(?string $id = null)
     {
         $this->checkRole(['admin']);
-
-        $contactMessage = $this->ContactMessages->get($id, contain: ['Patients']);
-
         $contactMessage = $this->ContactMessages->get($id, contain: ['Patients']);
         $this->set(compact('contactMessage'));
     }
@@ -84,7 +81,7 @@ class ContactMessagesController extends AppController
     }
 
     /**
-     * Edit method
+     * Edit method / Disabled **
      *
      * @param string|null $id Contact Message id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
