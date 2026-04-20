@@ -72,6 +72,12 @@ return function (RouteBuilder $routes): void {
             ['controller' => 'ContactMessages', 'action' => 'index'],
             ['status' => 301],
         );
+
+        $builder->redirect(
+            '/clinicians/edit/*',
+            ['controller' => 'Clinicians', 'action' => 'index'],
+            ['status' => 301],
+        );
         /*
          * Connect catchall routes for all controllers.
          *

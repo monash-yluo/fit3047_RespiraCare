@@ -20,6 +20,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
                     RespiraCare Administrator <br>Sign In
                 </h2>
 
+                <!-- TEMP -->
                 <div class="alert alert-info small py-3 mb-4 shadow-sm border-0 rounded-3"
                     style="background-color: #E0E8F5; color: #305BAB;">
                     <strong><i class="bi bi-info-circle me-1"></i> Testing Credentials:</strong><br>

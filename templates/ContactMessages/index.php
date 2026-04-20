@@ -26,8 +26,6 @@ $getStatusClass = function ($status) {
     <?= $this->element('table/page_header', [
         'title' => 'Contact Messages',
         'description' => 'Monitor and manage inquiries from patients and external users.',
-        'actionLabel' => __('New Message'),
-        'actionUrl' => ['action' => 'add'],
     ]) ?>
 
     <?php $this->start('table_content'); ?>

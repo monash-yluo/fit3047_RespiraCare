@@ -1,14 +1,7 @@
 <?php
 /**
  * Red Button Element (for delete/danger operations)
- * 
- * @var string $label Button label/text
- * @var string $url URL for postLink (required for delete operations)
- * @var string $confirm Confirmation message (optional)
- * @var string $iconType Icon type: 'delete', 'edit', 'add', 'view' (optional)
- * @var array $options Additional HTML options (optional)
  */
-
 $label = $label ?? 'Delete';
 $url = $url ?? null;
 $confirm = $confirm ?? __('Are you sure?');
@@ -23,8 +16,9 @@ $icons = [
     'view' => '<svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>'
 ];
 
-$icon = isset($icons[$iconType]) ? $icons[$iconType] : '';
-$buttonContent = $icon ? $icon . $label : $label;
+$icon = $icons[$iconType] ?? '';
+$buttonContent = $icon . h($label);
+$defaultClass = 'inline-flex items-center justify-center py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-red-600 dark:text-white dark:border-red-600 dark:hover:text-white dark:hover:bg-red-700';
 
 if ($url) {
     // Render as postLink for delete operations
@@ -34,18 +28,14 @@ if ($url) {
         array_merge([
             'escape' => false,
             'confirm' => $confirm,
-            'class' => 'inline-flex items-center justify-center py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-red-600 dark:text-white dark:border-red-600 dark:hover:text-white dark:hover:bg-red-700'
+            'class' => $defaultClass
         ], $options)
     );
 } else {
     // Render as regular button
-    ?>
-    <button type="button" <?php echo isset($options['class']) ? 'class="' . $options['class'] . '"' : 'class="inline-flex items-center justify-center py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-red-600 dark:text-white dark:border-red-600 dark:hover:text-white dark:hover:bg-red-700"'; ?>>
-        <?php if ($icon): ?>
-            <span><?= $icon ?></span>
-        <?php endif; ?>
-        <?= $label ?>
-    </button>
-    <?php
+    echo $this->Form->button($buttonContent, array_merge([
+        'type' => 'button',
+        'escapeTitle' => false,
+        'class' => $defaultClass,
+    ], $options));
 }
-?>

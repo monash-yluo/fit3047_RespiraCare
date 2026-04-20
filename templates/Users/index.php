@@ -30,6 +30,9 @@ $this->assign('title', 'Manage Users');
             <?= $this->Paginator->sort('id', 'ID') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+            <?= $this->Paginator->sort('image_path', 'Profile') ?>
+        </th>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('first_name', 'First Name') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -43,9 +46,6 @@ $this->assign('title', 'Manage Users');
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('role', 'Role') ?>
-        </th>
-        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            <?= $this->Paginator->sort('image_path', 'Image') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= __('Actions') ?>
@@ -73,6 +73,16 @@ $this->assign('title', 'Manage Users');
                     <?= $this->Number->format($user->id) ?>
                 </td>
 
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <?php if ($user->image_path): ?>
+                        <img src="<?= h($user->image_path) ?>" alt="User Image" class="w-8 h-8 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <?php else: ?>
+                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    <?php endif; ?>
+                </td>
+
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?= h($user->first_name) ?>
                 </td>
@@ -93,19 +103,6 @@ $this->assign('title', 'Manage Users');
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
                                 <?= h($user->role) ?>
                             </span>
-                </td>
-
-                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
-                    <?php if ($user->image_path): ?>
-                        <img src="<?= h($user->image_path) ?>" alt="User Image" class="w-8 h-8 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display:none;">
-                            <svg class="w-8 h-8 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                        </div>
-                    <?php else: ?>
-                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <svg class="w-8 h-8 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                        </div>
-                    <?php endif; ?>
                 </td>
 
                 <td class="p-4 space-x-2 whitespace-nowrap">

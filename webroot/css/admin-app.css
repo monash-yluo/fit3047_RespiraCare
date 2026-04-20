@@ -1995,6 +1995,10 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
 .max-h-none {
   max-height: none;
 }
@@ -2089,6 +2093,10 @@ input:checked + .toggle-bg {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-10 {
+  width: 2.5rem;
 }
 
 .min-w-full {
@@ -3160,6 +3168,11 @@ input:checked + .toggle-bg {
 .border-yellow-200 {
   --tw-border-opacity: 1;
   border-color: rgb(254 240 138 / var(--tw-border-opacity, 1));
+}
+
+.\!bg-red-100 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1)) !important;
 }
 
 .bg-blue-100 {
@@ -4684,19 +4697,31 @@ body.dark {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.message.error {
-  background-color: #fdf2f2;
-  color: #e74c3c;
-  border-left: 5px solid #e74c3c;
-}
-
-.message.error:hover {
+.message:hover {
   opacity: 0.85;
   transform: translateY(-1px);
 }
 
 .message.hidden {
   display: none !important;
+}
+
+.message.error {
+  background-color: #fdf2f2;
+  color: #e74c3c;
+  border-left: 5px solid #e74c3c;
+}
+
+.message.warning {
+  background-color: #fff8e6;
+  color: #f39c12;
+  border-left: 5px solid #f39c12;
+}
+
+.message.info {
+  background-color: #eef6fd;
+  color: #3498db;
+  border-left: 5px solid #3498db;
 }
 
 .message.success {
@@ -5090,11 +5115,6 @@ body.dark {
   color: rgb(251 146 60 / var(--tw-text-opacity, 1));
 }
 
-.dark\:text-primary-300:is(.dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(147 197 253 / var(--tw-text-opacity, 1));
-}
-
 .dark\:text-primary-400:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity, 1));
@@ -5218,6 +5238,11 @@ body.dark {
   --tw-ring-color: rgb(55 65 81 / var(--tw-ring-opacity, 1));
 }
 
+.dark\:focus\:ring-primary-500:focus:is(.dark *) {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));
+}
+
 .dark\:focus\:ring-primary-600:focus:is(.dark *) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity, 1));
@@ -5246,11 +5271,6 @@ body.dark {
 .dark\:focus\:ring-yellow-800:focus:is(.dark *) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(133 77 14 / var(--tw-ring-opacity, 1));
-}
-
-.dark\:focus\:ring-primary-500:focus:is(.dark *) {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));
 }
 
 .group:hover .dark\:group-hover\:text-white:is(.dark *) {
