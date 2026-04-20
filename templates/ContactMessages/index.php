@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContactMessage> $contactMessages
+ * @var $contactMessages
  */
 
 $this->setLayout($identity->role);
@@ -64,7 +64,7 @@ $getStatusClass = function ($status) {
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($contactMessages->isEmpty()) : ?>
+    <?php if ($contactMessages->items()->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No messages found',
             'message' => 'Incoming inquiries will appear here.',
