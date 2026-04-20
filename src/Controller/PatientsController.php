@@ -17,6 +17,8 @@ class PatientsController extends AppController
      */
     public function index()
     {
+        $this->checkRole(['admin']);
+
         $query = $this->Patients->find()
             ->contain(['Users', 'Clinicians.Users']);
         $patients = $this->paginate($query);
@@ -33,6 +35,8 @@ class PatientsController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $patient = $this->Patients->get($id, contain: ['Users', 'Clinicians.Users', 'PatientMeasurements', 'SymptomLogs' => ['SymptomTypes']]);
         $this->set(compact('patient'));
     }
@@ -92,6 +96,8 @@ class PatientsController extends AppController
      */
     public function delete(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $this->request->allowMethod(['post', 'delete']);
         $patient = $this->Patients->get($id);
         if ($this->Patients->delete($patient)) {

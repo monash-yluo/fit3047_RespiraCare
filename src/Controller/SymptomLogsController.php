@@ -17,6 +17,8 @@ class SymptomLogsController extends AppController
      */
     public function index()
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $query = $this->SymptomLogs->find()
             ->contain(['Patients']);
         $symptomLogs = $this->paginate($query);
@@ -33,6 +35,8 @@ class SymptomLogsController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']], 'SymptomTypes']);
         $this->set(compact('symptomLog'));
     }
@@ -46,6 +50,8 @@ class SymptomLogsController extends AppController
      */
     public function edit(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $symptomLog = $this->SymptomLogs->get($id, contain: ['SymptomTypes']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
@@ -70,6 +76,8 @@ class SymptomLogsController extends AppController
      */
     public function delete(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $this->request->allowMethod(['post', 'delete']);
         $symptomLog = $this->SymptomLogs->get($id);
         if ($this->SymptomLogs->delete($symptomLog)) {

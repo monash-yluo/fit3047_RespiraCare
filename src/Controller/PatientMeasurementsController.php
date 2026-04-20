@@ -17,6 +17,8 @@ class PatientMeasurementsController extends AppController
      */
     public function index()
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $query = $this->PatientMeasurements->find()
             ->contain(['Patients']);
         $patientMeasurements = $this->paginate($query);
@@ -48,6 +50,8 @@ class PatientMeasurementsController extends AppController
      */
     public function edit(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
@@ -71,6 +75,8 @@ class PatientMeasurementsController extends AppController
      */
     public function delete(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $this->request->allowMethod(['post', 'delete']);
         $patientMeasurement = $this->PatientMeasurements->get($id);
         if ($this->PatientMeasurements->delete($patientMeasurement)) {
