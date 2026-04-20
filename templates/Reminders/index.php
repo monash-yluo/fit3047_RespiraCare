@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\ResultSetInterface<\App\Model\Entity\Reminder> $reminders
+ * @var $reminders
  */
 
 $this->setLayout($identity->role);
@@ -48,7 +48,7 @@ $this->assign('title', 'System Reminders');
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($reminders->isEmpty()) : ?>
+    <?php if ($reminders->items()->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No reminders found',
             'message' => 'Automated reminders have not been scheduled yet.',

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\ResultSetInterface<\App\Model\Entity\Patient> $patients
+ * @var $patients
  */
 
 $this->setLayout($identity->role);
@@ -57,7 +57,7 @@ $this->assign('title', 'Manage Patients');
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($patients->isEmpty()) : ?>
+    <?php if ($patients->items()->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'colspan' => 10,
             'title' => 'No patients found',

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\ResultSetInterface<\App\Model\Entity\User> $users
+ * @var $users
  */
 
 $this->setLayout($identity->role);
@@ -54,7 +54,7 @@ $this->assign('title', 'Manage Users');
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if ($users->isEmpty()) : ?>
+    <?php if ($users->items()->isEmpty()) : ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No users found',
             'message' => 'There are currently no users in the system.',
