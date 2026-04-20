@@ -40,27 +40,6 @@ class PatientMeasurementsController extends AppController
     }
 
     /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $patientMeasurement = $this->PatientMeasurements->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
-            if ($this->PatientMeasurements->save($patientMeasurement)) {
-                $this->Flash->success(__('The patient measurement has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The patient measurement could not be saved. Please, try again.'));
-        }
-        $patients = $this->PatientMeasurements->Patients->find('list', limit: 200)->all();
-        $this->set(compact('patientMeasurement', 'patients'));
-    }
-
-    /**
      * Edit method
      *
      * @param string|null $id Patient Measurement id.
@@ -103,7 +82,7 @@ class PatientMeasurementsController extends AppController
         return $this->redirect($this->referer());
     }
 
-    public function patientAdd(?string $patientId = null)
+    public function add(?string $patientId = null)
     {
         # 权限检查：允许 admin 和 patient
         $this->checkRole(['admin', 'patient']);

@@ -29,7 +29,7 @@ $this->assign('title', 'Dashboard Overview');
                 </span>
             </div>
             <div class="items-center sm:flex">
-                <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'patientAdd']) ?>"
+                <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'add']) ?>"
                    class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2"
                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

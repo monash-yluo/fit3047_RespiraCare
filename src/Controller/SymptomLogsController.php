@@ -38,28 +38,6 @@ class SymptomLogsController extends AppController
     }
 
     /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $symptomLog = $this->SymptomLogs->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
-            if ($this->SymptomLogs->save($symptomLog)) {
-                $this->Flash->success(__('The symptom log has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The symptom log could not be saved. Please, try again.'));
-        }
-        $patients = $this->SymptomLogs->Patients->find('list', limit: 200)->all();
-        $symptomTypes = $this->SymptomLogs->SymptomTypes->find('list', limit: 200)->all();
-        $this->set(compact('symptomLog', 'patients', 'symptomTypes'));
-    }
-
-    /**
      * Edit method
      *
      * @param string|null $id Symptom Log id.
@@ -127,7 +105,7 @@ class SymptomLogsController extends AppController
         $this->set(compact('symptomLogs'));
     }
 
-    public function patientAdd(?string $patientId = null)
+    public function add(?string $patientId = null)
     {
         # 权限检查：允许 admin 和 patient
         $this->checkRole(['admin', 'patient']);
