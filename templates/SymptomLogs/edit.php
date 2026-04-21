@@ -11,18 +11,12 @@ $this->assign('title', 'Edit Symptom');
 ?>
 
 <div class="px-4 pt-6">
-    <div class="mb-4">
-        <div class="flex items-center justify-between">
-            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                Edit Respiratory Symptoms
-            </h1>
-        </div>
-        <div class="mt-2">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                Update your symptom information and severity to help us track your health trends accurately.
-            </p>
-        </div>
-    </div>
+
+    <?= $this->element('table/page_header', [
+        'title' => 'Edit Respiratory Symptoms',
+        'description' => 'Update your symptom information and severity to help us track your health trends accurately.',
+        'showBack' => true,
+        ]) ?>
 
     <?= $this->Form->create($symptomLog) ?>
 
@@ -116,12 +110,6 @@ $this->assign('title', 'Edit Symptom');
                         'iconType' => 'delete',
                         'confirm' => __('Are you sure you want to delete this symptom log?')
                     ]) ?>
-
-                    <?= $this->Html->link(
-                        __('Back to History'),
-                        $this->getRequest()->referer() ?? ['controller' => 'PatientPortals', 'action' => 'dashboard'],
-                        ['class' => 'py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 text-center']
-                    ) ?>
 
                 </div>
             </div>

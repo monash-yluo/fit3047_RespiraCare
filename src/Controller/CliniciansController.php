@@ -27,63 +27,6 @@ class CliniciansController extends AppController
     }
 
     /**
-     * View method
-     *
-     * @param string|null $id Clinician id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $clinician = $this->Clinicians->get($id, contain: ['Users', 'Bookings', 'Patients', 'Reminders']);
-        $this->set(compact('clinician'));
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $clinician = $this->Clinicians->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $clinician = $this->Clinicians->patchEntity($clinician, $this->request->getData());
-            if ($this->Clinicians->save($clinician)) {
-                $this->Flash->success(__('The clinician has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The clinician could not be saved. Please, try again.'));
-        }
-        $users = $this->Clinicians->Users->find('list', limit: 200)->all();
-        $this->set(compact('clinician', 'users'));
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Clinician id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $clinician = $this->Clinicians->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $clinician = $this->Clinicians->patchEntity($clinician, $this->request->getData());
-            if ($this->Clinicians->save($clinician)) {
-                $this->Flash->success(__('The clinician has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The clinician could not be saved. Please, try again.'));
-        }
-        $users = $this->Clinicians->Users->find('list', limit: 200)->all();
-        $this->set(compact('clinician', 'users'));
-    }
-
-    /**
      * Delete method
      *
      * @param string|null $id Clinician id.
@@ -101,5 +44,29 @@ class CliniciansController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * @return void
+     */
+    public function dashboard()
+    {
+        $this->checkRole(['clinician']);
+
+        $clinicianId = $this->getClinicianId();
+
+        if ($clinicianId) {
+            // Get patients assigned to this clinician
+            $patientsQuery = $this->fetchTable('Patients')->find()
+                ->where(['clinician_id' => $clinicianId])
+                ->contain(['Users']);
+
+            $patients = $this->paginate($patientsQuery);
+            $patientCount = $this->fetchTable('Patients')->find()
+                ->where(['clinician_id' => $clinicianId])
+                ->count();
+
+            $this->set(compact('patients', 'patientCount'));
+        }
     }
 }

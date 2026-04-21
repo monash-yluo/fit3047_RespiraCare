@@ -32,7 +32,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function index()
-    {   
+    {
         $this->checkRole(['admin']);
 
         $query = $this->Users->find();
@@ -66,7 +66,7 @@ class UsersController extends AppController
             $patient = $patientsTable->find()
                 ->where(['Patients.user_id' => $user->id])
                 ->first();
-            
+
             if ($patient) {
                 // 如果有分配的 clinician，加载 clinician 信息
                 if (!empty($patient->clinician_id)) {
@@ -85,7 +85,7 @@ class UsersController extends AppController
             $clinician = $cliniciansTable->find()
                 ->where(['Clinicians.user_id' => $user->id])
                 ->first();
-            
+
             if ($clinician) {
                 $user->clinician = $clinician;
             }
@@ -106,11 +106,11 @@ class UsersController extends AppController
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            
+
             // Extract patient data before patching entity
             $patientData = [];
             $role = $data['role'] ?? null;
-            
+
             if ($role === 'patient') {
                 // Store patient data separately
                 if (!empty($data['patient_dob'])) {
@@ -125,14 +125,14 @@ class UsersController extends AppController
                 if (!empty($data['patient_clinician_id'])) {
                     $patientData['clinician_id'] = $data['patient_clinician_id'];
                 }
-                
+
                 // Remove patient data from user data
                 unset($data['patient_dob']);
                 unset($data['patient_sex']);
                 unset($data['patient_notes']);
                 unset($data['patient_clinician_id']);
             }
-            
+
             // Handle file upload
             if (isset($data['image_path'])) {
                 $file = $data['image_path'];
@@ -155,7 +155,7 @@ class UsersController extends AppController
                     unset($data['image_path']);
                 }
             }
-            
+
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 // If role is patient, create patient record
@@ -163,7 +163,7 @@ class UsersController extends AppController
                     $patientsTable = $this->fetchTable('Patients');
                     $patient = $patientsTable->newEmptyEntity();
                     $patientData['user_id'] = $user->id;
-                    
+
                     $patient = $patientsTable->patchEntity($patient, $patientData);
                     if (!$patientsTable->save($patient)) {
                         // If patient creation fails, delete the created user
@@ -177,7 +177,7 @@ class UsersController extends AppController
                     $cliniciansTable = $this->fetchTable('Clinicians');
                     $clinician = $cliniciansTable->newEmptyEntity();
                     $clinician->user_id = $user->id;
-                    
+
                     if (!$cliniciansTable->save($clinician)) {
                         // If clinician creation fails, delete the created user
                         $this->Users->delete($user);
@@ -186,25 +186,25 @@ class UsersController extends AppController
                         return;
                     }
                 }
-                
+
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        
+
         // Load clinicians list for patient clinician assignment
         $clinicians = [];
         $cliniciansTable = $this->fetchTable('Clinicians');
         $cliniciansList = $cliniciansTable->find()
             ->contain(['Users'])
             ->all();
-        
+
         foreach ($cliniciansList as $clinician) {
             $clinicians[$clinician->id] = $clinician->user->first_name . ' ' . $clinician->user->last_name;
         }
-        
+
         $this->set(compact('user', 'clinicians'));
     }
 
@@ -220,25 +220,25 @@ class UsersController extends AppController
         $this->checkRole(['admin']);
 
         $user = $this->Users->get($id, contain: []);
-        
+
         // Load patient data if user is a patient
         if ($user->role === 'patient') {
             $patientsTable = $this->fetchTable('Patients');
             $patient = $patientsTable->find()
                 ->where(['Patients.user_id' => $user->id])
                 ->first();
-            
+
             if ($patient) {
                 $user->patient = $patient;
             }
         }
-        
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
-            
+
             // Extract patient data before patching entity
             $patientData = [];
-            
+
             if ($user->role === 'patient') {
                 // Store patient data separately
                 if (!empty($data['patient_dob'])) {
@@ -254,19 +254,19 @@ class UsersController extends AppController
                 if (isset($data['patient_clinician_id'])) {
                     $patientData['clinician_id'] = !empty($data['patient_clinician_id']) ? $data['patient_clinician_id'] : null;
                 }
-                
+
                 // Remove patient data from user data
                 unset($data['patient_dob']);
                 unset($data['patient_sex']);
                 unset($data['patient_notes']);
                 unset($data['patient_clinician_id']);
             }
-            
+
             // If password is empty, don't update it
             if (empty($data['password'])) {
                 unset($data['password']);
             }
-            
+
             // Handle file upload
             if (isset($data['image_path'])) {
                 $file = $data['image_path'];
@@ -289,7 +289,7 @@ class UsersController extends AppController
                     unset($data['image_path']);
                 }
             }
-            
+
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 // Save patient data if exists
@@ -299,17 +299,17 @@ class UsersController extends AppController
                     $patient = $patientsTable->patchEntity($patient, $patientData);
                     $patientsTable->save($patient);
                 }
-                
+
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        
+
         // Clear password field so form doesn't display the hash
         unset($user->password);
-        
+
         // Load clinicians list for patient clinician assignment
         $clinicians = [];
         if ($user->role === 'patient') {
@@ -317,12 +317,12 @@ class UsersController extends AppController
             $cliniciansList = $cliniciansTable->find()
                 ->contain(['Users'])
                 ->all();
-            
+
             foreach ($cliniciansList as $clinician) {
                 $clinicians[$clinician->id] = $clinician->user->first_name . ' ' . $clinician->user->last_name;
             }
         }
-        
+
         $this->set(compact('user', 'clinicians'));
     }
 
@@ -336,7 +336,7 @@ class UsersController extends AppController
     public function delete(?string $id = null)
     {
         $this->checkRole(['admin']);
-        
+
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
@@ -360,14 +360,14 @@ class UsersController extends AppController
         } elseif ($role === 'patient') {
             return $this->redirect(
                 [
-                    'controller' => 'PatientPortals',
+                    'controller' => 'Patients',
                     'action' => 'dashboard',
                 ],
             ); // Patient
         } elseif ($role === 'clinician') {
             return $this->redirect(
                 [
-                    'controller' => 'ClinicianPortals',
+                    'controller' => 'Clinicians',
                     'action' => 'dashboard',
                 ],
             ); // Clinician

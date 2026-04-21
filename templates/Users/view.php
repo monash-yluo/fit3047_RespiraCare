@@ -37,7 +37,7 @@ $this->assign('title', 'User Profile');
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start justify-between gap-4 mt-5">
                 <div class="flex-1">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <?= h($user->first_name . ' ' . $user->last_name) ?>
@@ -118,11 +118,7 @@ $this->assign('title', 'User Profile');
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-normal">Assigned Clinician</p>
                         <p class="text-sm font-bold text-gray-900 dark:text-white mt-1">
-                            <?= $this->Html->link(
-                                h($user->patient->clinician->user->first_name . ' ' . $user->patient->clinician->user->last_name),
-                                ['controller' => 'Clinicians', 'action' => 'view', $user->patient->clinician->id],
-                                ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
-                            ) ?>
+                            <?= h($user->patient->clinician->user->first_name . ' ' . $user->patient->clinician->user->last_name) ?>
                         </p>
                     </div>
                 </div>

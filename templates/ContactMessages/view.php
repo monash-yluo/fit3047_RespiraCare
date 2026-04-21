@@ -2,13 +2,22 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContactMessage $contactMessage
+ * @var $identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Contact Messages', 'url' => ['controller' => 'ContactMessages', 'action' => 'index']],
+    ['title' => $contactMessage->id, 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Contact Messages');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <div class="mb-4">
         <div class="flex items-center justify-between">
             <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">

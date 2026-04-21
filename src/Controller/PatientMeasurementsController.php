@@ -50,7 +50,7 @@ class PatientMeasurementsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $this->checkRole(['admin']);
+        $this->checkRole(['admin', 'patient']);
 
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -131,7 +131,7 @@ class PatientMeasurementsController extends AppController
             }
             $this->Flash->error(__('Failed to save. Please try again.'));
         }
-        
+
         $this->set(compact('patientMeasurement', 'patientId'));
     }
 
@@ -155,7 +155,7 @@ class PatientMeasurementsController extends AppController
         // 如果查询结果为空，或者关联的 Patient 没查到（说明 user_id 不匹配）
         if (!$patientMeasurement || !$patientMeasurement->patient) {
             $this->Flash->error(__('You are not authorized to view this record.'));
-            return $this->redirect(['controller' => 'PatientPortals', 'action' => 'dashboard']);
+            return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
         }
 
         $this->set(compact('patientMeasurement'));

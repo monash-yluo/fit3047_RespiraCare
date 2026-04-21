@@ -55,14 +55,14 @@
                 <li>
                     <!-- 如果是patient 登录 显示dashboard 链接 -->
                     <?php if ($identity && $identity->role === 'patient'): ?>
-                        <a href="<?= $this->Url->build(['controller' => 'PatientPortals', 'action' => 'dashboard']) ?>"
+                        <a href="<?= $this->Url->build(['controller' => 'Patients', 'action' => 'dashboard']) ?>"
                            class="<?= ($this->request->getParam('controller') === 'PatientPortals' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Dashboard</a>
                     <?php endif; ?>
                 </li>
                 <li>
                     <!-- 如果是clinician 登录 显示dashboard 链接 -->
                     <?php if ($identity && $identity->role === 'clinician'): ?>
-                        <a href="<?= $this->Url->build(['controller' => 'ClinicianPortals', 'action' => 'dashboard']) ?>"
+                        <a href="<?= $this->Url->build(['controller' => 'Clinicians', 'action' => 'dashboard']) ?>"
                            class="<?= ($this->request->getParam('controller') === 'ClinicianPortals' && $this->request->getParam('action') === 'dashboard') ? 'active' : '' ?>">Dashboard</a>
                     <?php endif; ?>
                 </li>

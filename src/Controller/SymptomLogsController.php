@@ -50,7 +50,7 @@ class SymptomLogsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $this->checkRole(['admin']);
+        $this->checkRole(['admin', 'patient']);
 
         $symptomLog = $this->SymptomLogs->get($id, contain: ['SymptomTypes']);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -164,13 +164,13 @@ class SymptomLogsController extends AppController
     public function patientView(?string $id = null)
     {
         $this->checkRole(['patient']);
-        
+
         $patientId = $this->getPatientId();
         if (!$patientId) {
             $this->Flash->error(__('Patient profile not found.'));
-            return $this->redirect(['controller' => 'PatientPortals', 'action' => 'index']);
+            return $this->redirect(['controller' => 'Patients', 'action' => 'index']);
         }
-        
+
         $symptomLog = $this->SymptomLogs->find()
             ->where(['SymptomLogs.id' => $id, 'SymptomLogs.patient_id' => $patientId])
             ->contain(['SymptomTypes'])
@@ -183,5 +183,5 @@ class SymptomLogsController extends AppController
 
         $this->set(compact('symptomLog'));
     }
-    
+
 }

@@ -74,6 +74,12 @@ return function (RouteBuilder $routes): void {
         );
 
         $builder->redirect(
+            '/contact-messages/add',
+            ['controller' => 'ContactMessages', 'action' => 'index'],
+            ['status' => 301],
+        );
+
+        $builder->redirect(
             '/clinicians/edit/*',
             ['controller' => 'Clinicians', 'action' => 'index'],
             ['status' => 301],
@@ -84,6 +90,25 @@ return function (RouteBuilder $routes): void {
             ['controller' => 'Clinicians', 'action' => 'index'],
             ['status' => 301],
         );
+
+        $builder->redirect(
+            '/clinicians/view/*',
+            ['controller' => 'Clinicians', 'action' => 'index'],
+            ['status' => 301],
+        );
+
+        $builder->redirect(
+            '/patients/edit/*',
+            ['controller' => 'Patients', 'action' => 'index'],
+            ['status' => 301],
+        );
+
+        $builder->redirect(
+            '/patients/add',
+            ['controller' => 'Patients', 'action' => 'index'],
+            ['status' => 301],
+        );
+
         /*
          * Connect catchall routes for all controllers.
          *

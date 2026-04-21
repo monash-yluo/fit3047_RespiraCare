@@ -16,8 +16,8 @@ $role = $identity?->role;
 
 $dashboardRoutes = [
     'admin' => ['controller' => 'Admins', 'action' => 'dashboard'],
-    'clinician' => ['controller' => 'ClinicianPortals', 'action' => 'dashboard'],
-    'patient' => ['controller' => 'PatientPortals', 'action' => 'dashboard'],
+    'clinician' => ['controller' => 'Clinicians', 'action' => 'dashboard'],
+    'patient' => ['controller' => 'Patients', 'action' => 'dashboard'],
 ];
 
 $fallback = $this->Url->build($dashboardRoutes[$role] ?? '/');

@@ -33,7 +33,7 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
         <div class="flex space-x-3">
             <?= $this->Html->link(
                 __('Back'),
-                $this->getRequest()->referer() ?? ['controller' => 'PatientPortals', 'action' => 'dashboard'],
+                $this->getRequest()->referer() ?? ['controller' => 'Patients', 'action' => 'dashboard'],
                 [
                     'class' => 'text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
                 ]
