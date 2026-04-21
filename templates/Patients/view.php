@@ -105,7 +105,7 @@ if ($identity->role === 'admin') {
             <?php if ($identity->role === 'admin') : ?>
                 <?= $this->Html->link(
                     '<svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Add Measurement',
-                    ['controller' => 'PatientMeasurements', 'action' => 'patientAdd', $patient->id],
+                    ['controller' => 'PatientMeasurements', 'action' => 'add', $patient->id],
                     ['escape' => false, 'class' => 'inline-flex items-center px-3 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700']
                 ) ?>
             <?php endif; ?>
@@ -265,7 +265,7 @@ if ($identity->role === 'admin') {
             <?php if ($identity->role === 'admin') : ?>
                 <?= $this->Html->link(
                     '<svg class="w-4 h-4 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Add Symptom',
-                    ['controller' => 'SymptomLogs', 'action' => 'patientAdd', $patient->id],
+                    ['controller' => 'SymptomLogs', 'action' => 'add', $patient->id],
                     ['escape' => false, 'class' => 'inline-flex items-center px-3 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700']
                 ) ?>
             <?php endif; ?>

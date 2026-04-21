@@ -17,7 +17,7 @@ $this->assign('title', 'Dashboard Overview');
 
     <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3 mb-4">
 
-        <?php for ($i = 0; $i < 3; $i++) : ?>
+        <!-- <?php for ($i = 0; $i < 3; $i++) : ?>
             <div
                 class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm
                 sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
@@ -45,7 +45,7 @@ $this->assign('title', 'Dashboard Overview');
                     </p>
                 </div>
             </div>
-        <?php endfor; ?>
+        <?php endfor; ?> -->
 
     </div>
 

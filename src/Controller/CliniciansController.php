@@ -17,6 +17,8 @@ class CliniciansController extends AppController
      */
     public function index()
     {
+        $this->checkRole(["admin"]);
+
         $query = $this->Clinicians->find()
             ->contain(['Users']);
         $clinicians = $this->paginate($query);

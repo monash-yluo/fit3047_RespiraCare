@@ -17,6 +17,8 @@ class SymptomLogsController extends AppController
      */
     public function index()
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $query = $this->SymptomLogs->find()
             ->contain(['Patients']);
         $symptomLogs = $this->paginate($query);
@@ -33,30 +35,10 @@ class SymptomLogsController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->checkRole(['admin', 'clinician']);
+
         $symptomLog = $this->SymptomLogs->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']], 'SymptomTypes']);
         $this->set(compact('symptomLog'));
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $symptomLog = $this->SymptomLogs->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
-            if ($this->SymptomLogs->save($symptomLog)) {
-                $this->Flash->success(__('The symptom log has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The symptom log could not be saved. Please, try again.'));
-        }
-        $patients = $this->SymptomLogs->Patients->find('list', limit: 200)->all();
-        $symptomTypes = $this->SymptomLogs->SymptomTypes->find('list', limit: 200)->all();
-        $this->set(compact('symptomLog', 'patients', 'symptomTypes'));
     }
 
     /**
@@ -68,6 +50,8 @@ class SymptomLogsController extends AppController
      */
     public function edit(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $symptomLog = $this->SymptomLogs->get($id, contain: ['SymptomTypes']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
@@ -92,6 +76,8 @@ class SymptomLogsController extends AppController
      */
     public function delete(?string $id = null)
     {
+        $this->checkRole(['admin']);
+
         $this->request->allowMethod(['post', 'delete']);
         $symptomLog = $this->SymptomLogs->get($id);
         if ($this->SymptomLogs->delete($symptomLog)) {
@@ -127,7 +113,7 @@ class SymptomLogsController extends AppController
         $this->set(compact('symptomLogs'));
     }
 
-    public function patientAdd(?string $patientId = null)
+    public function add(?string $patientId = null)
     {
         # 权限检查：允许 admin 和 patient
         $this->checkRole(['admin', 'patient']);

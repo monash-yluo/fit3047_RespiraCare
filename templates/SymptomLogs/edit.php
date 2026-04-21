@@ -104,15 +104,25 @@ $this->assign('title', 'Edit Symptom');
 
             <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 <div class="flex flex-col space-y-4">
-                    <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Update Symptom Log
-                    </button>
+                    <?= $this->element('button/blue_button', [
+                        'type' => 'submit',
+                        'label' => __('Update Symptom Log'),
+                        'iconType' => 'edit'
+                    ]) ?>
+
+                    <?= $this->element('button/red_button', [
+                        'label' => __('Delete'),
+                        'url' => ['action' => 'delete', $symptomLog->id],
+                        'iconType' => 'delete',
+                        'confirm' => __('Are you sure you want to delete this symptom log?')
+                    ]) ?>
 
                     <?= $this->Html->link(
                         __('Back to History'),
                         $this->getRequest()->referer() ?? ['controller' => 'PatientPortals', 'action' => 'dashboard'],
                         ['class' => 'py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 text-center']
                     ) ?>
+
                 </div>
             </div>
         </div>

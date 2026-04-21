@@ -43,7 +43,7 @@ $getSeverityProps = function($severity) {
         'title' => 'Symptom History',
         'description' => 'Keep track of your respiratory health and symptoms.',
         'actionLabel' => __('Log New Symptom'),
-        'actionUrl' => ['action' => 'patientAdd']
+        'actionUrl' => ['action' => 'add']
     ]) ?>
 
 

@@ -8,6 +8,9 @@ namespace App\Controller;
  *
  * @property \App\Model\Table\RemindersTable $Reminders
  */
+
+use Cake\Http\Exception\NotFoundException;
+
 class RemindersController extends AppController
 {
     /**
@@ -21,7 +24,7 @@ class RemindersController extends AppController
             ->contain(['Receivers', 'Senders']);
         
         // Only admins can see all reminders, others can only see their own
-        $identity = $this->request->getAttribute('identity');
+        $identity = $this->Authentication->getIdentity();
         if ($identity && $identity->role !== 'admin') {
             $query->where([
                 'OR' => [
@@ -46,6 +49,15 @@ class RemindersController extends AppController
     public function view($id = null)
     {
         $reminder = $this->Reminders->get($id, contain: ['Receivers', 'Senders']);
+        
+        // Only admins can see all reminders, others can only see their own
+        $identity = $this->Authentication->getIdentity();
+        if ($identity && $identity->role !== 'admin') {
+            if ($reminder->receiver_id !== $identity->id && $reminder->sender_id !== $identity->id) {
+                throw new NotFoundException(__('Page not found'));
+            }
+        }
+        
         $this->set(compact('reminder'));
     }
 

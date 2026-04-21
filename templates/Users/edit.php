@@ -145,7 +145,7 @@ $this->assign('title', 'Edit User');
                 <h3 class="mb-4 text-lg font-semibold dark:text-white">Actions</h3>
                 <div class="space-y-4">
                     <div class="flex flex-col space-y-4">
-                        <?= $this->element('button/blue_button', ['label' => 'Update User', 'iconType' => 'edit']) ?>
+                        <?= $this->element('button/blue_button', ['label' => 'Update User', 'iconType' => 'edit', 'type' => 'submit']) ?>
                         <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $user->id], 'confirm' => __('Are you sure you want to delete this user?'), 'iconType' => 'delete']) ?>
                     </div>
                 </div>
