@@ -52,6 +52,17 @@ class SymptomLogsController extends AppController
     {
         $this->checkRole(['admin', 'patient']);
 
+        $identity = $this->Authentication->getIdentity();
+
+        # 权限检查：如果是患者，确保只能更改自己的 / Permission check: if patient, ensure they can only edit their own logs
+        if ($identity->role === 'patient') {
+            $symptomLog = $this->SymptomLogs->get($id);
+            if ($symptomLog->patient_id !== $this->getPatientId()) {
+                $this->Flash->error(__('You do not have permission to edit this symptom log.'));
+                return $this->redirect(['action' => 'patientIndex']);
+            }
+        }
+
         $symptomLog = $this->SymptomLogs->get($id, contain: ['SymptomTypes']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $symptomLog = $this->SymptomLogs->patchEntity($symptomLog, $this->request->getData());
@@ -76,7 +87,19 @@ class SymptomLogsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->checkRole(['admin']);
+        $this->checkRole(['admin', 'patient']);
+        
+        $identity = $this->Authentication->getIdentity();
+
+        # 权限检查：如果是患者，确保只能删除自己的日志 / Permission check: if patient, ensure they can only delete their own logs
+        if ($identity->role === 'patient') {
+            $symptomLog = $this->SymptomLogs->get($id);
+            if ($symptomLog->patient_id !== $this->getPatientId()) {
+                $this->Flash->error(__('You do not have permission to delete this symptom log.'));
+
+                return $this->redirect(['action' => 'patientIndex']);
+            }
+        }
 
         $this->request->allowMethod(['post', 'delete']);
         $symptomLog = $this->SymptomLogs->get($id);
@@ -115,7 +138,7 @@ class SymptomLogsController extends AppController
 
     public function add(?string $patientId = null)
     {
-        # 权限检查：允许 admin 和 patient
+        # 权限检查：允许 admin 和 patient / Permission check: allow admin and patient
         $this->checkRole(['admin', 'patient']);
 
         $symptomLog = $this->SymptomLogs->newEmptyEntity();
@@ -124,10 +147,10 @@ class SymptomLogsController extends AppController
         $identity = $this->Authentication->getIdentity();
 
         if ($identity->role === 'admin') {
-            // Admin 从参数中获取 patient_id
+            // Admin 从参数中获取 patient_id / Admin gets patient_id from parameter
             $actualPatientId = $patientId ?? $this->request->getData('patient_id');
         } else {
-            // Patient 从登录用户自动查询
+            // Patient 从登录用户自动查询 / Patient automatically gets from logged-in user
             $actualPatientId = $this->getPatientId();
         }
 
@@ -147,7 +170,7 @@ class SymptomLogsController extends AppController
             if ($this->SymptomLogs->save($symptomLog)) {
                 $this->Flash->success(__('The symptom log has been saved.'));
 
-                // 根据角色返回不同的重定向
+                // 根据角色返回不同的重定向 / Redirect differently based on role
                 if ($identity->role === 'admin') {
                     return $this->redirect(['controller' => 'Patients', 'action' => 'view', $actualPatientId]);
                 } else {
