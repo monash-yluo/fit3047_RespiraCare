@@ -52,6 +52,15 @@ class PatientMeasurementsController extends AppController
     {
         $this->checkRole(['admin', 'patient']);
 
+        // 权限检查：如果是患者，确保只能更改自己的 / Permission check: if patient, ensure they can only edit their own records
+        if ($this->Authentication->getIdentity()->role === 'patient') {
+            $patientMeasurement = $this->PatientMeasurements->get($id);
+            if ($patientMeasurement->patient_id !== $this->getPatientId()) {
+                $this->Flash->error(__('You are not authorized to edit this record.'));
+                return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
+            }
+        }
+
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
@@ -75,7 +84,16 @@ class PatientMeasurementsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->checkRole(['admin']);
+        $this->checkRole(['admin', 'patient']);
+
+        // 权限检查：如果是患者，确保只能删除自己的 / Permission check: if patient, ensure they can only delete their own records
+        if ($this->Authentication->getIdentity()->role === 'patient') {
+            $patientMeasurement = $this->PatientMeasurements->get($id);
+            if ($patientMeasurement->patient_id !== $this->getPatientId()) {
+                $this->Flash->error(__('You are not authorized to delete this record.'));
+                return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
+            }
+        }
 
         $this->request->allowMethod(['post', 'delete']);
         $patientMeasurement = $this->PatientMeasurements->get($id);
