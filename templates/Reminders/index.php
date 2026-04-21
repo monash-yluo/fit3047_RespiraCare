@@ -2,9 +2,11 @@
 /**
  * @var \App\View\AppView $this
  * @var $reminders
+ * @var $identity
  */
 
 $this->setLayout($identity->role);
+$canCreate = in_array($identity->role, ['admin', 'clinician']);
 $this->assign('title', 'System Reminders');
 ?>
 
@@ -13,8 +15,8 @@ $this->assign('title', 'System Reminders');
     <?= $this->element('table/page_header', [
         'title' => 'System Reminders',
         'description' => 'View and manage automated health data reminders and communications.',
-        'actionLabel' => __('New Reminder'),
-        'actionUrl' => ['action' => 'add'],
+        'actionLabel' => $canCreate ? __('New Reminder') : null,
+        'actionUrl' => $canCreate ? ['action' => 'add'] : null,
     ]) ?>
 
     <?php $this->start('table_content'); ?>
