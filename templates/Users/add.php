@@ -3,13 +3,23 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
+ * @var $identity
  */
+
+// Breadcrumb
+$breadcrumbs = [
+    ['title' => 'Users', 'url' => ['action' => 'index']],
+    ['title' => 'Add User', 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Add New User');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <?= $this->element('table/page_header', [
         'title' => 'Add New User',
         'description' => 'Create a new user account by filling out the form below.',

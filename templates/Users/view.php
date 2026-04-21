@@ -3,13 +3,22 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
+ * @var identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Users', 'url' => ['action' => 'index']],
+    ['title' => '#' . $user->id, 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'User Profile');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <?= $this->element('table/page_header', [
         'title' => 'User Profile',
         'description' => 'View user account information and details.',

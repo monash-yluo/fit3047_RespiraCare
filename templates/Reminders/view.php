@@ -10,8 +10,8 @@ $this->assign('title', 'Reminder Details');
 
 // Breadcrumb
 $breadcrumbs = [
-    ['title' => 'Contact Messages', 'url' => ['controller' => 'Reminders', 'action' => 'index']],
-    ['title' => $reminder->id, 'url' => null],
+    ['title' => 'Contact Messages', 'url' => ['action' => 'index']],
+    ['title' => '#' . $reminder->id, 'url' => null],
 ];
 
 // Authorization Check
@@ -20,6 +20,8 @@ $isStaff = in_array($identity->role, ['admin', 'clinician']);
 
 <div class="px-4 pt-6">
 
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+    
     <?= $this->element('table/page_header', [
         'title' => 'Reminder Details',
         'description' => 'Viewing system communication record.',

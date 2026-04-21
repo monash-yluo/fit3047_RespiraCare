@@ -3,13 +3,21 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
+ * @var $identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Dashboard', 'url' => $identity->role == 'patient' ? ['controller' => 'Patients', 'action' => 'dashboard'] : $this->request->referer()],
+    ['title' => 'Edit #' . $patientMeasurement->id, 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Edit Measurement');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
 
     <?= $this->element('table/page_header', [
         'title' => 'Edit Daily Health Data',

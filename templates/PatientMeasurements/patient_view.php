@@ -2,7 +2,14 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
+ * @var $identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Dashboard', 'url' => $identity->role == 'patient' ? ['controller' => 'Patients', 'action' => 'dashboard'] : $this->request->referer()],
+    ['title' => '#' . $patientMeasurement->id, 'url' => null],
+];
+
 $this->setLayout($identity->role);
 $this->assign('title', 'Measurement Details');
 
@@ -23,23 +30,14 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
 ?>
 
 <div class="px-4 pt-6">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Measurement Details</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                Recorded on <?= $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY') ?> at <?= $this->Time->format($patientMeasurement->measured_at, 'HH:mm') ?>
-            </p>
-        </div>
-        <div class="flex space-x-3">
-            <?= $this->Html->link(
-                __('Back'),
-                $this->getRequest()->referer() ?? ['controller' => 'Patients', 'action' => 'dashboard'],
-                [
-                    'class' => 'text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
-                ]
-            ) ?>
-        </div>
-    </div>
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
+    <?= $this->element('table/page_header', [
+        'title' => 'Measurement Details',
+        'description' => 'Recorded on' . $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY') . 'at' . $this->Time->format($patientMeasurement->measured_at, 'HH:mm'),
+        'showBack' => true,
+    ]) ?>
 
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div class="xl:col-span-2 space-y-6">

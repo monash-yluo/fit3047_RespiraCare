@@ -3,7 +3,15 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\SymptomLog $symptomLog
+ * @var $identity
  */
+
+// Breadcrumb
+$breadcrumbs = [
+    ['title' => 'Symptom Logs', 'url' => $identity->role == 'patient' ? ['action' => 'patient-index'] : ['action' => 'index']],
+    ['title' => '#' . $symptomLog->id, 'url' => null],
+];
+
 $this->setLayout($identity->role);
 $this->assign('title', 'Symptom Details');
 
@@ -45,6 +53,9 @@ $getSeverityProps = function ($severity) {
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <?= $this->element('table/page_header', [
         'title' => 'Symptom Details',
         'description' => 'Recorded on ' . $this->Time->format($symptomLog->logged_at, 'MMMM d, YYYY') . ' at ' . $this->Time->format($symptomLog->logged_at, 'HH:mm'),

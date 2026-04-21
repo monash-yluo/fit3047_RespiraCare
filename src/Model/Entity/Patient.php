@@ -27,6 +27,8 @@ use Cake\ORM\Entity;
  */
 class Patient extends Entity
 {
+    protected array $_virtual = ['full_name'];
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -52,4 +54,14 @@ class Patient extends Entity
         'patient_measurements' => true,
         'symptom_logs' => true,
     ];
+
+    /**
+     * Get Full name of the user
+     *
+     * @return string
+     */
+    protected function _getFullName(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
+    }
 }

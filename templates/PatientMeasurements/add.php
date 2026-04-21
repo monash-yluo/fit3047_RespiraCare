@@ -2,13 +2,21 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
+ * @var $identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Dashboard', 'url' => $identity->role == 'patient' ? ['controller' => 'Patients', 'action' => 'dashboard'] : $this->request->referer()],
+    ['title' => 'Add Measurement', 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Add New Measurement');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
 
     <?= $this->element('table/page_header', [
         'title' => 'Record Daily Health Data',
@@ -29,7 +37,7 @@ $this->assign('title', 'Add New Measurement');
                             'type' => 'datetime-local',
                             'label' => false,
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
-                            'default' => date('Y-m-d\TH:i')
+                            'default' => date('Y-m-d\TH:i'),
                         ]) ?>
                     </div>
 
@@ -38,7 +46,7 @@ $this->assign('title', 'Add New Measurement');
                         <?= $this->Form->number('temperature', [
                             'step' => '0.1',
                             'placeholder' => '36.6',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
 
@@ -46,7 +54,7 @@ $this->assign('title', 'Add New Measurement');
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Heart Rate (BPM)</label>
                         <?= $this->Form->number('heart_rate', [
                             'placeholder' => '75',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
 
@@ -54,7 +62,7 @@ $this->assign('title', 'Add New Measurement');
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Respiratory Rate (BPM)</label>
                         <?= $this->Form->number('respiratory_rate', [
                             'placeholder' => '18',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
 
@@ -63,12 +71,12 @@ $this->assign('title', 'Add New Measurement');
                         <div class="flex items-center space-x-4">
                             <?= $this->Form->number('blood_pressure_systolic', [
                                 'placeholder' => 'Systolic (High)',
-                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             ]) ?>
                             <span class="text-gray-900">/</span>
                             <?= $this->Form->number('blood_pressure_diastolic', [
                                 'placeholder' => 'Diastolic (Low)',
-                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             ]) ?>
                         </div>
                     </div>
@@ -77,7 +85,7 @@ $this->assign('title', 'Add New Measurement');
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Oxygen Saturation (SpO2 %)</label>
                         <?= $this->Form->number('spo2', [
                             'placeholder' => '98',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
 
@@ -86,7 +94,7 @@ $this->assign('title', 'Add New Measurement');
                         <?= $this->Form->number('peak_flow', [
                             'step' => '1',
                             'placeholder' => '400',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
                 </div>
@@ -102,7 +110,7 @@ $this->assign('title', 'Add New Measurement');
                         <?= $this->Form->textarea('notes', [
                             'rows' => 5,
                             'placeholder' => 'Add any notes or special instructions...',
-                            'class' => 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                            'class' => 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
                 </div>

@@ -6,8 +6,8 @@
  */
 
 $breadcrumbs = [
-    ['title' => 'Contact Messages', 'url' => ['controller' => 'ContactMessages', 'action' => 'index']],
-    ['title' => $contactMessage->id, 'url' => null],
+    ['title' => 'Contact Messages', 'url' => ['action' => 'index']],
+    ['title' => '#' . $contactMessage->id, 'url' => null],
 ];
 
 $this->setLayout($identity->role);
@@ -93,24 +93,28 @@ $this->assign('title', 'Contact Messages');
             </div>
 
             <div class="xl:col-span-2 flex flex-col space-y-4">
+                <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                    <h3 class="mb-4 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                        Message Body
+                    </h3>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-700 dark:border-gray-600">
+                        <p class="text-base font-normal text-gray-700 dark:text-gray-300 leading-relaxed"> <?= $this->Text->autoParagraph(h($contactMessage->message)) ?> </p>
+                    </div>
+                </div>
 
-                <?= $this->element('card', [
-                    'title' => 'Message Body',
-                    'body' => '<div class="p-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-700 dark:border-gray-600">
-                                   <p class="text-base font-normal text-gray-700 dark:text-gray-300 leading-relaxed">' . $this->Text->autoParagraph(h($contactMessage->message)) . '</p>
-                               </div>'
-                ]) ?>
-
-                <?= $this->element('card', [
-                    'title' => 'Notes',
-                    'body' => $this->Form->control('notes', [
+                <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                    <h3 class="mb-4 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                        Notes
+                    </h3>
+                    <?= $this->Form->control('notes', [
                         'type' => 'textarea',
                         'label' => false,
                         'placeholder' => 'Add staff notes here...',
                         'rows' => 4,
                         'class' => 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500',
-                    ])
-                ]) ?>
+                    ]);
+                    ?>
+                </div>
 
             </div>
         </div>

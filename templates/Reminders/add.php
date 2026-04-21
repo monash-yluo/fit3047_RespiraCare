@@ -3,13 +3,22 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Reminder $reminder
  * @var \Cake\Collection\CollectionInterface|string[] $receivers
+ * @var $identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Reminders', 'url' => ['action' => 'index']],
+    ['title' => 'Add Reminder', 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Add Reminder');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <?= $this->element('table/page_header', [
         'title' => 'Add Reminder',
         'description' => 'Create a new reminder for a specific recipient.',

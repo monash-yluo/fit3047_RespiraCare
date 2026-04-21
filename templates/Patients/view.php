@@ -3,6 +3,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Patient $patient
+ * @var $identity
  */
 
 $this->setLayout($identity->role);
@@ -14,9 +15,17 @@ if ($identity->role === 'admin') {
 } elseif ($identity->role === 'clinician') {
     $back_url = ['controller' => 'Patients', 'action' => 'clinicianIndex'];
 }
+
+$breadcrumbs = [
+    ['title' => 'Patients', 'url' => $back_url],
+    ['title' => '#' . $patient->id, 'url' => null],
+];
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <?= $this->element('table/page_header', [
         'title' => 'Patient Profile',
         'description' => 'View patient information, health measurements, and symptom history.',

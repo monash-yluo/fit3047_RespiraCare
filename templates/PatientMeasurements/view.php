@@ -3,7 +3,14 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
+ * @var $identity
  */
+
+$breadcrumbs = [
+    ['title' => 'Dashboard', 'url' => $identity->role == 'admin' ? ['controller' => 'Admins', 'action' => 'dashboard'] : ['controller' => 'Clinicians', 'action' => 'dashboard']],
+    ['title' => '#' . $patientMeasurement->id, 'url' => null],
+];
+
 $this->setLayout($identity->role);
 $this->assign('title', 'Measurement Details');
 
@@ -24,6 +31,9 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
+
     <?= $this->element('table/page_header', [
         'title' => 'Measurement Details',
         'description' => 'Recorded on ' . $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY') . ' at ' . $this->Time->format($patientMeasurement->measured_at, 'HH:mm'),

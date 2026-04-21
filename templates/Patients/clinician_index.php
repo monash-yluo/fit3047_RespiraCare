@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Patient> $myPatients
  * @var iterable<\App\Model\Entity\Patient> $allPatients
+ * @var $identity
  */
 
 $this->setLayout($identity->role);
@@ -19,7 +20,7 @@ $this->assign('title', 'Manage Patients');
     <!-- My Patients Section -->
     <div class="mb-8">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">My Patients</h2>
-        
+
         <?php $this->start('table_content'); ?>
         <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
@@ -115,14 +116,14 @@ $this->assign('title', 'Manage Patients');
         <?php $this->end(); ?>
 
         <?= $this->element('table/table_wrapper') ?>
-        
+
         <?= $this->element('table/pagination_footer', ['scope' => 'myPatients']) ?>
     </div>
 
     <!-- All Patients Section -->
     <div>
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">All Patients</h2>
-        
+
         <?php $this->start('table_content'); ?>
         <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
@@ -233,7 +234,7 @@ $this->assign('title', 'Manage Patients');
         <?php $this->end(); ?>
 
         <?= $this->element('table/table_wrapper') ?>
-        
+
         <?= $this->element('table/pagination_footer', ['scope' => 'allPatients']) ?>
     </div>
 

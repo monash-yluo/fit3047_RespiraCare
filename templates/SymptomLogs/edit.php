@@ -4,13 +4,22 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\SymptomLog $symptomLog
  * @var \Cake\Collection\CollectionInterface|string[] $symptomTypes
+ * @var $identity
  */
+
+// Breadcrumb
+$breadcrumbs = [
+    ['title' => 'Symptom Logs', 'url' => $identity->role == 'patient' ? ['action' => 'patient-index'] : ['action' => 'index']],
+    ['title' => 'Edit #' . $symptomLog->id, 'url' => null],
+];
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Edit Symptom');
 ?>
 
 <div class="px-4 pt-6">
+
+    <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
 
     <?= $this->element('table/page_header', [
         'title' => 'Edit Respiratory Symptoms',
