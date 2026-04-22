@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\SymptomLog $symptomLog
@@ -15,8 +16,8 @@ $this->setLayout($identity->role);
 $this->assign('title', 'Symptom Details');
 
 // 严重程度映射 (1-5 分级)
-$getSeverityProps = function($severity) {
-    return match((int)$severity) {
+$getSeverityProps = function ($severity) {
+    return match ((int)$severity) {
         1 => [
             'label' => 'Very Mild',
             'class' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
@@ -105,13 +106,13 @@ $getSeverityProps = function($severity) {
                             <div class="w-24">
                                 <div class="flex gap-0.5">
                                     <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <div class="h-2 flex-1 rounded-full <?= $i <= $symptomLog->severity ? match($symptomLog->severity) {
-                                            1, 2 => 'bg-green-400 dark:bg-green-500',
-                                            3 => 'bg-yellow-400 dark:bg-yellow-500',
-                                            4 => 'bg-orange-400 dark:bg-orange-500',
-                                            5 => 'bg-red-500 dark:bg-red-600',
-                                            default => 'bg-gray-300'
-                                        } : 'bg-gray-200 dark:bg-gray-700' ?>"></div>
+                                        <div class="h-2 flex-1 rounded-full <?= $i <= $symptomLog->severity ? match ($symptomLog->severity) {
+                                                                                1, 2 => 'bg-green-400 dark:bg-green-500',
+                                                                                3 => 'bg-yellow-400 dark:bg-yellow-500',
+                                                                                4 => 'bg-orange-400 dark:bg-orange-500',
+                                                                                5 => 'bg-red-500 dark:bg-red-600',
+                                                                                default => 'bg-gray-300'
+                                                                            } : 'bg-gray-200 dark:bg-gray-700' ?>"></div>
                                     <?php endfor; ?>
                                 </div>
                             </div>
@@ -162,11 +163,11 @@ $getSeverityProps = function($severity) {
                     </div>
                 </div>
 
-                <?= $this->Form->postLink(
-                    '<svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>Delete',
-                    ['action' => 'delete', $symptomLog->id],
-                    ['escape' => false, 'confirm' => __('Are you sure you want to delete this record? This action cannot be undone.'), 'class' => 'block w-full text-center px-4 py-2 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 transition-colors']
-                ) ?>
+                <hr class="my-6 border-gray-100 dark:border-gray-700">
+                <div class="flex flex-col space-y-3">
+                    <?= $this->element('button/blue_button', ['label' => 'Edit', 'url' => ['action' => 'edit', $symptomLog->id], 'iconType' => 'edit']) ?>
+                    <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $symptomLog->id], 'confirm' => __('Are you sure you want to delete this symptom log?'), 'iconType' => 'delete']) ?>
+                </div>
             </div>
         </div>
     </div>

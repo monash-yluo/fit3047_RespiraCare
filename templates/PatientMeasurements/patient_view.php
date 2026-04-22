@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PatientMeasurement $patientMeasurement
@@ -23,7 +24,7 @@ $ranges = [
 ];
 
 // 辅助函数：判断是否在正常范围内
-$isNormal = function($value, $rangeKey) use ($ranges) {
+$isNormal = function ($value, $rangeKey) use ($ranges) {
     if ($value === null || !isset($ranges[$rangeKey])) return true;
     return $value >= $ranges[$rangeKey]['min'] && $value <= $ranges[$rangeKey]['max'];
 };
@@ -50,9 +51,9 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
                     <div class="p-4 rounded-xl border <?= $normal ? 'border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30' : 'border-red-200 bg-red-50 dark:bg-red-900/20' ?>">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Temperature</p>
                         <div class="flex items-baseline justify-between">
-            <span class="text-3xl font-bold <?= $normal ? 'text-gray-900 dark:text-white' : 'text-red-600' ?>">
-                <?= $patientMeasurement->temperature !== null ? h($patientMeasurement->temperature) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">°C</span>
-            </span>
+                            <span class="text-3xl font-bold <?= $normal ? 'text-gray-900 dark:text-white' : 'text-red-600' ?>">
+                                <?= $patientMeasurement->temperature !== null ? h($patientMeasurement->temperature) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">°C</span>
+                            </span>
                             <span class="text-xs text-gray-400">Ref: 36.1 - 37.2</span>
                         </div>
                     </div>
@@ -60,9 +61,9 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
                     <div class="p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Heart Rate</p>
                         <div class="flex items-baseline justify-between">
-            <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                <?= $patientMeasurement->heart_rate !== null ? h($patientMeasurement->heart_rate) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">bpm</span>
-            </span>
+                            <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                                <?= $patientMeasurement->heart_rate !== null ? h($patientMeasurement->heart_rate) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">bpm</span>
+                            </span>
                             <span class="text-xs text-gray-400">Ref: 60 - 100</span>
                         </div>
                     </div>
@@ -70,9 +71,9 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
                     <div class="p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Respiratory Rate</p>
                         <div class="flex items-baseline justify-between">
-            <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                <?= $patientMeasurement->respiratory_rate !== null ? h($patientMeasurement->respiratory_rate) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">bpm</span>
-            </span>
+                            <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                                <?= $patientMeasurement->respiratory_rate !== null ? h($patientMeasurement->respiratory_rate) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">bpm</span>
+                            </span>
                             <span class="text-xs text-gray-400">Ref: 12 - 20</span>
                         </div>
                     </div>
@@ -96,9 +97,9 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
                     <div class="p-4 rounded-xl border <?= $normal ? 'border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30' : 'border-orange-200 bg-orange-50 dark:bg-orange-900/20' ?>">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Oxygen Saturation (SpO2)</p>
                         <div class="flex items-baseline justify-between">
-            <span class="text-3xl font-bold <?= $normal ? 'text-gray-900 dark:text-white' : 'text-orange-600' ?>">
-                <?= $patientMeasurement->spo2 !== null ? h($patientMeasurement->spo2) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">%</span>
-            </span>
+                            <span class="text-3xl font-bold <?= $normal ? 'text-gray-900 dark:text-white' : 'text-orange-600' ?>">
+                                <?= $patientMeasurement->spo2 !== null ? h($patientMeasurement->spo2) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">%</span>
+                            </span>
                             <span class="text-xs text-gray-400">Ref: > 95%</span>
                         </div>
                     </div>
@@ -106,9 +107,9 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
                     <div class="p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Peak Flow</p>
                         <div class="flex items-baseline justify-between">
-            <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                <?= $patientMeasurement->peak_flow !== null ? h($patientMeasurement->peak_flow) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">L/min</span>
-            </span>
+                            <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                                <?= $patientMeasurement->peak_flow !== null ? h($patientMeasurement->peak_flow) : 'N/A' ?><span class="ml-1 text-sm font-normal text-gray-500">L/min</span>
+                            </span>
                             <span class="text-xs text-gray-400">Ref: 400 - 600</span>
                         </div>
                     </div>
@@ -143,6 +144,12 @@ $isNormal = function($value, $rangeKey) use ($ranges) {
                         <span class="text-gray-500 dark:text-gray-400">Last Modified</span>
                         <span class="text-gray-900 dark:text-white"><?= $this->Time->format($patientMeasurement->modified, 'yyyy-MM-dd HH:mm') ?></span>
                     </div>
+                </div>
+
+                <hr class="my-6 border-gray-100 dark:border-gray-700">
+                <div class="flex flex-col space-y-3">
+                    <?= $this->element('button/blue_button', ['label' => 'Edit', 'url' => ['action' => 'edit', $patientMeasurement->id], 'iconType' => 'edit']) ?>
+                    <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $patientMeasurement->id], 'confirm' => __('Are you sure you want to delete this measurement?'), 'iconType' => 'delete']) ?>
                 </div>
             </div>
         </div>

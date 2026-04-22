@@ -178,3 +178,7 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
                         <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $patientMeasurement->id], 'confirm' => __('Are you sure you want to delete this measurement?'), 'iconType' => 'delete']) ?>
                     </div>
                 <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
