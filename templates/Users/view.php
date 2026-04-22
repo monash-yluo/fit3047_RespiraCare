@@ -44,8 +44,13 @@ $this->assign('title', 'User Profile');
             <div class="flex items-start justify-between gap-4">
                 <div class="flex-shrink-0">
                     <?php if ($user->image_path): ?>
-                        <img src="<?= h($user->image_path) ?>" alt="User Avatar" class="w-24 h-24 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display:none;">
+                        <?= $this->Html->image('users/' . $user->image_path, [
+                            'alt' => h($user->first_name . ' ' . $user->last_name),
+                            'class' => 'w-24 h-24 rounded-full shadow-sm',
+                            'style' => 'object-fit: cover;',
+                            'onerror' => "this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        ]) ?>
+                        <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display: none">
                             <svg class="w-12 h-12 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                             </svg>
@@ -140,7 +145,17 @@ $this->assign('title', 'User Profile');
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-normal">Assigned Clinician</p>
                         <p class="text-sm font-bold text-gray-900 dark:text-white mt-1">
-                            <?= h($user->patient->clinician->user->first_name . ' ' . $user->patient->clinician->user->last_name) ?>
+                            <?php
+                            $clinicianName = h($user->patient->clinician->user->full_name);
+                            // Check if role is admin or clinician
+                            if (in_array($identity->role, ['admin', 'clinician'])): ?>
+                                <?= $this->Html->link($clinicianName,
+                                    ['controller' => 'Users', 'action' => 'view', $user->patient->clinician->user->id],
+                                    ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
+                                ) ?>
+                            <?php else: ?>
+                                <?= $clinicianName ?>
+                            <?php endif; ?>
                         </p>
                     </div>
                 </div>

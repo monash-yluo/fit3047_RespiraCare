@@ -87,6 +87,7 @@ CREATE TABLE `clinicians`
 (
     `id`       int(11) NOT NULL,
     `user_id`  int(11) NOT NULL,
+    `description`  text DEFAULT NULL,
     `created`  datetime DEFAULT NULL,
     `modified` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
@@ -95,9 +96,10 @@ CREATE TABLE `clinicians`
 -- Dumping data for table `clinicians`
 --
 
-INSERT INTO `clinicians` (`id`, `user_id`, `created`, `modified`)
-VALUES (1, 2, '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-       (2, 3, '2026-03-21 15:02:11', '2026-03-21 15:02:11');
+INSERT INTO `clinicians` (`id`, `user_id`, `description`, `created`, `modified`)
+VALUES (1, 2, 'Specializing in chronic lung disease and proactive remote patient monitoring.', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+       (2, 3, 'Dedicated to improving patient outcomes through continuous virtual care.', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+       (3, 7, 'Focused on patient education, symptom relief, and personalised treatment plans.', '2026-03-21 15:02:11', '2026-03-21 15:02:11');
 
 -- --------------------------------------------------------
 
@@ -364,10 +366,10 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `role
 VALUES (1, 'System', 'Admin', 'admin@respiracare.com', '$2y$12$mlxnLgkk5BS17ul4Zf0F/ehGibeodl1clHH7aMu.tkNzMN8GbBpZW',
         'admin', '/img/admin.jpg', '+61 401 550 100', '2026-03-21 15:02:11', '2026-03-25 07:09:20'),
        (2, 'Alice', 'Smith', 'alice.clinician@respiracare.com',
-        '$2y$12$aV7kNHrDDpo6KHfFk60xSe.jT3PMyG0tG2P5qd7Uc/uOGiVhWbY4.', 'clinician', '/img/alice.jpg', '+61 402 550 201', '2026-03-21 15:02:11',
+        '$2y$12$aV7kNHrDDpo6KHfFk60xSe.jT3PMyG0tG2P5qd7Uc/uOGiVhWbY4.', 'clinician', 'sarah_jenkins.jpg', '+61 402 550 201', '2026-03-21 15:02:11',
         '2026-03-21 07:06:18'),
-       (3, 'Bob', 'Jones', 'bob.clinician@respiracare.com',
-        '$2y$12$LYk3Ruf6E/TQBF9X0WAVIe0dtXc5hG4ScUPuS1UoBnAN3HV3avVBS', 'clinician', '/img/bob.jpg', '+61 403 550 202', '2026-03-21 15:02:11',
+       (3, 'Emily', 'Rostova', 'emily.clinician@respiracare.com',
+        '$2y$12$LYk3Ruf6E/TQBF9X0WAVIe0dtXc5hG4ScUPuS1UoBnAN3HV3avVBS', 'clinician', 'emily_rostova.jpg', '+61 403 550 202', '2026-03-21 15:02:11',
         '2026-03-21 07:06:26'),
        (4, 'John', 'Doe', 'john.patient@example.com', '$2y$12$e93jRs2CLEXx04rOdkReHeHupteYNcGM2X9V9wqi7tHUTdwL0aCu2',
         'patient', '/img/john.jpg', '+61 404 550 101', '2026-03-21 15:02:11', '2026-03-21 07:06:36'),
@@ -375,7 +377,10 @@ VALUES (1, 'System', 'Admin', 'admin@respiracare.com', '$2y$12$mlxnLgkk5BS17ul4Z
         'patient', '/img/jane.jpg', '+61 405 550 102', '2026-03-21 15:02:11', '2026-03-21 07:06:43'),
        (6, 'Charlie', 'Brown', 'charlie.patient@example.com',
         '$2y$12$IXRC5eBFM2ZzeC2jj1SpyOkiyHEUm5tEZz9827kiqfGux38Yagvau', 'patient', '/img/charlie.jpg', '+61 406 550 103', '2026-03-21 15:02:11',
-        '2026-03-21 07:06:50');
+        '2026-03-21 07:06:50'),
+       (7, 'Marcus', 'Johnson', 'marcus.clinician@respiracare.com',
+        '$2y$12$LYk3Ruf6E/TQBF9X0WAVIe0dtXc5hG4ScUPuS1UoBnAN3HV3avVBS', 'clinician', 'marcus_johnson.jpg', '+61 403 555 202', '2026-03-21 15:02:11',
+        '2026-03-21 07:06:26');
 
 --
 -- Indexes for dumped tables

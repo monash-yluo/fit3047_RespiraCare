@@ -124,12 +124,21 @@ $this->assign('title', 'Respira Care');
                 <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="<?= h($doc['delay']) ?>">
                     <div class="card h-100 text-center px-4 py-5 border-0 shadow text-dark rounded-3 lh-lg">
 
-                        <?= $this->Html->image($doc['image_url'], [
-                            'class' => 'image-loading-placeholder rounded-circle mx-auto mb-4 shadow-sm',
-                            'loading' => 'lazy',
-                            'alt' => $doc['name'],
-                            'style' => 'width: 120px; height: 120px; object-fit: cover;',
-                        ]) ?>
+                        <?php if (!empty($doc['image_url'])): ?>
+                            <?= $this->Html->image('users/' . $doc['image_url'], [
+                                'class' => 'image-loading-placeholder rounded-circle mx-auto mb-4 shadow-sm',
+                                'loading' => 'lazy',
+                                'alt' => $doc['name'],
+                                'style' => 'width: 120px; height: 120px; object-fit: cover;',
+                            ]) ?>
+                        <?php else: ?>
+                            <div class="mx-auto mb-4 shadow-sm rounded-circle bg-light d-flex align-items-center justify-content-center border"
+                                 style="width: 120px; height: 120px;">
+                                <svg class="text-secondary" style="width: 3rem; height: 3rem;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        <?php endif; ?>
 
                         <h5 class="fw-bold text-muted mb-1"><?= h($doc['name']) ?></h5>
                         <p class="small text-muted mb-0"><?= h($doc['desc']) ?></p>

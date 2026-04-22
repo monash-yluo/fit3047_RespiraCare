@@ -66,6 +66,23 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
 
+        if ($this->request->is('get') && !$this->request->is('ajax')) {
+            $session = $this->request->getSession();
+            $history = $session->read('User.History', []);
+            $currentUrl = $this->request->getRequestTarget();
+
+            // Prevent recording the exact same page twice in a row (e.g., manual refreshes)
+            if (end($history) !== $currentUrl) {
+                $history[] = $currentUrl;
+
+                // Keep the last 10 pages in memory
+                if (count($history) > 10) {
+                    array_shift($history);
+                }
+                $session->write('User.History', $history);
+            }
+        }
+
         $identity = $this->Authentication->getIdentity();
         $reminders = null;
 

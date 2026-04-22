@@ -30,6 +30,7 @@ class Clinician extends Entity
      */
     protected array $_accessible = [
         'user_id' => true,
+        'description' => true,
         'created' => true,
         'modified' => true,
         'user' => true,

@@ -40,7 +40,7 @@ $breadcrumbs = [
                 <div>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <?php if ($patient->hasValue('user')) : ?>
-                            <?= h($patient->user->first_name . ' ' . $patient->user->last_name) ?>
+                            <?= h($patient->user->full_name) ?>
                         <?php else : ?>
                             <span class="text-gray-400">Unknown Patient</span>
                         <?php endif; ?>

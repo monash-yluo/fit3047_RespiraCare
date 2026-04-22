@@ -74,6 +74,10 @@ class CliniciansTable extends Table
             ->notEmptyString('user_id')
             ->add('user_id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
+        $validator
+            ->scalar('description')
+            ->allowEmptyString('description');
+
         return $validator;
     }
 

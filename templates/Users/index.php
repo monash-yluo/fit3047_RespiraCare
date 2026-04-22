@@ -76,7 +76,12 @@ $this->assign('title', 'Manage Users');
 
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
                         <?php if ($user->image_path): ?>
-                            <img src="<?= h($user->image_path) ?>" alt="User Image" class="w-8 h-8 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <?= $this->Html->image('users/' . $user->image_path, [
+                                'alt' => h($user->first_name . ' ' . $user->last_name . 'Image'),
+                                'class' => 'w-8 h-8 rounded-full shadow-sm',
+                                'style' => 'object-fit: cover;',
+                                'onerror' => "this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            ]) ?>
                             <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display:none;">
                                 <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>

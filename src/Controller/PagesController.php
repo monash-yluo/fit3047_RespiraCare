@@ -91,29 +91,28 @@ class PagesController extends AppController
      */
     public function home(): void
     {
-        $specialists = [
-            [
-                // https://www.pexels.com/zh-cn/photo/5998474/
-                'name' => 'Dr. Sarah Jenkins',
-                'desc' => 'Specializing in chronic lung disease and proactive remote patient monitoring.',
-                'image_url' => 'sarah_jenkins.jpg',
-                'delay' => '100',
-            ],
-            [
-                // https://www.pexels.com/zh-cn/photo/6234600/
-                'name' => 'Dr. Marcus Johnson',
-                'desc' => 'Dedicated to improving patient outcomes through continuous virtual care.',
-                'image_url' => 'marcus_johnson.jpg',
-                'delay' => '200',
-            ],
-            [
-                // https://www.pexels.com/zh-cn/photo/5215024/
-                'name' => 'Dr. Emily Rostova',
-                'desc' => 'Focused on patient education, symptom relief, and personalised treatment plans.',
-                'image_url' => 'emily_rostova.jpg',
-                'delay' => '300',
-            ],
-        ];
+        $cliniciansQuery = $this->fetchTable('Clinicians')->find()
+            ->contain(['Users'])
+            ->select([
+                'Clinicians.description',
+                'Clinicians.created',
+                'Users.first_name',
+                'Users.last_name',
+                'Users.image_path',
+            ])
+            ->orderBy(['Clinicians.created' => 'ASC'])
+            ->limit(3)
+            ->all();
+
+        $specialists = [];
+        foreach ($cliniciansQuery as $index => $clinician) {
+            $specialists[] = [
+                'name' => 'Dr. ' . $clinician->user->full_name,
+                'desc' => $clinician->description,
+                'image_url' => $clinician->user->image_path ?? null,
+                'delay' => ($index + 1) * 100,
+            ];
+        }
 
         $copdSteps = [
             [
