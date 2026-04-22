@@ -83,11 +83,12 @@ $breadcrumbs = [
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-normal">Assigned Clinician</p>
                     <?php if ($patient->hasValue('clinician')) : ?>
                         <p class="text-sm font-bold text-gray-900 dark:text-white mt-1">
-                            <?= $this->Html->link(
+                            <?=  h($patient->clinician->user->full_name)
+                            /* $this->Html->link(
                                 h($patient->clinician->user->first_name . ' ' . $patient->clinician->user->last_name),
                                 ['controller' => 'Clinicians', 'action' => 'view', $patient->clinician->id],
                                 ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
-                            ) ?>
+                            ) */ ?>
                         </p>
                     <?php else : ?>
                         <p class="text-sm text-gray-400 italic mt-1">Not assigned</p>
@@ -264,7 +265,7 @@ $breadcrumbs = [
         </tbody>
         <?php $this->end(); ?>
 
-        <?= $this->element('table/table_wrapper') ?>
+        <?= $this->element('table/table_wrapper', ['search' => false]) ?>
     </div>
 
     <!-- Symptom Logs Section -->
@@ -396,7 +397,7 @@ $breadcrumbs = [
         </tbody>
         <?php $this->end(); ?>
 
-        <?= $this->element('table/table_wrapper') ?>
+        <?= $this->element('table/table_wrapper', ['search' => false]) ?>
     </div>
 
 </div>

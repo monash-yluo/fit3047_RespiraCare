@@ -36,6 +36,22 @@ class UsersController extends AppController
         $this->checkRole(['admin']);
 
         $query = $this->Users->find();
+
+        // 1. Get the search term from the URL
+        $search = $this->request->getQuery('search');
+
+        // 2. If a search term exists, apply the WHERE conditions
+        if (!empty($search)) {
+            $query->where([
+                'OR' => [
+                    'Users.first_name LIKE' => "%" . $search . "%",
+                    'Users.last_name LIKE' => "%" . $search . "%",
+                    'Users.phone LIKE' => "%" . $search . "%",
+                    'Users.email LIKE' => "%" . $search . "%",
+                ]
+            ]);
+        }
+
         $users = $this->paginate($query);
 
         $this->set(compact('users'));

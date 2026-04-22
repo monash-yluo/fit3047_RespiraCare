@@ -22,6 +22,7 @@ $this->assign('title', 'Manage Patients');
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">My Patients</h2>
 
         <?php $this->start('table_content'); ?>
+
         <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
             <th scope="col" class="p-4 w-4">
@@ -75,7 +76,7 @@ $this->assign('title', 'Manage Patients');
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                         <?php if ($patient->hasValue('user')) : ?>
                             <?= $this->Html->link(
-                                h($patient->user->first_name . ' ' . $patient->user->last_name),
+                                h($patient->user->full_name),
                                 ['action' => 'view', $patient->id],
                                 ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                             ) ?>
@@ -115,7 +116,7 @@ $this->assign('title', 'Manage Patients');
         </tbody>
         <?php $this->end(); ?>
 
-        <?= $this->element('table/table_wrapper') ?>
+        <?= $this->element('table/table_wrapper', ['search' => false]) ?>
 
         <?= $this->element('table/pagination_footer', ['scope' => 'myPatients']) ?>
     </div>
@@ -181,7 +182,7 @@ $this->assign('title', 'Manage Patients');
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                         <?php if ($patient->hasValue('user')) : ?>
                             <?= $this->Html->link(
-                                h($patient->user->first_name . ' ' . $patient->user->last_name),
+                                h($patient->user->full_name),
                                 ['action' => 'view', $patient->id],
                                 ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
                             ) ?>
@@ -192,11 +193,7 @@ $this->assign('title', 'Manage Patients');
 
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
                         <?php if ($patient->hasValue('clinician')) : ?>
-                            <?= $this->Html->link(
-                                h($patient->clinician->user->first_name . ' ' . $patient->clinician->user->last_name),
-                                ['controller' => 'Clinicians', 'action' => 'view', $patient->clinician->id],
-                                ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
-                            ) ?>
+                            <?= h($patient->clinician->user->full_name) ?>
                         <?php else : ?>
                             <span class="text-gray-400 italic">Unassigned</span>
                         <?php endif; ?>

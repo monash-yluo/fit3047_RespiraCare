@@ -38,8 +38,20 @@ class ContactMessagesController extends AppController
         $query = $this->ContactMessages->find()
             ->contain(['Patients']);
 
-        $query = $this->ContactMessages->find()
-            ->contain(['Patients']);
+        // 1. Get the search term from the URL
+        $search = $this->request->getQuery('search');
+
+        // 2. If a search term exists, apply the WHERE conditions
+        if (!empty($search)) {
+            $query->where([
+                'OR' => [
+                    'first_name LIKE' => '%' . $search . '%',
+                    'last_name LIKE' => '%' . $search . '%',
+                    'email LIKE' => '%' . $search . '%',
+                ],
+            ]);
+        }
+
         $contactMessages = $this->paginate($query);
 
         $this->set(compact('contactMessages'));

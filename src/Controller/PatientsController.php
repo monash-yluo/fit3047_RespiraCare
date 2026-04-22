@@ -21,8 +21,21 @@ class PatientsController extends AppController
     {
         $this->checkRole(['admin']);
 
+        $search = $this->request->getQuery('search');
         $query = $this->Patients->find()
             ->contain(['Users', 'Clinicians.Users']);
+
+        if (!empty($search)) {
+            $query->where([
+                'OR' => [
+                    'Users.first_name LIKE' => '%' . $search . '%',
+                    'Users.last_name LIKE' => '%' . $search . '%',
+                    'Users.email LIKE' => '%' . $search . '%',
+                    'Users.phone LIKE' => '%' . $search . '%',
+                ],
+            ]);
+        }
+
         $patients = $this->paginate($query);
 
         $this->set(compact('patients'));
@@ -70,21 +83,31 @@ class PatientsController extends AppController
         $identity = $this->request->getAttribute('identity');
         $this->checkRole(['clinician']);
 
+        $search = $this->request->getQuery('search');
         $clinicianId = $this->getClinicianId();
 
         if ($clinicianId) {
-            // Get own patients
             $myPatientsQuery = $this->Patients->find()
-                ->where(['clinician_id' => $clinicianId])
+                ->where(['Patients.clinician_id' => $clinicianId])
                 ->contain(['Users', 'Clinicians.Users']);
-            $myPatients = $this->paginate($myPatientsQuery, ['scope' => 'myPatients']);
 
-            // Get all patients
             $allPatientsQuery = $this->Patients->find()
                 ->contain(['Users', 'Clinicians.Users']);
-            $allPatients = $this->paginate($allPatientsQuery, ['scope' => 'allPatients']);
 
-            $this->set(compact('myPatients', 'allPatients'));
+            if (!empty($search)) {
+                $allPatientsQuery->where([
+                    'OR' => [
+                        'Users.first_name LIKE' => '%' . $search . '%',
+                        'Users.last_name LIKE' => '%' . $search . '%',
+                        'Users.phone LIKE' => '%' . $search . '%',
+                    ],
+                ]);
+            }
+
+            $myPatients = $this->paginate($myPatientsQuery);
+            $allPatients = $this->paginate($allPatientsQuery);
+
+            $this->set(compact('myPatients', 'allPatients', 'search'));
         }
     }
 
@@ -115,6 +138,7 @@ class PatientsController extends AppController
         // 安全检查：如果该用户没有关联的病人资料
         if (!$patient) {
             $this->Flash->error(__('Patient profile not found.'));
+
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 

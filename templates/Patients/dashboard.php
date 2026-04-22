@@ -227,7 +227,7 @@ $this->assign('title', 'Dashboard Overview');
 
     <?php $this->end(); ?>
 
-    <?= $this->element('table/table_wrapper') ?>
+    <?= $this->element('table/table_wrapper', ['search' => false]) ?>
 
     <?= $this->element('table/pagination_footer') ?>
 

@@ -21,18 +21,38 @@ $this->assign('title', 'Dashboard Overview');
     ]) ?>
 
     <!-- KPI Cards -->
-    <div class="grid w-full grid-cols-1 gap-4 mb-6 xl:grid-cols-2 2xl:grid-cols-3">
-        <div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+    <div class="grid w-full grid-cols-1 gap-4 mb-6 sm:grid-cols-2 2xl:grid-cols-3">
+
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <div class="w-full">
                 <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">Total Patients</h3>
                 <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">
                     <?= $patientCount ?? 0 ?>
                 </span>
-                <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400 mt-2">
-                    <span class="text-sm text-gray-400">Patients assigned to you</span>
-                </p>
+                <p class="mt-2 text-sm text-gray-400">Patients assigned to you</p>
             </div>
         </div>
+
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            <div class="w-full">
+                <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">Notifications</h3>
+                <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">
+                    <?= $reminderCount ?? 0 ?>
+                </span>
+                <p class="mt-2 text-sm text-gray-400">Total reminders received</p>
+            </div>
+        </div>
+
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            <div class="w-full">
+                <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">Urgent Attention</h3>
+                <span class="text-2xl font-bold leading-none text-red-600 sm:text-3xl dark:text-red-500">
+                    <?= $urgentPatientCount ?? 0 ?>
+                </span>
+                <p class="mt-2 text-sm text-gray-400">Patients with high-risk readings</p>
+            </div>
+        </div>
+
     </div>
 
     <!-- Patients Table -->

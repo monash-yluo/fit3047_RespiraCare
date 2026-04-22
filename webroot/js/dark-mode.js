@@ -64,3 +64,90 @@ if (preloader) {
         });
     }
 }
+
+/**
+ * Auto SearchingBar
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    let searchTimeout;
+    const searchInput = document.getElementById('simple-search');
+    const searchForm = document.getElementById('search-form');
+
+    if (searchInput && searchForm) {
+        // Move cursor to the end of the text on load (UX improvement for auto-searches)
+        const val = searchInput.value;
+        searchInput.focus();
+        searchInput.value = '';
+        searchInput.value = val;
+
+        // Listen for user typing
+        searchInput.addEventListener('input', function() {
+            // Clear the existing timer if they type again
+            clearTimeout(searchTimeout);
+
+            // Set a new timer for 2 seconds (2000 milliseconds)
+            searchTimeout = setTimeout(function() {
+                searchForm.submit();
+            }, 1500);
+        });
+    }
+});
+
+/**
+ * Global Search
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('topbar-search');
+    const dropdown = document.getElementById('search-dropdown');
+    const searchItems = document.querySelectorAll('.search-item');
+
+    const handleSearch = () => {
+        const filter = searchInput.value.toLowerCase();
+        let visibleCount = 0;
+
+
+        if (filter.length <= 0) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+
+        searchItems.forEach(item => {
+            const label = item.getAttribute('data-label');
+            if (label.includes(filter)) {
+                item.style.display = 'block';
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        if (visibleCount > 0) {
+            dropdown.classList.remove('hidden');
+        } else {
+            dropdown.classList.add('hidden');
+        }
+    };
+
+
+    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('focus', handleSearch);
+
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !dropdown.classList.contains('hidden')) {
+
+            const firstVisible = Array.from(searchItems).find(i => i.style.display !== 'none');
+            if (firstVisible) {
+                e.preventDefault();
+                firstVisible.querySelector('a').click();
+            }
+        }
+    });
+});

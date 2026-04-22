@@ -88,7 +88,7 @@ class SymptomLogsController extends AppController
     public function delete(?string $id = null)
     {
         $this->checkRole(['admin', 'patient']);
-        
+
         $identity = $this->Authentication->getIdentity();
 
         # 权限检查：如果是患者，确保只能删除自己的日志 / Permission check: if patient, ensure they can only delete their own logs

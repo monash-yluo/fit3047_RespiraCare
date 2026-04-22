@@ -1,4 +1,5 @@
 <?php
+/** @var \App\Model\Entity\User $identity */
 
 $clinicianMenu = [
     ['label' => 'Dashboard', 'url' => ['controller' => 'Clinicians', 'action' => 'dashboard']],
@@ -6,4 +7,13 @@ $clinicianMenu = [
     // ['label' => 'Settings', 'url' => ['controller' => 'Users', 'action' => 'edit', $identity->id]],
 ];
 
-echo $this->element('base/navbar', ['menuItems' => $clinicianMenu]);
+$searchableMenu = [
+    ['label' => 'Dashboard', 'url' => ['controller' => 'Clinicians', 'action' => 'dashboard']],
+    ['label' => 'Patients', 'url' => ['controller' => 'Patients', 'action' => 'clinicianIndex']],
+    ['label' => 'Resources', 'url' => /*['controller' => 'Resources', 'action' => 'index']*/ ['controller' => 'Clinicians', 'action' => 'dashboard']],
+    ['label' => 'Reminders', 'url' => ['controller' => 'Reminders', 'action' => 'index']],
+    ['label' => 'My Profile', 'url' => ['controller' => 'Users', 'action' => 'view', $identity->id]],
+    ['label' => 'Logout', 'url' => ['controller' => 'Users', 'action' => 'logout']],
+];
+
+echo $this->element('base/navbar', ['menuItems' => $clinicianMenu, 'searchableLinks' => $searchableMenu]);

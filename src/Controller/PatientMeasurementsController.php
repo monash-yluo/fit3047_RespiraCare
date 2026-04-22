@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Exception\NotFoundException;
+
 /**
  * PatientMeasurements Controller
  *
@@ -18,6 +20,8 @@ class PatientMeasurementsController extends AppController
     public function index()
     {
         $this->checkRole(['admin', 'clinician']);
+        // TEMP
+        throw new NotFoundException('Page not found');
 
         $query = $this->PatientMeasurements->find()
             ->contain(['Patients']);
@@ -57,6 +61,7 @@ class PatientMeasurementsController extends AppController
             $patientMeasurement = $this->PatientMeasurements->get($id);
             if ($patientMeasurement->patient_id !== $this->getPatientId()) {
                 $this->Flash->error(__('You are not authorized to edit this record.'));
+
                 return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
             }
         }
@@ -91,6 +96,7 @@ class PatientMeasurementsController extends AppController
             $patientMeasurement = $this->PatientMeasurements->get($id);
             if ($patientMeasurement->patient_id !== $this->getPatientId()) {
                 $this->Flash->error(__('You are not authorized to delete this record.'));
+
                 return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
             }
         }
@@ -129,25 +135,27 @@ class PatientMeasurementsController extends AppController
             if ($identity->role === 'admin') {
                 return $this->redirect(['controller' => 'Patients', 'action' => 'view', $patientId]);
             } else {
-                return $this->redirect(['controller' => 'PatientsPortals', 'action' => 'dashboard']);
+                return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
             }
         }
 
         if ($this->request->is('post')) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
-            $patientMeasurement->patient_id = $actualPatientId;
+            $patientMeasurement->set('patient_id', $actualPatientId);
 
-            if ($this->PatientMeasurements->save($patientMeasurement)) {
+            if ($patientMeasurement->measured_at && $patientMeasurement->measured_at->isFuture()) {
+                $this->Flash->error(__('The measurement date and time cannot be in the future.'));
+            } elseif ($this->PatientMeasurements->save($patientMeasurement)) {
                 $this->Flash->success(__('The measurement data has been successfully saved.'));
 
-                $this->Flash->error(__('Patient profile not found.'));
                 if ($identity->role === 'admin') {
-                    return $this->redirect(['controller' => 'Patients', 'action' => 'view', $patientId]);
+                    return $this->redirect(['controller' => 'Patients', 'action' => 'view', $actualPatientId]);
                 } else {
-                    return $this->redirect(['controller' => 'PatientsPortals', 'action' => 'dashboard']);
+                    return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
                 }
+            } else {
+                $this->Flash->error(__('Failed to save. Please try again.'));
             }
-            $this->Flash->error(__('Failed to save. Please try again.'));
         }
 
         $this->set(compact('patientMeasurement', 'patientId'));
@@ -173,6 +181,7 @@ class PatientMeasurementsController extends AppController
         // 如果查询结果为空，或者关联的 Patient 没查到（说明 user_id 不匹配）
         if (!$patientMeasurement || !$patientMeasurement->patient) {
             $this->Flash->error(__('You are not authorized to view this record.'));
+
             return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
         }
 

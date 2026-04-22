@@ -20,12 +20,12 @@ $navItems = [
     ],
     [
         'title' => 'Resources',
-        'link' => $this->Url->build(['controller' => 'Resources', 'action' => 'index']),
+        'link' => /*$this->Url->build(['controller' => 'Resources', 'action' => 'index'])*/ null,
         'svg' => '<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z" clip-rule="evenodd"/></svg>'
     ],
     [
         'title' => 'Booking',
-        'link' => $this->Url->build(['controller' => 'Bookings', 'action' => 'add']),
+        'link' => /*$this->Url->build(['controller' => 'Bookings', 'action' => 'add'])*/ null,
         'svg' => '<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>'
     ],
     [
