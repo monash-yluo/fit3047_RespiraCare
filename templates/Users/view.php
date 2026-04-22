@@ -10,6 +10,19 @@ $breadcrumbs = [
     ['title' => 'Users', 'url' => ['action' => 'index']],
     ['title' => '#' . $user->id, 'url' => null],
 ];
+if ($identity->role === 'patient') {
+    $breadcrumbs = [
+        ['title' => 'Dashboard', 'url' => ['action' => 'dashboard', 'controller' => 'Patients']],
+        ['title' => '#' . $user->id, 'url' => null]
+    ];
+}
+if ($identity->role === 'clinician') {
+    $breadcrumbs = [
+        ['title' => 'Dashboard', 'url' => ['action' => 'dashboard', 'controller' => 'Clinicians']],
+        ['title' => '#' . $user->id, 'url' => null]
+    ];
+}
+
 
 $this->setLayout($identity->role);
 $this->assign('title', 'User Profile');
