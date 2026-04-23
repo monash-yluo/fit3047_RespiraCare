@@ -3153,6 +3153,11 @@ input:checked + .toggle-bg {
   border-color: rgb(254 202 202 / var(--tw-border-opacity, 1));
 }
 
+.border-red-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(252 165 165 / var(--tw-border-opacity, 1));
+}
+
 .border-red-600 {
   --tw-border-opacity: 1;
   border-color: rgb(220 38 38 / var(--tw-border-opacity, 1));
@@ -4112,6 +4117,11 @@ input:checked + .toggle-bg {
   color: rgb(30 64 175 / var(--tw-text-opacity, 1));
 }
 
+.text-red-400 {
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity, 1));
+}
+
 .text-red-500 {
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity, 1));
@@ -4772,6 +4782,44 @@ body.dark {
   background-color: #f0fdf4;
   color: #16a34a;
   border-left: 5px solid #16a34a;
+}
+
+/* Standard CakePHP error message styling with Tailwind colors */
+
+.error-message {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  /* mt-2 */
+  font-size: 0.875rem;
+  /* text-sm */
+  font-weight: 500;
+  /* font-medium */
+  color: #e02424;
+  /* text-red-600 */
+}
+
+/* Dark mode support */
+
+.dark .error-message {
+  color: #f98080;
+  /* text-red-400 */
+}
+
+/* Optional: Highlight the input border when there is an error */
+
+.form-error input,
+.form-error select,
+.form-error textarea {
+  border-color: #f8b4b4 !important;
+  /* border-red-300 */
+  background-color: #fdf2f2 !important;
+  /* bg-red-50 */
+}
+
+.dark .form-error input {
+  border-color: #9b1c1c !important;
+  background-color: #1a1a1a !important;
 }
 
 .hover\:bg-blue-800:hover {

@@ -6,6 +6,7 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
+use Exception;
 
 /**
  * Users Controller
@@ -44,11 +45,11 @@ class UsersController extends AppController
         if (!empty($search)) {
             $query->where([
                 'OR' => [
-                    'Users.first_name LIKE' => "%" . $search . "%",
-                    'Users.last_name LIKE' => "%" . $search . "%",
-                    'Users.phone LIKE' => "%" . $search . "%",
-                    'Users.email LIKE' => "%" . $search . "%",
-                ]
+                    'Users.first_name LIKE' => '%' . $search . '%',
+                    'Users.last_name LIKE' => '%' . $search . '%',
+                    'Users.phone LIKE' => '%' . $search . '%',
+                    'Users.email LIKE' => '%' . $search . '%',
+                ],
             ]);
         }
 
@@ -137,6 +138,28 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
+            if (!empty($data['phone'])) {
+                $digits = preg_replace('/[^0-9]/', '', $data['phone']);
+                if (str_starts_with($digits, '61')) {
+                    $digits = substr($digits, 2);
+                }
+
+                if (str_starts_with($digits, '0')) {
+                    $digits = substr($digits, 1);
+                }
+
+                $digitCount = strlen($digits);
+                if ($digitCount === 9) {
+                    // Apply the +61 format
+                    $data['phone'] = sprintf(
+                        '+61 %s %s %s',
+                        substr($digits, 0, 3),
+                        substr($digits, 3, 3),
+                        substr($digits, 6, 3),
+                    );
+                }
+            }
+
             // Extract patient data before patching entity
             $patientData = [];
             $role = $data['role'] ?? null;
@@ -175,10 +198,11 @@ class UsersController extends AppController
                         }
                         $filename = time() . '_' . $file->getClientFilename();
                         $file->moveTo($uploadDir . $filename);
-                        $data['image_path'] = '/img/users/' . $filename;
-                    } catch (\Exception $e) {
+                        $data['image_path'] = $filename;
+                    } catch (Exception $e) {
                         $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
                         $this->set(compact('user'));
+
                         return;
                     }
                 } else {
@@ -200,6 +224,7 @@ class UsersController extends AppController
                         $this->Users->delete($user);
                         $this->Flash->error(__('Failed to create patient record. User has been reverted.'));
                         $this->set(compact('user'));
+
                         return;
                     }
                 }
@@ -213,6 +238,7 @@ class UsersController extends AppController
                         $this->Users->delete($user);
                         $this->Flash->error(__('Failed to create clinician record. User has been reverted.'));
                         $this->set(compact('user'));
+
                         return;
                     }
                 }
@@ -269,6 +295,28 @@ class UsersController extends AppController
             // Extract patient data before patching entity
             $patientData = [];
 
+            if (!empty($data['phone'])) {
+                $digits = preg_replace('/[^0-9]/', '', $data['phone']);
+                if (str_starts_with($digits, '61')) {
+                    $digits = substr($digits, 2);
+                }
+
+                if (str_starts_with($digits, '0')) {
+                    $digits = substr($digits, 1);
+                }
+
+                $digitCount = strlen($digits);
+                if ($digitCount === 9) {
+                    // Apply the +61 format
+                    $data['phone'] = sprintf(
+                        '+61 %s %s %s',
+                        substr($digits, 0, 3),
+                        substr($digits, 3, 3),
+                        substr($digits, 6, 3),
+                    );
+                }
+            }
+
             if ($user->role === 'patient') {
                 // Store patient data separately
                 if (!empty($data['patient_dob'])) {
@@ -307,12 +355,23 @@ class UsersController extends AppController
                         if (!is_dir($uploadDir)) {
                             mkdir($uploadDir, 0755, true);
                         }
+
+                        $oldImage = $user->image_path;
+
                         $filename = time() . '_' . $file->getClientFilename();
                         $file->moveTo($uploadDir . $filename);
-                        $data['image_path'] = '/img/users/' . $filename;
-                    } catch (\Exception $e) {
+                        $data['image_path'] = $filename;
+
+                        if (!empty($oldImage)) {
+                            $oldFilepath = $uploadDir . $oldImage;
+                            if (file_exists($oldFilepath) && is_file($oldFilepath)) {
+                                unlink($oldFilepath);
+                            }
+                        }
+                    } catch (Exception $e) {
                         $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
                         $this->set(compact('user'));
+
                         return;
                     }
                 } else {
