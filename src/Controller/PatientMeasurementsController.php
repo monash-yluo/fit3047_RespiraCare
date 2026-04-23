@@ -55,9 +55,10 @@ class PatientMeasurementsController extends AppController
     public function edit(?string $id = null)
     {
         $this->checkRole(['admin', 'patient']);
+        $role = $this->Authentication->getIdentity()->role;
 
         // 权限检查：如果是患者，确保只能更改自己的 / Permission check: if patient, ensure they can only edit their own records
-        if ($this->Authentication->getIdentity()->role === 'patient') {
+        if ($role === 'patient') {
             $patientMeasurement = $this->PatientMeasurements->get($id);
             if ($patientMeasurement->patient_id !== $this->getPatientId()) {
                 $this->Flash->error(__('You are not authorized to edit this record.'));
@@ -72,7 +73,11 @@ class PatientMeasurementsController extends AppController
             if ($this->PatientMeasurements->save($patientMeasurement)) {
                 $this->Flash->success(__('The patient measurement has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                if ($role === 'patient') {
+                    return $this->redirect(['controller' => 'PatientMeasurements', 'action' => 'patientView', $patientMeasurement->id]);
+                } elseif ($role === 'admin') {
+                    return $this->redirect(['controller' => 'PatientMeasurements', 'action' => 'view', $patientMeasurement->id]);
+                }
             }
             $this->Flash->error(__('The patient measurement could not be saved. Please, try again.'));
         }

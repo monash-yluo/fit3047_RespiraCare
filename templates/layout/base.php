@@ -43,7 +43,9 @@
 </div>
 
 <!-- Preloader -->
-<div id="preloader"></div>
+<?php if (!$this->getRequest()->getQuery('search') && $this->getRequest()->getQuery('search') != "" ) : ?>
+    <div id="preloader"></div>
+<?php endif; ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 

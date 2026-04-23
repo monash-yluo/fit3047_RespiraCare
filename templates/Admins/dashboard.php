@@ -50,6 +50,7 @@ $this->assign('title', 'Dashboard Overview');
     </div>
 
     <?php $this->start('table_content'); ?>
+
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>
         <th scope="col" class="p-4 w-4">

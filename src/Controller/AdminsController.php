@@ -12,16 +12,16 @@ class AdminsController extends AppController
     {
         $this->checkRole(['admin']);
 
-        $search = $this->request->getQuery('search');
+        $searchTerm = $this->request->getQuery('search');
         $query = $this->fetchTable('ContactMessages')->find();
 
-        if (!empty($search)) {
+        if (!empty($searchTerm)) {
             $query->where([
                 'OR' => [
-                    'ContactMessages.first_name LIKE' => '%' . $search . '%',
-                    'ContactMessages.last_name LIKE' => '%' . $search . '%',
-                    'ContactMessages.email LIKE' => '%' . $search . '%',
-                    'ContactMessages.category LIKE' => '%' . $search . '%',
+                    'ContactMessages.first_name LIKE' => '%' . $searchTerm . '%',
+                    'ContactMessages.last_name LIKE' => '%' . $searchTerm . '%',
+                    'ContactMessages.email LIKE' => '%' . $searchTerm . '%',
+                    'ContactMessages.category LIKE' => '%' . $searchTerm . '%',
                 ]
             ]);
         }

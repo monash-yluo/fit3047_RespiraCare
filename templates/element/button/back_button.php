@@ -35,25 +35,29 @@ $count = count($history);
 $targetUrl = $fallback;
 
 if ($count >= 3) {
-    // Array indexing: $count - 1 is the Current Page
+
     $currentPage = $history[$count - 1];
     $previousPage = $history[$count - 2];
     $twoPagesAgo = $history[$count - 3];
 
-    // THE LOOP CHECK: Is 2 pages ago the same as the current page? (A -> B -> A)
     if ($currentPage === $twoPagesAgo) {
-        // We are in a loop! Leapfrog to 3 pages ago (if it exists)
         if ($count >= 4) {
-            $targetUrl = $history[$count - 4];
+            $potentialTarget = $history[$count - 4];
+
+            if ($potentialTarget === $history[$count - 2]) {
+                $targetUrl = $fallback;
+            } else {
+                $targetUrl = $potentialTarget;
+            }
         } else {
             $targetUrl = $fallback;
         }
     } else {
-        // Normal navigation, go back 1 page
+
         $targetUrl = $previousPage;
     }
 } elseif ($count === 2) {
-    // We only have 2 pages of history, just go to the first one
+
     $targetUrl = $history[0];
 }
 
