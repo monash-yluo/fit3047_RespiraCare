@@ -73,7 +73,9 @@ class SymptomLogsTable extends Table
 
         $validator
             ->scalar('description')
-            ->allowEmptyString('description');
+            ->requirePresence('description', 'create')
+            ->notEmptyString('description');
+            
 
         $validator
             ->integer('severity')

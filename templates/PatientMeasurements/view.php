@@ -7,7 +7,8 @@
  */
 
 $breadcrumbs = [
-    ['title' => 'Dashboard', 'url' => $identity->role == 'admin' ? ['controller' => 'Admins', 'action' => 'dashboard'] : ['controller' => 'Clinicians', 'action' => 'dashboard']],
+    ['title' => 'Patients', 'url' => $identity->role == 'admin' ? ['controller' => 'Patients', 'action' => 'index'] : ['controller' => 'Patients', 'action' => 'clinician-index']],
+    ['title' => 'Measurements', 'url' => $identity->role == 'patient' ? null : ['controller' => 'Patients', 'action' => 'view', $patientMeasurement->patient->id]],
     ['title' => '#' . $patientMeasurement->id, 'url' => null],
 ];
 

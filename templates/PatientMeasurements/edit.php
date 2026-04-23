@@ -44,7 +44,10 @@ $this->assign('title', 'Edit Measurement');
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Temperature (°C)</label>
-                        <?= $this->Form->number('temperature', [
+                        <?= $this->Form->control('temperature', [
+                            'label' => false,
+                            'container' => false,
+                            'type' => 'number',
                             'step' => '0.1',
                             'placeholder' => '36.6',
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
@@ -53,7 +56,10 @@ $this->assign('title', 'Edit Measurement');
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Heart Rate (BPM)</label>
-                        <?= $this->Form->number('heart_rate', [
+                        <?= $this->Form->control('heart_rate', [
+                            'label' => false,
+                            'container' => false,
+                            'type' => 'number',
                             'placeholder' => '75',
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
                         ]) ?>
@@ -61,7 +67,10 @@ $this->assign('title', 'Edit Measurement');
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Respiratory Rate (BPM)</label>
-                        <?= $this->Form->number('respiratory_rate', [
+                        <?= $this->Form->control('respiratory_rate', [
+                            'label' => false,
+                            'container' => false,
+                            'type' => 'number',
                             'placeholder' => '18',
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
                         ]) ?>
@@ -69,22 +78,35 @@ $this->assign('title', 'Edit Measurement');
 
                     <div class="sm:col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blood Pressure (mmHg)</label>
-                        <div class="flex items-center space-x-4">
-                            <?= $this->Form->number('blood_pressure_systolic', [
-                                'placeholder' => 'Systolic (High)',
-                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
-                            ]) ?>
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <?= $this->Form->control('blood_pressure_systolic', [
+                                    'label' => false,
+                                    'container' => false,
+                                    'type' => 'number',
+                                    'placeholder' => 'Systolic (High)',
+                                    'class' => 'w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                                ]) ?>
+                            </div>
                             <span class="text-gray-900">/</span>
-                            <?= $this->Form->number('blood_pressure_diastolic', [
-                                'placeholder' => 'Diastolic (Low)',
-                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
-                            ]) ?>
+                            <div class="flex-1 min-w-0">
+                                <?= $this->Form->control('blood_pressure_diastolic', [
+                                    'label' => false,
+                                    'container' => false,
+                                    'type' => 'number',
+                                    'placeholder' => 'Diastolic (Low)',
+                                    'class' => 'w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
+                                ]) ?>
+                            </div>
                         </div>
                     </div>
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Oxygen Saturation (SpO2 %)</label>
-                        <?= $this->Form->number('spo2', [
+                        <?= $this->Form->control('spo2', [
+                            'label' => false,
+                            'container' => false,
+                            'type' => 'number',
                             'placeholder' => '98',
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'
                         ]) ?>
@@ -92,7 +114,10 @@ $this->assign('title', 'Edit Measurement');
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Peak Flow (L/min)</label>
-                        <?= $this->Form->number('peak_flow', [
+                        <?= $this->Form->control('peak_flow', [
+                            'label' => false,
+                            'container' => false,
+                            'type' => 'number',
                             'step' => '1',
                             'placeholder' => '400',
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400'

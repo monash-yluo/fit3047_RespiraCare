@@ -72,30 +72,37 @@ class PatientMeasurementsTable extends Table
 
         $validator
             ->integer('spo2')
+            ->range('spo2', [50, 100])
             ->allowEmptyString('spo2');
 
         $validator
             ->integer('heart_rate')
+            ->range('heart_rate', [0, 200])
             ->allowEmptyString('heart_rate');
 
         $validator
             ->numeric('temperature')
+            ->range('temperature', [20, 50])
             ->allowEmptyString('temperature');
 
         $validator
             ->integer('respiratory_rate')
+            ->range('respiratory_rate', [0, 100])
             ->allowEmptyString('respiratory_rate');
 
         $validator
             ->integer('peak_flow')
+            ->range('peak_flow', [0, 1000])
             ->allowEmptyString('peak_flow');
 
         $validator
             ->integer('blood_pressure_systolic')
+            ->range('blood_pressure_systolic', [0, 300])
             ->allowEmptyString('blood_pressure_systolic');
 
         $validator
             ->integer('blood_pressure_diastolic')
+            ->range('blood_pressure_diastolic', [0, 200])
             ->allowEmptyString('blood_pressure_diastolic');
 
         $validator
