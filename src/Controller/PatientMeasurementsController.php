@@ -120,7 +120,11 @@ class PatientMeasurementsController extends AppController
             $this->Flash->error(__('The measurement could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect($this->referer());
+        if ($this->Authentication->getIdentity()->role === 'admin') {
+            return $this->redirect(['controller' => 'Patients', 'action' => 'view', $patientMeasurement->patient_id]);
+        } else {
+            return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
+        }
     }
 
     public function add(?string $patientId = null)

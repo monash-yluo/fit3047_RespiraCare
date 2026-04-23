@@ -114,7 +114,11 @@ class SymptomLogsController extends AppController
             $this->Flash->error(__('The symptom log could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect($this->referer()); 
+        if ($identity->role === 'admin' || $identity->role === 'clinician') {
+            return $this->redirect(['controller' => 'Patients', 'action' => 'view', $symptomLog->patient_id]);
+        } else {
+            return $this->redirect(['controller' => 'SymptomLogs', 'action' => 'patientIndex']);
+        }
     }
 
     public function patientIndex()
