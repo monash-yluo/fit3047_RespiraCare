@@ -69,7 +69,12 @@ class SymptomLogsController extends AppController
             if ($this->SymptomLogs->save($symptomLog)) {
                 $this->Flash->success(__('The symptom log has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                // 根据角色返回不同的重定向 / Redirect differently based on role
+                if ($identity->role === 'admin' || $identity->role === 'clinician') {
+                    return $this->redirect(['controller' => 'Patients', 'action' => 'view', $symptomLog->patient_id]);
+                } else {
+                    return $this->redirect(['controller' => 'SymptomLogs', 'action' => 'patientView', $symptomLog->id]);
+                }
             }
             $this->Flash->error(__('The symptom log could not be saved. Please, try again.'));
         }
@@ -171,7 +176,7 @@ class SymptomLogsController extends AppController
                 $this->Flash->success(__('The symptom log has been saved.'));
 
                 // 根据角色返回不同的重定向 / Redirect differently based on role
-                if ($identity->role === 'admin') {
+                if ($identity->role === 'admin' || $identity->role === 'clinician') {
                     return $this->redirect(['controller' => 'Patients', 'action' => 'view', $actualPatientId]);
                 } else {
                     return $this->redirect(['controller' => 'SymptomLogs', 'action' => 'patientIndex']);
