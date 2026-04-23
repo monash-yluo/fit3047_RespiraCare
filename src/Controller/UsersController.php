@@ -103,7 +103,7 @@ class UsersController extends AppController
                 ->where(['Clinicians.user_id' => $user->id])
                 ->first();
 
-            
+
             if ($clinician) {
                 // 如果是 clinician，还加载他负责的患者列表
                 $patientsTable = $this->fetchTable('Patients');
@@ -428,6 +428,12 @@ class UsersController extends AppController
 
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+
+        if ($user->email === 'admin@respiracare.com') {
+            $this->Flash->error(__('The master administrator account cannot be deleted.'));
+            return $this->redirect(['action' => 'index']);
+        }
+
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
