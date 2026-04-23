@@ -2245,3 +2245,12 @@ body.dark .footer {
     --surface-color: #413e66;
     --contrast-color: #ffffff;
 }
+
+.error-message {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem; /* mt-2 */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    color: #e02424; /* text-red-600 */
+}
