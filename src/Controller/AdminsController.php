@@ -35,6 +35,6 @@ class AdminsController extends AppController
         $totalClinicians = $this->fetchTable('Clinicians')->find()->count();
         $totalPatients = $this->fetchTable('Patients')->find()->count();
 
-        $this->set(compact('contactMessages', 'totalMessages', 'totalClinicians', 'totalPatients', 'search'));
+        $this->set(compact('contactMessages', 'totalMessages', 'totalClinicians', 'totalPatients'));
     }
 }
