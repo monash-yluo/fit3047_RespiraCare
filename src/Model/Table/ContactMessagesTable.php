@@ -73,13 +73,21 @@ class ContactMessagesTable extends Table
             ->scalar('first_name')
             ->maxLength('first_name', 50)
             ->requirePresence('first_name', 'create')
-            ->notEmptyString('first_name');
+            ->notEmptyString('first_name')
+            ->add('first_name', 'validChars', [
+                'rule' => ['custom', "/^[a-zA-Z']+$/"],
+                'message' => __('First name can only contain letters and apostrophes.'),
+            ]);;
 
         $validator
             ->scalar('last_name')
             ->maxLength('last_name', 50)
             ->requirePresence('last_name', 'create')
-            ->notEmptyString('last_name');
+            ->notEmptyString('last_name')
+            ->add('last_name', 'validChars', [
+                'rule' => ['custom', "/^[a-zA-Z']+$/"],
+                'message' => __('Last name can only contain letters and apostrophes.'),
+            ]);
 
         $validator
             ->email('email')

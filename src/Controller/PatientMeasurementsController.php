@@ -70,7 +70,10 @@ class PatientMeasurementsController extends AppController
         $patientMeasurement = $this->PatientMeasurements->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
-            if ($this->PatientMeasurements->save($patientMeasurement)) {
+
+            if ($patientMeasurement->measured_at && $patientMeasurement->measured_at->isFuture()) {
+                $this->Flash->error(__('The measurement date and time cannot be in the future.'));
+            } elseif ($this->PatientMeasurements->save($patientMeasurement)) {
                 $this->Flash->success(__('The patient measurement has been saved.'));
 
                 if ($role === 'patient') {
@@ -78,8 +81,11 @@ class PatientMeasurementsController extends AppController
                 } elseif ($role === 'admin') {
                     return $this->redirect(['controller' => 'PatientMeasurements', 'action' => 'view', $patientMeasurement->id]);
                 }
+
+            } else {
+                $this->Flash->error(__('The patient measurement could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The patient measurement could not be saved. Please, try again.'));
+
         }
         $patients = $this->PatientMeasurements->Patients->find('list', limit: 200)->all();
         $this->set(compact('patientMeasurement', 'patients'));
