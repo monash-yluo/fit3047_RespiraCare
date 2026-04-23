@@ -71,7 +71,7 @@ class UsersController extends AppController
         // 先获取基本用户信息
         $user = $this->Users->get($id, contain: []);
 
-        if ($identity->get('role') !== 'admin' && $identity->get('id') !== $user->id) {
+        if ($identity->get('role') === 'patient' && $identity->get('id') !== $user->id) {
             throw new NotFoundException('Page not found');
         }
 
@@ -101,6 +101,20 @@ class UsersController extends AppController
             $clinician = $cliniciansTable->find()
                 ->where(['Clinicians.user_id' => $user->id])
                 ->first();
+
+            
+            if ($clinician) {
+                // 如果是 clinician，还加载他负责的患者列表
+                $patientsTable = $this->fetchTable('Patients');
+                $patients = $patientsTable->find()
+                    ->where(['Patients.clinician_id' => $clinician->id])
+                    ->contain(['Users'])
+                    ->all();
+
+                if ($patients) {
+                    $clinician->patients = $patients;
+                }
+            }
 
             if ($clinician) {
                 $user->clinician = $clinician;

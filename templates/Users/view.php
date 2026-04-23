@@ -142,14 +142,14 @@ $this->assign('title', 'User Profile');
             <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
                 <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4">Care Team</h3>
                 <div class="space-y-3">
-                    <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-normal">Assigned Clinician</p>
                         <p class="text-sm font-bold text-gray-900 dark:text-white mt-1">
                             <?php
                             $clinicianName = h($user->patient->clinician->user->full_name);
                             // Check if role is admin or clinician
                             if (in_array($identity->role, ['admin', 'clinician'])): ?>
-                                <?= $this->Html->link($clinicianName,
+                                <?= $this->Html->link(
+                                    $clinicianName,
                                     ['controller' => 'Users', 'action' => 'view', $user->patient->clinician->user->id],
                                     ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
                                 ) ?>
@@ -157,10 +157,31 @@ $this->assign('title', 'User Profile');
                                 <?= $clinicianName ?>
                             <?php endif; ?>
                         </p>
-                    </div>
                 </div>
             </div>
         <?php endif; ?>
+
+        <?php if ($user->role === 'clinician' && $user->hasValue('clinician') && !empty($user->clinician->patients)) : ?>
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4">Patients</h3>
+                <div class="space-y-3">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-normal">Assigned Patients</p>
+                    <?php foreach ($user->clinician->patients as $patient) : ?>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">
+                                <?= $this->Html->link(
+                                    h($patient->user->full_name),
+                                    ['controller' => 'Users', 'action' => 'view', $patient->user->id],
+                                    ['class' => 'text-primary-600 hover:underline dark:text-primary-500']
+                                ) ?>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+
     </div>
 
 </div>
