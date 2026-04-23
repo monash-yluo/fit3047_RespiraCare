@@ -145,15 +145,15 @@ $this->assign('title', 'Edit User');
                 <h3 class="mb-4 text-lg font-semibold dark:text-white">Actions</h3>
                 <div class="flex flex-col space-y-4">
                     <?= $this->element('button/blue_button', ['label' => 'Update User', 'iconType' => 'edit', 'type' => 'submit']) ?>
+                    <?= $this->Form->end() ?>
                     <?= $this->element('button/red_button', [
-                        'label' => 'Delete',
-                        'url' => ['action' => 'delete', $user->id],
-                        'confirm' => __('Are you sure you want to delete {0}?', $user->full_name),
-                        'iconType' => 'delete'
+                        'label' => 'Delete User',
+                        'iconType' => 'delete',
+                        'url' => ['controller' => 'Users', 'action' => 'delete', $user->id],
+                        'confirm' => __('Are you sure you want to delete user {0} {1}?', $user->first_name, $user->last_name),
                     ]) ?>
                 </div>
             </div>
         </div>
     </div>
-    <?= $this->Form->end() ?>
 </div>

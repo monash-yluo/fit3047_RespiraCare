@@ -318,26 +318,25 @@ class UsersController extends AppController
             }
 
             if ($user->role === 'patient') {
+                $patient = $data['patient'] ?? [];
+
                 // Store patient data separately
-                if (!empty($data['patient_dob'])) {
-                    $patientData['dob'] = $data['patient_dob'];
+                if (!empty($patient['dob'])) {
+                    $patientData['dob'] = $patient['dob'];
                 }
-                if (!empty($data['patient_sex'])) {
-                    $patientData['sex'] = $data['patient_sex'];
+                if (!empty($patient['sex'])) {
+                    $patientData['sex'] = $patient['sex'];
                 }
-                if (!empty($data['patient_notes'])) {
-                    $patientData['notes'] = $data['patient_notes'];
+                if (!empty($patient['notes'])) {
+                    $patientData['notes'] = $patient['notes'];
                 }
                 // Handle clinician_id - can be empty/null
-                if (isset($data['patient_clinician_id'])) {
-                    $patientData['clinician_id'] = !empty($data['patient_clinician_id']) ? $data['patient_clinician_id'] : null;
+                if (array_key_exists('clinician_id', $patient)) {
+                    $patientData['clinician_id'] = !empty($patient['clinician_id']) ? $patient['clinician_id'] : null;
                 }
 
                 // Remove patient data from user data
-                unset($data['patient_dob']);
-                unset($data['patient_sex']);
-                unset($data['patient_notes']);
-                unset($data['patient_clinician_id']);
+                unset($data['patient']);
             }
 
             // If password is empty, don't update it

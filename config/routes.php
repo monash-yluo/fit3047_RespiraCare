@@ -108,6 +108,12 @@ return function (RouteBuilder $routes): void {
             ['controller' => 'Patients', 'action' => 'index'],
             ['status' => 301],
         );
+        
+        $builder->redirect(
+            '/reminders/edit/*',
+            ['controller' => 'Reminders', 'action' => 'index'],
+            ['status' => 301],
+        );
 
         /*
          * Connect catchall routes for all controllers.

@@ -71,11 +71,15 @@ $this->assign('title', 'System Reminders');
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?php if ($reminder->hasValue('receiver')) : ?>
-                        <?= $this->Html->link(
-                            h($reminder->receiver->full_name),
-                            ['controller' => 'Users', 'action' => 'view', $reminder->receiver->id],
-                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
-                        ) ?>
+                        <?php if ($identity->role === 'patient') : ?>
+                            <?= h($reminder->receiver->full_name) ?>
+                        <?php else : ?>
+                            <?= $this->Html->link(
+                                h($reminder->receiver->full_name),
+                                ['controller' => 'Users', 'action' => 'view', $reminder->receiver->id],
+                                ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
+                            ) ?>
+                        <?php endif; ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">No Receiver</span>
                     <?php endif; ?>
@@ -83,11 +87,15 @@ $this->assign('title', 'System Reminders');
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[150px]">
                     <?php if ($reminder->hasValue('sender')) : ?>
-                        <?= $this->Html->link(
-                            h($reminder->sender->full_name),
-                            ['controller' => 'Users', 'action' => 'view', $reminder->sender->id],
-                            ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
-                        ) ?>
+                        <?php if ($identity->role === 'patient') : ?>
+                            <?= h($reminder->sender->full_name) ?>
+                        <?php else : ?>
+                            <?= $this->Html->link(
+                                h($reminder->sender->full_name),
+                                ['controller' => 'Users', 'action' => 'view', $reminder->sender->id],
+                                ['class' => 'text-primary-600 hover:underline dark:text-primary-500'],
+                            ) ?>
+                        <?php endif; ?>
                     <?php else : ?>
                         <span class="text-gray-400 italic">No Sender</span>
                     <?php endif; ?>

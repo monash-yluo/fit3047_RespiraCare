@@ -17,4 +17,4 @@ $searchableMenu = [
     ['label' => 'Logout', 'url' => ['controller' => 'Users', 'action' => 'logout']],
 ];
 
-echo $this->element('base/navbar', ['menuItems' => $patientMenu, 'searchableMenu' => $searchableMenu]);
+echo $this->element('base/navbar', ['menuItems' => $patientMenu, 'searchableLinks' => $searchableMenu]);

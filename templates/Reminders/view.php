@@ -49,11 +49,6 @@ $isStaff = in_array($identity->role, ['admin', 'clinician']);
                 <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-4">Management</h3>
                     <div class="flex flex-col space-y-3">
-                        <?= $this->element('button/blue_button', [
-                            'label' => 'Edit Message',
-                            'url' => ['action' => 'edit', $reminder->id],
-                            'iconType' => 'edit'
-                        ]) ?>
 
                         <?= $this->element('button/red_button', [
                             'label' => 'Delete Record',
