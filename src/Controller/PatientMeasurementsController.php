@@ -71,6 +71,12 @@ class PatientMeasurementsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
 
+            # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
+            if ($patientMeasurement->diastolic >= $patientMeasurement->systolic) {
+                $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
+                return;
+            }
+
             if ($patientMeasurement->measured_at && $patientMeasurement->measured_at->isFuture()) {
                 $this->Flash->error(__('The measurement date and time cannot be in the future.'));
             } elseif ($this->PatientMeasurements->save($patientMeasurement)) {
@@ -157,6 +163,12 @@ class PatientMeasurementsController extends AppController
         if ($this->request->is('post')) {
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
             $patientMeasurement->set('patient_id', $actualPatientId);
+
+            # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
+            if ($patientMeasurement->diastolic >= $patientMeasurement->systolic) {
+                $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
+                return;
+            }
 
             if ($patientMeasurement->measured_at && $patientMeasurement->measured_at->isFuture()) {
                 $this->Flash->error(__('The measurement date and time cannot be in the future.'));
