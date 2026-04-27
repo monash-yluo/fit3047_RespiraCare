@@ -72,9 +72,10 @@ class PatientMeasurementsController extends AppController
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
 
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
-            if ($patientMeasurement->diastolic >= $patientMeasurement->systolic) {
+            # 先检查是否有 血压数据，再比较，避免空值导致的错误 / Check if blood pressure data is present before comparing to avoid errors from null values
+            if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
-                $this->set(compact('patientMeasurement', 'patients'));
+                $this->set(compact('patientMeasurement'));
                 return;
             }
 
@@ -94,8 +95,7 @@ class PatientMeasurementsController extends AppController
             }
 
         }
-        $patients = $this->PatientMeasurements->Patients->find('list', limit: 200)->all();
-        $this->set(compact('patientMeasurement', 'patients'));
+        $this->set(compact('patientMeasurement'));
     }
 
     /**
@@ -166,9 +166,10 @@ class PatientMeasurementsController extends AppController
             $patientMeasurement->set('patient_id', $actualPatientId);
 
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
-            if ($patientMeasurement->diastolic >= $patientMeasurement->systolic) {
+            # 先检查是否有 血压数据，再比较，避免空值导致的错误 / Check if blood pressure data is present before comparing to avoid errors from null values
+            if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
-                $this->set(compact('patientMeasurement', 'patients'));
+                $this->set(compact('patientMeasurement'));
                 return;
             }
 
@@ -187,7 +188,7 @@ class PatientMeasurementsController extends AppController
             }
         }
 
-        $this->set(compact('patientMeasurement', 'patientId'));
+        $this->set(compact('patientMeasurement'));
     }
 
     public function patientView(?string $id = null)

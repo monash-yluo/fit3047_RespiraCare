@@ -87,7 +87,7 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
                                 <span class="text-3xl font-bold text-gray-900 dark:text-white"><?= h($patientMeasurement->blood_pressure_diastolic) ?></span>
                                 <span class="text-sm font-normal text-gray-500 uppercase">mmHg</span>
                             <?php else: ?>
-                                <span class="text-3xl font-bold text-gray-400 italic">N/A</span>
+                                <span class="text-3xl font-bold text-gray-900">N/A</span>
                             <?php endif; ?>
                         </div>
                         <p class="mt-1 text-xs text-gray-400">Ref: Normal ~ 120/80</p>
