@@ -74,6 +74,7 @@ class PatientMeasurementsController extends AppController
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
             if ($patientMeasurement->diastolic >= $patientMeasurement->systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
+                $this->set(compact('patientMeasurement', 'patients'));
                 return;
             }
 
@@ -167,6 +168,7 @@ class PatientMeasurementsController extends AppController
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
             if ($patientMeasurement->diastolic >= $patientMeasurement->systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
+                $this->set(compact('patientMeasurement', 'patients'));
                 return;
             }
 
