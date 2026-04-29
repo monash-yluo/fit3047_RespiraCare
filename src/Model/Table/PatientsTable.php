@@ -7,6 +7,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\Model\Validation\TimeWindowValidation;
 
 /**
  * Patients Model
@@ -85,6 +86,8 @@ class PatientsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
+        $validator->setProvider('timeWindow', TimeWindowValidation::class);
+
         $validator
             ->integer('user_id')
             ->notEmptyString('user_id')
@@ -96,7 +99,17 @@ class PatientsTable extends Table
 
         $validator
             ->date('dob')
-            ->allowEmptyDate('dob');
+            ->allowEmptyDate('dob')
+            ->add('dob', 'notInFuture', [
+                'rule' => ['notInFuture'],
+                'provider' => 'timeWindow',
+                'message' => 'Date of birth cannot be in the future.'
+            ])
+            ->add('dob', 'notTooOld', [
+                'rule' => ['withinLastYears', 120],
+                'provider' => 'timeWindow',
+                'message' => 'Date of birth must be within the last 120 years.'
+            ]);
 
         $validator
             ->scalar('sex')

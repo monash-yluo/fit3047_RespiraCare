@@ -8,7 +8,7 @@
 
 // Breadcrumb
 $breadcrumbs = [
-    ['title' => 'Symptom Logs', 'url' => $identity->role == 'patient' ? ['action' => 'patient-index'] : ['action' => 'index']],
+    ['title' => 'Symptom Logs', 'url' => $identity->role == 'patient' ? null : ['controller' => 'Patients', 'action' => 'view', $patientId]],
     ['title' => 'Add Symptom log', 'url' => null],
 ];
 
