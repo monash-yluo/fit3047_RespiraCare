@@ -38,6 +38,8 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        // Load the content block helper globally
+        $this->loadHelper('ContentBlocks.ContentBlock');
     }
 
     /**

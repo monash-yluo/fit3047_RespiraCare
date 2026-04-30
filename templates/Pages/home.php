@@ -20,7 +20,7 @@ $this->assign('title', 'Respira Care');
             </div>
 
             <div class="col-lg-5 d-flex flex-column justify-content-center">
-                <h1 class="fs-2 mb-3">Your Dedicated Partner in <br><span>COPD Management</span></h1>
+                <?= $this->ContentBlock->html('home-hero-title') ?>
                 <p class="mb-4">
                     Log your daily vitals, receive personalised reminders,
                     and get expert respiratory support exactly when you need it.
