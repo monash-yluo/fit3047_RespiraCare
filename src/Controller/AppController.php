@@ -20,6 +20,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Log\Log;
 
 /**
  * Application Controller
@@ -65,6 +66,15 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+
+        // // 判断插件
+        // $plugin = $this->request->getParam('plugin');
+        // $controller = $this->request->getParam('controller');
+        // debug("Plugin: $plugin, Controller: $controller");
+        
+        // if ($plugin === 'ContentBlocks' && $controller === 'ContentBlocks') {
+        //     $this->checkRole(['admin']); // 仅管理员允许访问
+        // }
 
         if ($this->request->is('get') && !$this->request->is('ajax')) {
             $session = $this->request->getSession();
