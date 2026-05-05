@@ -76,13 +76,27 @@ $this->assign('title', 'Edit User');
                         ]) ?>
                     </div>
 
-                    <div>
+                    <div class="flex flex-row items-end w-full space-x-3">
                         <?= $this->Form->control('image_path', [
                             'type' => 'file',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Avatar Image'],
-                            'accept' => 'image/*',
-                            'class' => 'block w-full text-sm text-gray-500 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400',
+                            'class' => 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400',
+                            'templates' => [
+                                'fileContainer' => '<div class="input file flex-1">{{content}}</div>'
+                            ]
                         ]) ?>
+
+                        <?php if (!empty($user->image_path)): ?>
+                            <div class="flex-shrink-0">
+                                <input type="checkbox" name="delete_image" id="delete_image_checkbox" class="hidden peer">
+
+                                <label for="delete_image_checkbox" class="inline-flex items-center px-4 py-2.5 text-xs font-medium text-center text-red-700 bg-white border border-red-700 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white peer-checked:bg-red-700 peer-checked:text-white focus:ring-4 focus:ring-red-300 dark:bg-gray-800 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:peer-checked:bg-red-600 dark:peer-checked:text-white transition-all">
+                                    <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </label>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="sm:col-span-2">

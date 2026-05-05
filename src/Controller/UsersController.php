@@ -7,6 +7,8 @@ use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
 use Exception;
+use Psr\Http\Message\UploadedFileInterface;
+use SplFileInfo;
 
 /**
  * Users Controller
@@ -103,7 +105,6 @@ class UsersController extends AppController
                 ->where(['Clinicians.user_id' => $user->id])
                 ->first();
 
-
             if ($clinician) {
                 // 如果是 clinician，还加载他负责的患者列表
                 $patientsTable = $this->fetchTable('Patients');
@@ -137,6 +138,8 @@ class UsersController extends AppController
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+            $tempFile = null;
+            $newFilename = null;
 
             if (!empty($data['phone'])) {
                 $digits = preg_replace('/[^0-9]/', '', $data['phone']);
@@ -187,24 +190,31 @@ class UsersController extends AppController
             }
 
             // Handle file upload
-            if (isset($data['image_path'])) {
+            if (isset($data['image_path']) && $data['image_path'] instanceof UploadedFileInterface) {
                 $file = $data['image_path'];
-                // Check if it's an uploaded file with actual content
-                if (is_object($file) && method_exists($file, 'getClientFilename') && !empty($file->getClientFilename()) && $file->getSize() > 0) {
-                    try {
-                        $uploadDir = WWW_ROOT . 'img' . DS . 'users' . DS;
-                        if (!is_dir($uploadDir)) {
-                            mkdir($uploadDir, 0755, true);
-                        }
-                        $filename = time() . '_' . $file->getClientFilename();
-                        $file->moveTo($uploadDir . $filename);
-                        $data['image_path'] = $filename;
-                    } catch (Exception $e) {
-                        $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
-                        $this->set(compact('user'));
 
-                        return;
+                if ($file->getError() !== 0) {
+                    if ($file->getError() === 1 || $file->getError() === 2) {
+                        $this->Flash->error(__('The file is too big.'));
+                    } elseif ($file->getError() !== 4) {
+                        $this->Flash->error(__('Error uploading image.'));
                     }
+                    if ($file->getError() !== 4) {
+                        return $this->render();
+                    }
+                }
+
+                if ($file->getClientFilename() !== '' && $file->getSize() > 0) {
+                    // Prepare metadata but DON'T MOVE
+                    $extension = preg_replace(
+                        '/[^a-z0-9]/',
+                        '',
+                        strtolower((new SplFileInfo($file->getClientFilename()))->getExtension()),
+                    );
+                    $newFilename = md5(random_bytes(10)) . '.' . $extension;
+                    $tempFile = $file;
+
+                    $data['image_path'] = $newFilename;
                 } else {
                     unset($data['image_path']);
                 }
@@ -212,6 +222,20 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                // Move the file to the correct location
+                if ($tempFile && $newFilename) {
+                    try {
+                        $destDir = WWW_ROOT . 'img' . DS . 'users';
+                        if (!is_dir($destDir)) {
+                            mkdir($destDir, 0755, true);
+                        }
+
+                        $tempFile->moveTo($destDir . DS . $newFilename);
+                    } catch (Exception $e) {
+                        $this->Flash->warning(__('User saved, but image upload failed.'));
+                    }
+                }
+
                 // If role is patient, create patient record
                 if ($role === 'patient') {
                     $patientsTable = $this->fetchTable('Patients');
@@ -291,6 +315,9 @@ class UsersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
+            $tempFile = null;
+            $newFilename = null;
+            $oldImageFilename = $user->image_path;
 
             // Extract patient data before patching entity
             $patientData = [];
@@ -345,41 +372,71 @@ class UsersController extends AppController
             }
 
             // Handle file upload
-            if (isset($data['image_path'])) {
+            if (isset($data['image_path']) && $data['image_path'] instanceof UploadedFileInterface) {
                 $file = $data['image_path'];
-                // Check if it's an uploaded file with actual content
-                if (is_object($file) && method_exists($file, 'getClientFilename') && !empty($file->getClientFilename()) && $file->getSize() > 0) {
-                    try {
-                        $uploadDir = WWW_ROOT . 'img' . DS . 'users' . DS;
-                        if (!is_dir($uploadDir)) {
-                            mkdir($uploadDir, 0755, true);
+
+                if ($file->getError() !== 0) {
+                    if ($file->getError() === 4) {
+                        unset($data['image_path']);
+                    } else {
+                        if ($file->getError() === 1 || $file->getError() === 2) {
+                            $this->Flash->error(__('The file you uploaded is too big.'));
+                        } else {
+                            $this->Flash->error(__('There was an error uploading the file.'));
                         }
 
-                        $oldImage = $user->image_path;
-
-                        $filename = time() . '_' . $file->getClientFilename();
-                        $file->moveTo($uploadDir . $filename);
-                        $data['image_path'] = $filename;
-
-                        if (!empty($oldImage)) {
-                            $oldFilepath = $uploadDir . $oldImage;
-                            if (file_exists($oldFilepath) && is_file($oldFilepath)) {
-                                unlink($oldFilepath);
-                            }
-                        }
-                    } catch (Exception $e) {
-                        $this->Flash->error(__('Failed to upload image: ' . $e->getMessage()));
-                        $this->set(compact('user'));
-
-                        return;
+                        return $this->render();
                     }
+                }
+
+                if ($file->getClientFilename() !== '' && $file->getSize() > 0) {
+                    $extension = preg_replace(
+                        '/[^a-z0-9]/',
+                        '',
+                        strtolower((new SplFileInfo($file->getClientFilename()))->getExtension()),
+                    );
+                    $newFilename = md5(random_bytes(10)) . '.' . $extension;
+                    $tempFile = $file;
+
+                    // Set filename for the entity check
+                    $data['image_path'] = $newFilename;
                 } else {
                     unset($data['image_path']);
                 }
             }
 
+            // If no Image is uploaded and was checked to remove
+            if (!empty($data['delete_image']) && $data['delete_image'] === 'on' && empty($data['image_path'])) {
+                $data['image_path'] = null;
+            }
+
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                $destDir = WWW_ROOT . 'img' . DS . 'users';
+                $oldFilepath = !empty($oldImageFilename) ? $destDir . DS . $oldImageFilename : null;
+
+                if (!empty($data['delete_image']) && $data['delete_image'] === 'on' && empty($tempFile)) {
+                    if ($oldFilepath && file_exists($oldFilepath) && is_file($oldFilepath)) {
+                        unlink($oldFilepath);
+                    }
+                }
+
+                if ($tempFile && $newFilename) {
+                    try {
+                        if (!is_dir($destDir)) {
+                            mkdir($destDir, 0755, true);
+                        }
+
+                        $tempFile->moveTo($destDir . DS . $newFilename);
+
+                        if ($oldFilepath && file_exists($oldFilepath) && is_file($oldFilepath)) {
+                            unlink($oldFilepath);
+                        }
+                    } catch (Exception $e) {
+                        $this->Flash->warning(__('User saved, but new image could not be processed.'));
+                    }
+                }
+
                 // Save patient data if exists
                 if (isset($user->patient) && !empty($patientData)) {
                     $patientsTable = $this->fetchTable('Patients');
@@ -427,19 +484,51 @@ class UsersController extends AppController
 
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+        $oldImageFilename = $user->image_path;
 
         if ($user->email === 'admin@respiracare.com') {
             $this->Flash->error(__('The master administrator account cannot be deleted.'));
+
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->Users->delete($user)) {
+            if (!empty($oldImageFilename)) {
+                $oldFilepath = WWW_ROOT . 'img' . DS . 'users' . DS . $oldImageFilename;
+                if (file_exists($oldFilepath) && is_file($oldFilepath)) {
+                    unlink($oldFilepath);
+                }
+            }
+
             $this->Flash->success(__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function deleteImage($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $user = $this->Users->get($id);
+
+        $oldImage = $user->image_path;
+        $user->image_path = null;
+
+        if ($this->Users->save($user)) {
+            if ($oldImage) {
+                $path = WWW_ROOT . 'img' . DS . 'users' . DS . $oldImage;
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+            $this->Flash->success(__('The image has been deleted.'));
+        } else {
+            $this->Flash->error(__('The image could not be deleted.'));
+        }
+
+        return $this->redirect(['action' => 'edit', $id]);
     }
 
     public function roleRedirect($role)

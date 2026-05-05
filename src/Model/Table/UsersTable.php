@@ -86,8 +86,7 @@ class UsersTable extends Table
             ->scalar('password')
             ->maxLength('password', 255)
             ->requirePresence('password', 'create')
-            ->notEmptyString('password')
-            ->allowEmptyString('password', 'update');
+            ->notEmptyString('password');
 
         $validator
             ->scalar('role')
