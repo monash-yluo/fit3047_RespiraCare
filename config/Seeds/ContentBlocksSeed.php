@@ -14,8 +14,16 @@ class ContentBlocksSeed extends BaseSeed
                 'label' => 'Website Title',
                 'description' => 'Shown on the home page, as well as any tabs in the users browser.',
                 'slug' => 'website-title',
-                'type' => 'text',
-                'value' => 'RespiraCare',
+                'type' => 'html',
+                'value' => '<h1 class="sitename mb-0 fs-3">RespiraCare</h1>',
+            ],
+            [
+                'parent' => 'global',
+                'label' => 'Dashboard Website Title',
+                'description' => 'Shown on the dashboard page.',
+                'slug' => 'dashboard-website-title',
+                'type' => 'html',
+                'value' => '<h1 class="text-2xl mr-10 font-semibold text-gray-900 dark:text-white">RespiraCare</h1>',
             ],
             [
                 'parent' => 'global',
