@@ -111,17 +111,20 @@ $this->assign('title', 'Respira Care');
 
         <div class="row gy-4 dark-background py-5 rounded-top-2"
              style="background-color: var(--background-color);  padding-inline: 96px;">
-            <?php foreach ($specialists as $doc) : ?>
-                <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="<?= h($doc['delay']) ?>">
+            <?php for ($i = 1; $i <= 3; $i++) : ?>
+                <?php $doctorImagePath = $this->ContentBlock->imagePath("doctor-image-{$i}"); ?>
+                <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="<?= h((string)($i * 100)) ?>">
                     <div class="card h-100 text-center px-4 py-5 border-0 shadow text-dark rounded-3 lh-lg">
-
-                        <?php if (!empty($doc['image_url'])): ?>
-                            <?= $this->Html->image('users/' . $doc['image_url'], [
-                                'class' => 'image-loading-placeholder rounded-circle mx-auto mb-4 shadow-sm',
-                                'loading' => 'lazy',
-                                'alt' => $doc['name'],
-                                'style' => 'width: 120px; height: 120px; object-fit: cover;',
-                            ]) ?>
+                        
+                        <?php if (!empty($doctorImagePath)): ?>
+                            <div class="mx-auto mb-4 shadow-sm rounded-circle bg-white dark:bg-gray-800 overflow-hidden border border-gray-200 dark:border-gray-600"
+                                 style="width: 120px; height: 120px;">
+                                <?= $this->ContentBlock->image("doctor-image-{$i}", [
+                                    'class' => 'w-full h-full object-cover',
+                                    'alt' => h($this->ContentBlock->text("doctor-name-{$i}")),
+                                    'style' => 'width: 120px; height: 120px; object-fit: cover;',
+                                ]) ?>
+                            </div>
                         <?php else: ?>
                             <div class="mx-auto mb-4 shadow-sm rounded-circle bg-light d-flex align-items-center justify-content-center border"
                                  style="width: 120px; height: 120px;">
@@ -130,13 +133,11 @@ $this->assign('title', 'Respira Care');
                                 </svg>
                             </div>
                         <?php endif; ?>
-
-                        <h5 class="fw-bold text-muted mb-1"><?= h($doc['name']) ?></h5>
-                        <p class="small text-muted mb-0"><?= h($doc['desc']) ?></p>
-
+                        <h5 class="fw-bold text-muted mb-1"><?= h($this->ContentBlock->text("doctor-name-{$i}")) ?></h5>
+                        <p class="small text-muted mb-0"><?= h($this->ContentBlock->text("doctor-description-{$i}")) ?></p>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endfor; ?>
         </div>
 
         <div class="row align-items-center px-4 py-5 rounded-bottom-2"
@@ -144,9 +145,7 @@ $this->assign('title', 'Respira Care');
 
             <div class="col-md-8 mb-4 mb-md-0">
                 <p class="mb-0 lh-lg">
-                    Ready to take control of your COPD? Reach out to our team to learn more about how the RespiraCare
-                    platform can support your daily health journey. Whether you need help setting up your remote vitals
-                    monitoring, or have questions about connecting with our certified specialists, we are here to help.
+                    <?= h($this->ContentBlock->text('home-doctors-cta-text')) ?>
                 </p>
             </div>
             <div class="col-md-4 d-flex flex-column align-self-end align-items-center">
