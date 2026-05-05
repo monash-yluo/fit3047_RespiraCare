@@ -71,17 +71,21 @@ class AppController extends Controller
         // $plugin = $this->request->getParam('plugin');
         // $controller = $this->request->getParam('controller');
         // debug("Plugin: $plugin, Controller: $controller");
-        
+
         // if ($plugin === 'ContentBlocks' && $controller === 'ContentBlocks') {
         //     $this->checkRole(['admin']); // 仅管理员允许访问
         // }
 
-        if ($this->request->is('get') && !$this->request->is('ajax')) {
+        if (
+            $this->request->is('get') &&
+            !$this->request->is('ajax') &&
+            $this->request->getParam('action') !== 'goBack'
+        ) {
             $session = $this->request->getSession();
             $history = $session->read('User.History', []);
             $currentUrl = $this->request->getRequestTarget();
 
-            // Prevent recording the exact same page twice in a row (e.g., manual refreshes)
+            // Prevent recording the exact same page twice in a row
             if (end($history) !== $currentUrl) {
                 $history[] = $currentUrl;
 
@@ -158,5 +162,38 @@ class AppController extends Controller
         if (!$identity || !in_array($identity->get('role'), $requiredRole)) {
             throw new NotFoundException('Page not found');
         }
+    }
+
+    public function goBack(): \Cake\Http\Response
+    {
+        $session = $this->request->getSession();
+        $history = $session->read('User.History', []);
+
+        // Remove current page
+        array_pop($history);
+
+        // Deduplicate trailing entries
+        while (count($history) >= 2 && end($history) === $history[count($history) - 2]) {
+            array_pop($history);
+        }
+
+        // Pop the target stack
+        $target = array_pop($history);
+
+        // Save trimmed history
+        $session->write('User.History', $history);
+
+        if (!$target) {
+            $identity = $this->request->getAttribute('identity');
+            $role = $identity?->role;
+            $dashboardRoutes = [
+                'admin'     => ['controller' => 'Admins',     'action' => 'dashboard'],
+                'clinician' => ['controller' => 'Clinicians', 'action' => 'dashboard'],
+                'patient'   => ['controller' => 'Patients',   'action' => 'dashboard'],
+            ];
+            return $this->redirect($dashboardRoutes[$role] ?? '/');
+        }
+
+        return $this->redirect($target);
     }
 }

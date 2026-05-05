@@ -29,8 +29,7 @@ $breadcrumbs = [
     <?= $this->element('table/page_header', [
         'title' => 'Patient Profile',
         'description' => 'View patient information, health measurements, and symptom history.',
-        'actionLabel' => 'Back',
-        'actionUrl' => $back_url
+        'showBack' => true,
     ]) ?>
 
     <!-- Patient Information Card -->
