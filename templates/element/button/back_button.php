@@ -16,55 +16,6 @@ if (!empty($url)) {
     echo $this->Html->link(__($label), $url, ['class' => $class]);
     return;
 }
-
-// 2. Setup Dashboard Fallback
-$identity = $this->getRequest()->getAttribute('identity');
-$role = $identity?->role;
-
-$dashboardRoutes = [
-    'admin' => ['controller' => 'Admins', 'action' => 'dashboard'],
-    'clinician' => ['controller' => 'Clinicians', 'action' => 'dashboard'],
-    'patient' => ['controller' => 'Patients', 'action' => 'dashboard'],
-];
-$fallback = $this->Url->build($dashboardRoutes[$role] ?? '/');
-
-// 3. Read the Session History
-$history = $this->request->getSession()->read('User.History', []);
-$count = count($history);
-
-$targetUrl = $fallback;
-
-if ($count >= 3) {
-
-    $currentPage = $history[$count - 1];
-    $previousPage = $history[$count - 2];
-    $twoPagesAgo = $history[$count - 3];
-
-    if ($currentPage === $twoPagesAgo) {
-        if ($count >= 4) {
-            $potentialTarget = $history[$count - 4];
-
-            if ($potentialTarget === $history[$count - 2]) {
-                $targetUrl = $fallback;
-            } else {
-                $targetUrl = $potentialTarget;
-            }
-        } else {
-            $targetUrl = $fallback;
-        }
-    } else {
-
-        $targetUrl = $previousPage;
-    }
-} elseif ($count === 2) {
-
-    $targetUrl = $history[0];
-}
-
 ?>
 
-<?= $this->Html->link(
-    __($label),
-    $targetUrl,
-    ['class' => $class]
-) ?>
+<?= $this->Html->link(__($label), '/go-back', ['class' => $class]); ?>
