@@ -55,12 +55,20 @@ $slugify = function ($text) {
                             </p>
                             <div class="text-xs bg-gray-50 dark:bg-gray-700 p-2 rounded border border-gray-200 dark:border-gray-600 max-h-[100px] overflow-y-auto">
                                 <?php if ($contentBlock['type'] === 'image'): ?>
-                                    <div class="w-20 h-20 rounded overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
-                                        <?= $this->Html->image($contentBlock['value'], [
-                                            'class' => 'w-full h-full object-cover',
-                                            'alt' => h($contentBlock['label']),
-                                        ]) ?>
-                                    </div>
+
+                                    <?php if (!empty($contentBlock['value'])): ?>
+                                        <div class="w-20 h-20 rounded overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
+                                            <?= $this->Html->image($contentBlock['value'], [
+                                                'class' => 'w-full h-full object-cover',
+                                                'alt' => h($contentBlock['label']),
+                                            ]) ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="w-full h-full flex items-center justify-center text-gray-900 dark:text-gray-100 text-sm font-bold">
+                                            No image now
+                                        </div>
+                                    <?php endif; ?>
+
                                 <?php else: ?>
                                     <div class="text-gray-700 dark:text-gray-300 font-mono whitespace-normal break-words">
                                         <?= h(substr($contentBlock['value'], 0, 200)) ?>

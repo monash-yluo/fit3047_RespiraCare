@@ -22,8 +22,7 @@ $this->assign('title', 'Respira Care');
             <div class="col-lg-5 d-flex flex-column justify-content-center">
                 <?= $this->ContentBlock->html('home-hero-title') ?>
                 <p class="mb-4">
-                    Log your daily vitals, receive personalised reminders,
-                    and get expert respiratory support exactly when you need it.
+                    <?= h($this->ContentBlock->text('home-hero-description')) ?>
                 </p>
                 <div class="d-flex">
                     <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>"
@@ -42,29 +41,37 @@ $this->assign('title', 'Respira Care');
     <div class="container">
         <div class="row mb-5" data-aos="fade-up">
             <div class="col-12">
-                <h2 class="text-white fw-bold">Simple, Remote COPD Management</h2>
+                <h2 class="text-white fw-bold">
+                    <?= h($this->ContentBlock->text('home-process-title')) ?>
+                </h2>
             </div>
         </div>
 
         <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
 
             <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
-                <?php foreach ($copdSteps as $step) : ?>
+                <?php
+                $stepTitles = array_map('trim', explode('|', $this->ContentBlock->text('home-process-step-titles')));
+                $stepDescriptions = array_map('trim', explode('|', $this->ContentBlock->text('home-process-step-descriptions')));
+                $stepCount = min(count($stepTitles), count($stepDescriptions));
+                ?>
+
+                <?php for ($i = 0; $i < $stepCount; $i++) : ?>
                     <div class="col-md-4 d-flex align-items-start">
                         <div class="border border-2 border-white rounded-circle d-flex
                             align-items-center justify-content-center me-3 flex-shrink-0"
                             style="width: 50px; height: 50px; font-size: 1.25rem; font-weight: bold;">
-                            <?= h($step['number']) ?>
+                            <?= h((string)($i + 1)) ?>
                         </div>
                         <div>
                             <p class="mb-0 text-white-50 lh-lg">
-                                <strong class="text-white"><?= h($step['title']) ?></strong>
-                                <?= h($step['description']) ?>
+                                <strong class="text-white"><?= h($stepTitles[$i]) ?></strong>
+                                <?= h($stepDescriptions[$i]) ?>
                             </p>
                         </div>
                     </div>
 
-                <?php endforeach; ?>
+                <?php endfor; ?>
             </div>
         </div>
     </div>
@@ -84,19 +91,7 @@ $this->assign('title', 'Respira Care');
             </div>
 
             <div class="col-md-6 ps-md-5" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="fw-bold mb-4">Empowering Your Respiratory Health</h3>
-                <p>
-                    Managing Chronic Obstructive Pulmonary Disease shouldn't require constant
-                    hospital visits. RespiraCare brings the clinic to your living room.
-                </p>
-                <p>
-                    Our intuitive platform allows you to securely input your daily health data, providing your
-                    specialised care team with the real-time insights they need to monitor your condition.
-                </p>
-                <p>
-                    With automated reminders, we are dedicated to helping you stay proactive
-                    about your lung health and preventing flare-ups before they happen.
-                </p>
+                <?= $this->ContentBlock->html('home-feature-details') ?>
             </div>
 
         </div>
@@ -108,11 +103,7 @@ $this->assign('title', 'Respira Care');
     <div class="w-100 px-4 d-flex flex-column align-items-center text-center"
          style="background-color: var(--light-accent-color); padding: 80px 0 120px 0;"
          data-aos="fade-up">
-        <h2 class="text-white fw-bold mb-3">Meet Our Certified Specialists</h2>
-        <p class="text-white-50 col-lg-8 mb-0">
-            Our dedicated team of certified physicians and pulmonologists specialise in
-            advanced COPD management, ensuring you receive the highest standard of virtual respiratory care.
-        </p>
+        <?= $this->ContentBlock->html('home-doctors-header') ?>
     </div>
 
     <div class="container position-relative"

@@ -38,10 +38,10 @@ $this->assign('title', 'Edit Content Block - Content Blocks');
                 <?php
                 if ($contentBlock->type === 'text') {
                     echo $this->Form->control('value', [
-                        'type' => 'text',
+                        'type' => 'textarea',
                         'value' => html_entity_decode($contentBlock->value),
                         'label' => __('Content'),
-                        'class' => 'block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                        'class' => 'block w-full min-h-[300px] px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
                         'templates' => [
                             'inputContainer' => '<div class="{{required}}">{{content}}</div>',
                             'label' => '<label{{attrs}} class="block text-sm font-medium text-gray-900 dark:text-white mb-2">{{text}}</label>',
