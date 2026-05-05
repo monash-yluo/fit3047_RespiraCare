@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var iterable<\ContentBlocks\Model\Entity\ContentBlock> $contentBlocksGrouped
@@ -7,7 +8,7 @@ $this->setLayout($identity->role);
 
 $this->assign('title', 'Content Blocks');
 
-$slugify = function($text) {
+$slugify = function ($text) {
     return preg_replace('/[^A-Za-z0-9-]+/', '-', $text);
 }
 
@@ -23,7 +24,7 @@ $slugify = function($text) {
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Quick Links</h3>
             <div class="flex flex-wrap gap-2">
-                <?php foreach(array_keys($contentBlocksGrouped) as $parent) { ?>
+                <?php foreach (array_keys($contentBlocksGrouped) as $parent) { ?>
                     <a href="#<?= $slugify($parent) ?>" class="px-3 py-1.5 text-sm font-medium text-primary-700 bg-primary-100 rounded-lg hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800 transition-colors">
                         <?= $parent ?>
                     </a>
@@ -32,26 +33,43 @@ $slugify = function($text) {
         </div>
     </div>
 
-    <?php foreach($contentBlocksGrouped as $parent => $contentBlocks) { ?>
+    <?php foreach ($contentBlocksGrouped as $parent => $contentBlocks) { ?>
 
         <div class="mb-8">
             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <a href="#<?= $slugify($parent)?>" id="<?= $slugify($parent)?>" class="hover:text-primary-700 dark:hover:text-primary-400 transition-colors">
+                <a href="#<?= $slugify($parent) ?>" id="<?= $slugify($parent) ?>" class="hover:text-primary-700 dark:hover:text-primary-400 transition-colors">
                     <?= $parent ?>
                 </a>
-                <a href="#<?= $slugify($parent)?>" class="ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">#</a>
+                <a href="#<?= $slugify($parent) ?>" class="ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">#</a>
             </h4>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <?php foreach($contentBlocks as $contentBlock) { ?>
+                <?php foreach ($contentBlocks as $contentBlock) { ?>
                     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 hover:shadow-md dark:hover:shadow-lg transition-shadow flex flex-col">
                         <div class="flex-1 mb-4">
                             <h5 class="text-base font-semibold text-gray-900 dark:text-white mb-2">
                                 <?= $contentBlock['label'] ?>
                             </h5>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
                                 <?= $contentBlock['description'] ?>
                             </p>
+                            <div class="text-xs bg-gray-50 dark:bg-gray-700 p-2 rounded border border-gray-200 dark:border-gray-600 max-h-[100px] overflow-y-auto">
+                                <?php if ($contentBlock['type'] === 'image'): ?>
+                                    <div class="w-20 h-20 rounded overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
+                                        <?= $this->Html->image($contentBlock['value'], [
+                                            'class' => 'w-full h-full object-cover',
+                                            'alt' => h($contentBlock['label']),
+                                        ]) ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="text-gray-700 dark:text-gray-300 font-mono whitespace-normal break-words">
+                                        <?= h(substr($contentBlock['value'], 0, 200)) ?>
+                                        <?php if (strlen($contentBlock['value']) > 200): ?>
+                                            ...
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <div class="flex gap-2">
                             <?= $this->Html->link(
