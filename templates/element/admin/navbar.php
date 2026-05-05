@@ -13,7 +13,7 @@ $searchableMenu = [
     ['label' => 'Clinicians', 'url' => ['controller' => 'Clinicians', 'action' => 'index']],
     ['label' => 'Patients', 'url' => ['controller' => 'Patients', 'action' => 'index']],
     ['label' => 'Reminders', 'url' => ['controller' => 'Reminders', 'action' => 'index']],
-    ['label' => 'Resources', 'url' => /*['controller' => 'Resources', 'action' => 'index']*/ ['controller' => 'Admins', 'action' => 'dashboard']],
+    ['label' => 'Resources', 'url' => ['controller' => 'Resources', 'action' => 'index']],
     ['label' => 'Contact Messages', 'url' => ['controller' => 'ContactMessages', 'action' => 'index']],
     ['label' => 'My Profile', 'url' => ['controller' => 'Users', 'action' => 'view', $identity->id]],
     ['label' => 'Settings', 'url' => ['controller' => 'Users', 'action' => 'edit', $identity->id]],

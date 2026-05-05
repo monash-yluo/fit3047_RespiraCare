@@ -193,3 +193,14 @@ body.dark {
     border-color: #9b1c1c !important;
     background-color: #1a1a1a !important;
 }
+
+
+a.asc {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+a.desc {
+    color: var(--nav-color);
+    font-weight: 600;
+}
