@@ -64,7 +64,7 @@ $this->assign('title', 'Edit Content Block - Content Blocks');
                         ?>
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2"><?= __('Current Image') ?></label>
-                            <div class="w-40 h-40 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                            <div class="w-auto rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                                 <?= $this->Html->image($contentBlock->value, [
                                     'class' => 'w-full h-full object-cover',
                                 ]) ?>

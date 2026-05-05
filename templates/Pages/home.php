@@ -12,7 +12,7 @@ $this->assign('title', 'Respira Care');
     <div class="container">
         <div class="row gy-4 justify-content-between align-items-center">
             <div class="col-lg-6 order-lg-last hero-img text-center">
-                <?= $this->Html->image('landing-hero.png', [
+                <?= $this->ContentBlock->image('home-hero-image', [
                     'class' => 'img-fluid',
                     'alt' => 'RespiraCare Remote Monitoring Doctors',
                     'style' => 'max-height: 400px;',
@@ -83,7 +83,7 @@ $this->assign('title', 'Respira Care');
         <div class="row gy-4 align-items-center">
 
             <div class="col-md-6 d-flex justify-content-center" data-aos="zoom-out" data-aos-delay="100">
-                <?= $this->Html->image('landing-feature.svg', [
+                <?= $this->ContentBlock->image('home-feature-image', [
                     'class' => 'img-fluid',
                     'alt' => 'RespiraCare Features Dashboard',
                     'style' => 'max-height: 350px;',

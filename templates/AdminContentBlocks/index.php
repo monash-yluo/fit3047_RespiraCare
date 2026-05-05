@@ -57,7 +57,7 @@ $slugify = function ($text) {
                                 <?php if ($contentBlock['type'] === 'image'): ?>
 
                                     <?php if (!empty($contentBlock['value'])): ?>
-                                        <div class="w-20 h-20 rounded overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
+                                        <div class="w-24 rounded overflow-hidden dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
                                             <?= $this->Html->image($contentBlock['value'], [
                                                 'class' => 'w-full h-full object-cover',
                                                 'alt' => h($contentBlock['label']),

@@ -19,10 +19,19 @@ class ContentBlocksSeed extends BaseSeed
             ],
             [
                 'parent' => 'global',
-                'label' => 'Logo',
+                'label' => 'Light Logo',
                 'description' => 'Shown in the centre of the home page, and also in the top corner of all administration pages.',
-                'slug' => 'logo',
+                'slug' => 'logo-light',
                 'type' => 'image',
+                'value' => 'respiracare-Icon.png',
+            ],
+            [
+                'parent' => 'global',
+                'label' => 'Dark Logo',
+                'description' => 'Shown in the centre of the home page, and also in the top corner of all administration pages.',
+                'slug' => 'logo-dark',
+                'type' => 'image',
+                'value' => 'respiracare-Icon-dark.png',
             ],
             [
                 'parent' => 'home-hero',
@@ -40,6 +49,14 @@ class ContentBlocksSeed extends BaseSeed
                 'type' => 'text',
                 'value' => 'Log your daily vitals, receive personalised reminders, 
                 and get expert respiratory support exactly when you need it.'
+            ],
+            [
+                'parent' => 'home-hero',
+                'label' => 'Home Page Hero Image',
+                'description' => 'Hero image shown on the home page.',
+                'slug' => 'home-hero-image',
+                'type' => 'image',
+                'value' => 'landing-hero.png',
             ],
             [
                 'parent' => 'home-process',
@@ -64,6 +81,14 @@ class ContentBlocksSeed extends BaseSeed
                 'slug' => 'home-process-step-descriptions',
                 'type' => 'text',
                 'value' => 'Easily record your oxygen saturation (SpO2), blood pressure, and respiratory rate from the comfort of home.|Confidentially update your physician on coughing, wheezing, or shortness of breath via our secure portal.|Get personalised feedback, proactive treatment adjustments, and continuous monitoring.',
+            ],
+            [
+                'parent' => 'home-feature',
+                'label' => 'Feature Details Image',
+                'description' => 'Image for the feature details section.',
+                'slug' => 'home-feature-image',
+                'type' => 'image',
+                'value' => 'landing-feature.svg',
             ],
             [
                 'parent' => 'home-feature',
@@ -157,6 +182,30 @@ class ContentBlocksSeed extends BaseSeed
                 'slug' => 'home-doctors-cta-text',
                 'type' => 'text',
                 'value' => 'Ready to take control of your COPD? Reach out to our team to learn more about how the RespiraCare platform can support your daily health journey. Whether you need help setting up your remote vitals monitoring, or have questions about connecting with our certified specialists, we are here to help.',
+            ],
+            [
+                'parent' => 'about',
+                'label' => 'About Page Hero',
+                'description' => 'Hero section HTML for the about page.',
+                'slug' => 'about-hero',
+                'type' => 'html',
+                'value' => '<h1 class="fw-bold mb-3 display-4">About RespiraCare</h1><p class="lead mb-0">Pioneering the future of remote COPD management.</p>',
+            ],
+            [
+                'parent' => 'about',
+                'label' => 'About Mission Section',
+                'description' => 'Mission section HTML for the about page.',
+                'slug' => 'about-mission',
+                'type' => 'html',
+                'value' => '<span class="fw-bold text-uppercase small" style="color: #305BAB; letter-spacing: 1.5px;">Our Mission</span><h2 class="fw-bold mb-4 mt-2 display-6">Empowering Patients. <br>Redefining Respiratory Care.</h2><p class="mb-4 lh-lg fs-5">Founded by certified physicians specialising in Chronic Obstructive Pulmonary Disease (COPD), RespiraCare Online was built on a simple premise: managing a chronic lung condition should not mean living in a waiting room.</p><p class="mb-5 lh-lg">Our platform allows patients to easily input vital data—such as lung function, oxygen saturation, and daily symptoms—directly from home. By seamlessly connecting this data to specialised clinicians, we provide real-time remote monitoring, personalised treatment adjustments, and total peace of mind.</p>',
+            ],
+            [
+                'parent' => 'about',
+                'label' => 'About Clinic Image',
+                'description' => 'Clinic image for the about page mission section.',
+                'slug' => 'about-clinic-image',
+                'type' => 'image',
+                'value' => 'about-clinic.jpg',
             ],
             
         ];
