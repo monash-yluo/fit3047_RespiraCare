@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use DateTime;
+
 /**
  * Bookings Controller
  *
@@ -21,14 +23,56 @@ class BookingsController extends AppController
 
         $query = $this->Bookings->find()
             ->contain(['Patients.Users', 'Clinicians.Users']);
-        $bookings = $this->paginate($query);
+
+        $search = $this->request->getQuery('search');
+
+        if (!empty($search)) {
+            // Find Patient by Search
+            $matchingPatientIds = $this->Bookings->Patients->find()
+                ->select(['Patients.id'])
+                ->innerJoinWith('Users')
+                ->where([
+                    'OR' => [
+                        'Users.first_name LIKE' => '%' . $search . '%',
+                        'Users.last_name LIKE' => '%' . $search . '%',
+                        'Users.email LIKE' => '%' . $search . '%',
+                    ],
+                ]);
+
+            // Find Clinician by Search
+            $matchingClinicianIds = $this->Bookings->Clinicians->find()
+                ->select(['Clinicians.id'])
+                ->innerJoinWith('Users')
+                ->where([
+                    'OR' => [
+                        'Users.first_name LIKE' => '%' . $search . '%',
+                        'Users.last_name LIKE' => '%' . $search . '%',
+                        'Users.email LIKE' => '%' . $search . '%',
+                    ],
+                ]);
+
+            // If existed, return
+            $query->where([
+                'OR' => [
+                    'Bookings.patient_id IN' => $matchingPatientIds,
+                    'Bookings.clinician_id IN' => $matchingClinicianIds,
+                ],
+            ]);
+        }
 
         $this->paginate = [
             'limit' => 10,
-            'order' => ['created' => 'DESC'],
+            'order' => ['Bookings.created' => 'DESC'],
         ];
 
+        $bookings = $this->paginate($query);
         $this->set(compact('bookings'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/bookings_table');
+        }
     }
 
     public function patientClinicianIndex()
@@ -39,7 +83,7 @@ class BookingsController extends AppController
         $clinicianId = null;
         if ($this->Authentication->getIdentity()->role === 'patient') {
             $patientId = $this->getPatientId();
-        } else if ($this->Authentication->getIdentity()->role === 'clinician') {
+        } elseif ($this->Authentication->getIdentity()->role === 'clinician') {
             $clinicianId = $this->getClinicianId();
         }
 
@@ -52,24 +96,26 @@ class BookingsController extends AppController
             ->andWhere(function ($exp) use ($patientId, $clinicianId) {
                 if ($patientId) {
                     return $exp->eq('Bookings.patient_id', $patientId);
-                } else if ($clinicianId) {
+                } elseif ($clinicianId) {
                     return $exp->eq('Bookings.clinician_id', $clinicianId);
                 }
+
                 return null;
             })
             ->count();
 
         // Get upcoming bookings (not paginated)
-        $today = new \DateTime();
+        $today = new DateTime();
         $upcomingBookings = $this->Bookings->find()
             ->contain(['Clinicians.Users', 'Patients.Users'])
             ->where(['Bookings.scheduled_date >=' => $today->format('Y-m-d')])
             ->andWhere(function ($exp) use ($patientId, $clinicianId) {
                 if ($patientId) {
                     return $exp->eq('Bookings.patient_id', $patientId);
-                } else if ($clinicianId) {
+                } elseif ($clinicianId) {
                     return $exp->eq('Bookings.clinician_id', $clinicianId);
                 }
+
                 return null;
             })
             ->orderBy(['Bookings.scheduled_date' => 'ASC'])
@@ -81,9 +127,10 @@ class BookingsController extends AppController
             ->andWhere(function ($exp) use ($patientId, $clinicianId) {
                 if ($patientId) {
                     return $exp->eq('Bookings.patient_id', $patientId);
-                } else if ($clinicianId) {
+                } elseif ($clinicianId) {
                     return $exp->eq('Bookings.clinician_id', $clinicianId);
                 }
+
                 return null;
             })
             ->orderBy(['Bookings.scheduled_date' => 'DESC']);
@@ -99,7 +146,7 @@ class BookingsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $booking = $this->Bookings->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']], 'Clinicians' => ['Users']]);
         $this->set(compact('booking'));
@@ -122,7 +169,6 @@ class BookingsController extends AppController
                 $booking->patient_id = $this->getPatientId(); // Set patient_id to the logged-in patient's ID
             }
 
-
             if ($this->Bookings->save($booking)) {
                 $this->Flash->success(__('The booking has been saved.'));
 
@@ -134,10 +180,10 @@ class BookingsController extends AppController
             }
             $this->Flash->error(__('The booking could not be saved. Please, try again.'));
         }
-        
+
         $clinicians = $this->Bookings->Clinicians->find('list', contain: ['Users'])->all();
         $patients = $this->Bookings->Patients->find('list', contain: ['Users'])->all();
-        
+
         $this->set(compact('booking', 'clinicians', 'patients'));
     }
 
@@ -148,6 +194,7 @@ class BookingsController extends AppController
         $booking = $this->Bookings->get($id);
         if (!in_array($status, ['confirmed', 'pending', 'declined'])) {
             $this->Flash->error(__('Invalid status value.'));
+
             return $this->redirect($this->referer());
         }
 
@@ -168,7 +215,7 @@ class BookingsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $booking = $this->Bookings->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -192,7 +239,7 @@ class BookingsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->checkRole(['admin', 'patient']); // Only admins and patients can delete bookings
 
