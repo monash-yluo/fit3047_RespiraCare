@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2026 at 02:38 PM
+-- Generation Time: May 06, 2026 at 09:50 PM
 -- Server version: 11.8.6-MariaDB
 -- PHP Version: 8.4.16
 
@@ -57,7 +57,7 @@ CREATE TABLE `bookings` (
   `clinician_id` int(11) NOT NULL,
   `notes` text DEFAULT NULL,
   `scheduled_date` datetime NOT NULL,
-  `status` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'pending',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
@@ -68,8 +68,9 @@ CREATE TABLE `bookings` (
 
 INSERT INTO `bookings` (`id`, `patient_id`, `clinician_id`, `notes`, `scheduled_date`, `status`, `created`, `modified`) VALUES
 (1, 1, 1, 'Initial consultation.', '2026-04-01 10:00:00', 'confirmed', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, 2, 1, 'Lung function test.', '2026-04-02 14:30:00', 'scheduled', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(3, 3, 2, 'Routine follow-up.', '2026-04-03 09:15:00', 'pending', '2026-03-21 15:02:11', '2026-03-21 15:02:11');
+(2, 2, 1, 'Lung function test.', '2026-04-02 14:30:00', 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(3, 3, 2, 'Routine follow-up.', '2026-04-03 09:15:00', 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(6, 1, 1, '123', '2026-05-23 17:23:00', 'confirmed', '2026-05-06 09:24:00', '2026-05-06 10:20:08');
 
 -- --------------------------------------------------------
 
@@ -112,7 +113,7 @@ CREATE TABLE `cake_seeds` (
 --
 
 INSERT INTO `cake_seeds` (`id`, `plugin`, `seed_name`, `executed_at`) VALUES
-(3, NULL, 'ContentBlocksSeed', '2026-04-30 08:13:08');
+(10, NULL, 'ContentBlocksSeed', '2026-05-05 13:36:07');
 
 -- --------------------------------------------------------
 
@@ -187,9 +188,32 @@ CREATE TABLE `content_blocks` (
 --
 
 INSERT INTO `content_blocks` (`id`, `parent`, `slug`, `label`, `description`, `type`, `value`, `previous_value`, `modified`) VALUES
-(4, 'global', 'website-title', 'Website Title', 'Shown on the home page, as well as any tabs in the users browser.', 'text', 'RespiraCare', NULL, '2026-04-30 08:13:08'),
-(5, 'global', 'logo', 'Logo', 'Shown in the centre of the home page, and also in the top corner of all administration pages.', 'image', NULL, NULL, '2026-04-30 08:13:08'),
-(6, 'home', 'home-hero-title', 'Home Page Hero Title', 'The main content shown in the centre of the home page.', 'html', '<h1 class=\"fs-2 mb-3\">Your Dedicated Partner in <br><span>COPD Management</span></h1>', NULL, '2026-04-30 08:13:08');
+(108, 'global', 'website-title', 'Website Title', 'Shown on the home page, as well as any tabs in the users browser.', 'html', '<h1 class=\"sitename mb-0 fs-3\">RespiraCare</h1>', NULL, '2026-05-05 13:36:07'),
+(109, 'global', 'dashboard-website-title', 'Dashboard Website Title', 'Shown on the dashboard page.', 'html', '<h1 class=\"text-2xl mr-10 font-semibold text-gray-900 dark:text-white\">RespiraCare</h1>', NULL, '2026-05-05 13:36:07'),
+(110, 'global', 'logo-light', 'Light Logo', 'Shown in the centre of the home page, and also in the top corner of all administration pages.', 'image', 'respiracare-Icon.png', NULL, '2026-05-05 13:39:02'),
+(111, 'global', 'logo-dark', 'Dark Logo', 'Shown in the centre of the home page, and also in the top corner of all administration pages.', 'image', 'respiracare-Icon-dark.png', NULL, '2026-05-05 13:36:07'),
+(112, 'home-hero', 'home-hero-title', 'Home Page Hero Title', 'The main content shown in the centre of the home page.', 'html', '<h1 class=\"fs-2 mb-3\">Your Dedicated Partner in <br><span>COPD Management</span></h1>', NULL, '2026-05-05 13:36:07'),
+(113, 'home-hero', 'home-hero-description', 'Home Page Hero Description', 'A brief description for the home page hero section.', 'text', 'Log your daily vitals, receive personalised reminders, \r\n                and get expert respiratory support exactly when you need it.', NULL, '2026-05-05 13:36:07'),
+(114, 'home-hero', 'home-hero-image', 'Home Page Hero Image', 'Hero image shown on the home page.', 'image', 'landing-hero.png', NULL, '2026-05-05 13:36:07'),
+(115, 'home-process', 'home-process-title', 'Process Section Title', 'Section heading shown above the COPD management steps.', 'text', 'Simple, Remote COPD Management', NULL, '2026-05-05 13:36:07'),
+(116, 'home-process', 'home-process-step-titles', 'Process Step Titles', 'Pipe-delimited titles for COPD process steps.', 'text', 'Log Daily Vitals:|Track Symptoms:|Receive Expert Care:', NULL, '2026-05-05 13:36:07'),
+(117, 'home-process', 'home-process-step-descriptions', 'Process Step Descriptions', 'Pipe-delimited descriptions for COPD process steps.', 'text', 'Easily record your oxygen saturation (SpO2), blood pressure, and respiratory rate from the comfort of home.|Confidentially update your physician on coughing, wheezing, or shortness of breath via our secure portal.|Get personalised feedback, proactive treatment adjustments, and continuous monitoring.', NULL, '2026-05-05 13:36:07'),
+(118, 'home-feature', 'home-feature-image', 'Feature Details Image', 'Image for the feature details section.', 'image', 'landing-feature.svg', NULL, '2026-05-05 13:36:07'),
+(119, 'home-feature', 'home-feature-details', 'Feature Details Section', 'HTML content for the feature details section including title and paragraphs.', 'html', '<h3 class=\"fw-bold mb-4\">Empowering Your Respiratory Health</h3><p>Managing Chronic Obstructive Pulmonary Disease shouldn\'t require constant hospital visits. RespiraCare brings the clinic to your living room.</p><p>Our intuitive platform allows you to securely input your daily health data, providing your specialised care team with the real-time insights they need to monitor your condition.</p><p>With automated reminders, we are dedicated to helping you stay proactive about your lung health and preventing flare-ups before they happen.</p>', NULL, '2026-05-05 13:36:07'),
+(120, 'home-doctors', 'home-doctors-header', 'Doctors Section Header', 'HTML content for the doctors section header including title and description.', 'html', '<h2 class=\"text-white fw-bold mb-3\">Meet Our Certified Specialists</h2><p class=\"text-white-50 col-lg-8 mb-0\">Our dedicated team of certified physicians and pulmonologists specialise in advanced COPD management, ensuring you receive the highest standard of virtual respiratory care.</p>', NULL, '2026-05-05 13:36:07'),
+(121, 'home-doctors', 'doctor-name-1', 'Doctor 1 Name', 'Name of the first specialist doctor.', 'text', 'Dr. Alice Smith', NULL, '2026-05-05 13:36:07'),
+(122, 'home-doctors', 'doctor-description-1', 'Doctor 1 Description', 'Description of the first specialist doctor.', 'text', 'Specializing in chronic lung disease and proactive remote patient monitoring.', NULL, '2026-05-05 13:36:07'),
+(123, 'home-doctors', 'doctor-name-2', 'Doctor 2 Name', 'Name of the second specialist doctor.', 'text', 'Dr. Emily Rostova', NULL, '2026-05-05 13:36:07'),
+(124, 'home-doctors', 'doctor-description-2', 'Doctor 2 Description', 'Description of the second specialist doctor.', 'text', 'Dedicated to improving patient outcomes through continuous virtual care.', NULL, '2026-05-05 13:36:07'),
+(125, 'home-doctors', 'doctor-name-3', 'Doctor 3 Name', 'Name of the third specialist doctor.', 'text', 'Dr. Marcus Thompson', NULL, '2026-05-05 13:36:07'),
+(126, 'home-doctors', 'doctor-description-3', 'Doctor 3 Description', 'Description of the third specialist doctor.', 'text', 'Passionate about advancing respiratory care through innovative virtual solutions.', NULL, '2026-05-05 13:36:07'),
+(127, 'home-doctors', 'doctor-image-1', 'Doctor 1 Image', 'Profile image of the first specialist doctor.', 'image', NULL, NULL, '2026-05-05 13:36:07'),
+(128, 'home-doctors', 'doctor-image-2', 'Doctor 2 Image', 'Profile image of the second specialist doctor.', 'image', NULL, NULL, '2026-05-05 13:36:07'),
+(129, 'home-doctors', 'doctor-image-3', 'Doctor 3 Image', 'Profile image of the third specialist doctor.', 'image', NULL, NULL, '2026-05-05 13:36:07'),
+(130, 'home-doctors', 'home-doctors-cta-text', 'Doctors CTA Section Text', 'Call-to-action text for the doctors section.', 'text', 'Ready to take control of your COPD? Reach out to our team to learn more about how the RespiraCare platform can support your daily health journey. Whether you need help setting up your remote vitals monitoring, or have questions about connecting with our certified specialists, we are here to help.', NULL, '2026-05-05 13:36:07'),
+(131, 'about', 'about-hero', 'About Page Hero', 'Hero section HTML for the about page.', 'html', '<h1 class=\"fw-bold mb-3 display-4\">About RespiraCare</h1><p class=\"lead mb-0\">Pioneering the future of remote COPD management.</p>', NULL, '2026-05-05 13:36:07'),
+(132, 'about', 'about-mission', 'About Mission Section', 'Mission section HTML for the about page.', 'html', '<span class=\"fw-bold text-uppercase small\" style=\"color: #305BAB; letter-spacing: 1.5px;\">Our Mission</span><h2 class=\"fw-bold mb-4 mt-2 display-6\">Empowering Patients. <br>Redefining Respiratory Care.</h2><p class=\"mb-4 lh-lg fs-5\">Founded by certified physicians specialising in Chronic Obstructive Pulmonary Disease (COPD), RespiraCare Online was built on a simple premise: managing a chronic lung condition should not mean living in a waiting room.</p><p class=\"mb-5 lh-lg\">Our platform allows patients to easily input vital data—such as lung function, oxygen saturation, and daily symptoms—directly from home. By seamlessly connecting this data to specialised clinicians, we provide real-time remote monitoring, personalised treatment adjustments, and total peace of mind.</p>', NULL, '2026-05-05 13:36:07'),
+(133, 'about', 'about-clinic-image', 'About Clinic Image', 'Clinic image for the about page mission section.', 'image', 'about-clinic.jpg', NULL, '2026-05-05 13:36:07');
 
 -- --------------------------------------------------------
 
@@ -535,7 +559,7 @@ ALTER TABLE `ai_insights`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cake_migrations`
@@ -547,13 +571,13 @@ ALTER TABLE `cake_migrations`
 -- AUTO_INCREMENT for table `cake_seeds`
 --
 ALTER TABLE `cake_seeds`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `clinicians`
 --
 ALTER TABLE `clinicians`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `contact_messages`
@@ -565,7 +589,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT for table `content_blocks`
 --
 ALTER TABLE `content_blocks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `patients`
@@ -613,7 +637,7 @@ ALTER TABLE `symptom_types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
