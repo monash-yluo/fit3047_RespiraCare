@@ -46,9 +46,19 @@ class RemindersController extends AppController
             ]);
         }
 
-        $reminders = $this->paginate($query);
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['created' => 'DESC'],
+        ];
 
+        $reminders = $this->paginate($query);
         $this->set(compact('reminders'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/reminders_table');
+        }
     }
 
     /**

@@ -8,22 +8,31 @@
  * @var \App\View\AppView $this
  */
 
-$search = $search ?? true;
+use Cake\Http\Exception\NotFoundException;
+
+$hasSearch = $hasSearch ?? true;
+$tableElement = $tableElement ?? false;
+$useContainer = $useContainer ?? true;
+
+if (empty($tableElement)) {
+    throw new NotFoundException('table_wrapper requires a $tableElement to be passed.');
+}
 
 ?>
 <div class="flex flex-col">
     <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
             <div class="overflow-hidden shadow">
-                <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600 border border-gray-200 dark:border-gray-700">
 
-                    <?php if ($search): ?>
+                <?php if ($hasSearch) : ?>
+                    <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-900 border border-b-0 border-gray-200 dark:border-gray-700">
                         <?= $this->element('table/search') ?>
-                    <?php endif; ?>
+                    </div>
+                <?php endif; ?>
 
-                    <?= $this->fetch('table_content') ?>
-
-                </table>
+                <div class="<?= $useContainer ? 'ajax-table-content' : null; ?>">
+                    <?= $this->element($tableElement) ?>
+                </div>
             </div>
         </div>
     </div>

@@ -1658,6 +1658,10 @@ input:checked + .toggle-bg {
   margin: 0px;
 }
 
+.m-5 {
+  margin: 1.25rem;
+}
+
 .-my-3 {
   margin-top: -0.75rem;
   margin-bottom: -0.75rem;
@@ -4080,6 +4084,11 @@ input:checked + .toggle-bg {
   letter-spacing: 0.1em;
 }
 
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+
 .text-blue-600 {
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity, 1));
@@ -4908,6 +4917,10 @@ a.asc {
 a.desc {
   color: var(--nav-color);
   font-weight: 600;
+}
+
+#resources-filter-panel #simple-search {
+  background-color: #fff !important;
 }
 
 .hover\:bg-blue-800:hover {

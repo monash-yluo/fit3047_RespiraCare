@@ -17,6 +17,7 @@ $searchableMenu = [
     ['label' => 'Contact Messages', 'url' => ['controller' => 'ContactMessages', 'action' => 'index']],
     ['label' => 'My Profile', 'url' => ['controller' => 'Users', 'action' => 'view', $identity->id]],
     ['label' => 'Settings', 'url' => ['controller' => 'Users', 'action' => 'edit', $identity->id]],
+    ['label' => 'Content Management', 'url' => ['controller' => 'AdminContentBlocks', 'action' => 'index']],
     ['label' => 'Logout', 'url' => ['controller' => 'Users', 'action' => 'logout']],
 ];
 

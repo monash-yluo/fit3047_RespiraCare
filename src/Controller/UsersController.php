@@ -55,9 +55,19 @@ class UsersController extends AppController
             ]);
         }
 
-        $users = $this->paginate($query);
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['Users.created' => 'DESC'],
+        ];
 
+        $users = $this->paginate($query);
         $this->set(compact('users'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/users_table');
+        }
     }
 
     /**

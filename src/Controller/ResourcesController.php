@@ -17,10 +17,26 @@ class ResourcesController extends AppController
      */
     public function index()
     {
+        $search = $this->request->getQuery('search');
         $query = $this->Resources->find();
-        $resources = $this->paginate($query);
 
+        if (!empty($search)) {
+            $query->where(['title LIKE' => '%' . $search . '%']);
+        }
+
+        $this->paginate = [
+            'limit' => 12,
+            'order' => ['created' => 'DESC'],
+        ];
+
+        $resources = $this->paginate($query);
         $this->set(compact('resources'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/resources_grid');
+        }
     }
 
     /**
@@ -30,7 +46,7 @@ class ResourcesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $resource = $this->Resources->get($id, contain: []);
         $this->set(compact('resource'));
@@ -65,7 +81,7 @@ class ResourcesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $this->checkRole(['admin', 'clinician']);
 
@@ -89,7 +105,7 @@ class ResourcesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->checkRole(['admin', 'clinician']);
 

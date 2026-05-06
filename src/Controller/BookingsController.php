@@ -23,6 +23,11 @@ class BookingsController extends AppController
             ->contain(['Patients.Users', 'Clinicians.Users']);
         $bookings = $this->paginate($query);
 
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['created' => 'DESC'],
+        ];
+
         $this->set(compact('bookings'));
     }
 

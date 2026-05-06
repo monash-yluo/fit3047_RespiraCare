@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Http\Exception\NotFoundException;
+use Cake\Log\Log;
 
 /**
  * Patients Controller
@@ -36,9 +37,19 @@ class PatientsController extends AppController
             ]);
         }
 
-        $patients = $this->paginate($query);
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['Users.created' => 'DESC'],
+        ];
 
+        $patients = $this->paginate($query);
         $this->set(compact('patients'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/patients_table');
+        }
     }
 
     /**
@@ -80,7 +91,6 @@ class PatientsController extends AppController
 
     public function clinicianIndex()
     {
-        $identity = $this->request->getAttribute('identity');
         $this->checkRole(['clinician']);
 
         $search = $this->request->getQuery('search');
@@ -95,6 +105,14 @@ class PatientsController extends AppController
                 ->contain(['Users', 'Clinicians.Users']);
 
             if (!empty($search)) {
+                $myPatientsQuery->where([
+                    'OR' => [
+                        'Users.first_name LIKE' => '%' . $search . '%',
+                        'Users.last_name LIKE' => '%' . $search . '%',
+                        'Users.phone LIKE' => '%' . $search . '%',
+                    ],
+                ]);
+
                 $allPatientsQuery->where([
                     'OR' => [
                         'Users.first_name LIKE' => '%' . $search . '%',
@@ -104,10 +122,23 @@ class PatientsController extends AppController
                 ]);
             }
 
-            $myPatients = $this->paginate($myPatientsQuery);
-            $allPatients = $this->paginate($allPatientsQuery);
+            $myPatients = $this->paginate($myPatientsQuery, [
+                'scope' => 'myPatients',
+                'limit' => 10,
+            ]);
 
-            $this->set(compact('myPatients', 'allPatients', 'search'));
+            $allPatients = $this->paginate($allPatientsQuery, [
+                'scope' => 'allPatients',
+                'limit' => 10,
+            ]);
+
+            $this->set(compact('myPatients', 'allPatients'));
+
+            if ($this->request->is('ajax')) {
+                $this->viewBuilder()->disableAutoLayout();
+
+                return $this->render('/element/table/entity_tables/clinician_combined_tables');
+            }
         }
     }
 

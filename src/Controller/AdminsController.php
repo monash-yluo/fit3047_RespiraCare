@@ -36,5 +36,11 @@ class AdminsController extends AppController
         $totalPatients = $this->fetchTable('Patients')->find()->count();
 
         $this->set(compact('contactMessages', 'totalMessages', 'totalClinicians', 'totalPatients'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/admin_dashboard_table');
+        }
     }
 }

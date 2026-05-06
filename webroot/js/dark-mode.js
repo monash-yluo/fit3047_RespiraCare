@@ -71,10 +71,10 @@ if (preloader) {
 document.addEventListener('DOMContentLoaded', function() {
     let searchTimeout;
     const searchInput = document.getElementById('simple-search');
-    const searchForm = document.getElementById('search-form');
+    const tableContainer = document.querySelector('.ajax-table-content');
 
-    if (searchInput && searchForm) {
-        // Move cursor to the end of the text on load (UX improvement for auto-searches)
+    if (searchInput && tableContainer) {
+        // Move cursor to the end of the text on load
         const val = searchInput.value;
         searchInput.focus();
         searchInput.value = '';
@@ -82,13 +82,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Listen for user typing
         searchInput.addEventListener('input', function() {
-            // Clear the existing timer if they type again
+            // Clear the existing timer
             clearTimeout(searchTimeout);
 
-            // Set a new timer for 2 seconds (2000 milliseconds)
+            // Set a new timer for 0.3s
             searchTimeout = setTimeout(function() {
-                searchForm.submit();
-            }, 1500);
+                const searchValue = searchInput?.value || '';
+                const target = searchInput.getAttribute('data-target');
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', searchValue);
+
+                if (searchInput.value.trim() !== '') {
+                    url.searchParams.set('target', target);
+                }
+
+                fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                    .then(response => response.text())
+                    .then(html => {tableContainer.innerHTML = html; })
+                    .catch(error => {console.error('Search failed:', error);});
+
+            }, 300);
         });
     }
 });
@@ -167,3 +180,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    let searchTimeout;
+    const searchInput = document.getElementById('simple-search');
+    const gridContainer = document.getElementById('grid-container');
+
+
+    if (searchInput && gridContainer) {
+        const val = searchInput.value;
+        searchInput.focus();
+        searchInput.value = '';
+        searchInput.value = val;
+
+        // Listen for user typing
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+
+            searchTimeout = setTimeout(function() {
+                const searchTerm = encodeURIComponent(searchInput.value);
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', searchTerm);
+
+                fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                    .then(response => response.text())
+                    .then(html => {gridContainer.innerHTML = html; })
+                    .catch(error => {console.error('Search failed:', error);});
+
+            }, 300);
+        });
+    }
+});

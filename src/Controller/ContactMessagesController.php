@@ -52,9 +52,19 @@ class ContactMessagesController extends AppController
             ]);
         }
 
-        $contactMessages = $this->paginate($query);
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['created' => 'DESC'],
+        ];
 
+        $contactMessages = $this->paginate($query);
         $this->set(compact('contactMessages'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/contact_messages_table');
+        }
     }
 
     /**

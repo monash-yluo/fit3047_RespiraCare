@@ -37,9 +37,19 @@ class CliniciansController extends AppController
             ]);
         }
 
-        $clinicians = $this->paginate($query);
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['Users.created' => 'DESC'],
+        ];
 
+        $clinicians = $this->paginate($query);
         $this->set(compact('clinicians'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/clinicians_table');
+        }
     }
 
     /**
@@ -88,6 +98,10 @@ class CliniciansController extends AppController
                 ]);
             }
 
+            $this->paginate = [
+                'limit' => 10,
+            ];
+
             $patients = $this->paginate($patientsQuery);
             $patientCount = $patientsQuery->count();
 
@@ -115,6 +129,12 @@ class CliniciansController extends AppController
                 ->count();
 
             $this->set(compact('patients', 'patientCount', 'reminderCount', 'urgentPatientCount'));
+
+            if ($this->request->is('ajax')) {
+                $this->viewBuilder()->disableAutoLayout();
+
+                return $this->render('/element/table/entity_tables/clinician_dashboard_table');
+            }
         }
     }
 }
