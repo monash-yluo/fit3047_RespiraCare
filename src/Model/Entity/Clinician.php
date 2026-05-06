@@ -37,4 +37,12 @@ class Clinician extends Entity
         'bookings' => true,
         'patients' => true,
     ];
+
+    protected function _getUserName()
+    {
+        if (isset($this->user)) {
+            return $this->user->full_name;
+        }
+        return '';
+    }
 }

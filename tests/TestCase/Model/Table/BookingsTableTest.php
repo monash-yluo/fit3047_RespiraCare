@@ -74,4 +74,15 @@ class BookingsTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Test updateExpiredPendingBookings method
+     *
+     * @return void
+     * @link \App\Model\Table\BookingsTable::updateExpiredPendingBookings()
+     */
+    public function testUpdateExpiredPendingBookings(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

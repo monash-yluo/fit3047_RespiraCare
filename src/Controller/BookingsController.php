@@ -71,19 +71,28 @@ class BookingsController extends AppController
      */
     public function add()
     {
+        $this->checkRole(['patient', 'admin']); // Only patients and admins can add bookings
+
         $booking = $this->Bookings->newEmptyEntity();
         if ($this->request->is('post')) {
             $booking = $this->Bookings->patchEntity($booking, $this->request->getData());
+
+            if ($identity = $this->Authentication->getIdentity()->role === 'patient') {
+                $booking->patient_id = $this->getPatientId(); // Set patient_id to the logged-in patient's ID
+            }
+
+
             if ($this->Bookings->save($booking)) {
                 $this->Flash->success(__('The booking has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'patientIndex']);
             }
             $this->Flash->error(__('The booking could not be saved. Please, try again.'));
         }
-        $patients = $this->Bookings->Patients->find('list', limit: 200)->all();
-        $clinicians = $this->Bookings->Clinicians->find('list', limit: 200)->all();
-        $this->set(compact('booking', 'patients', 'clinicians'));
+        
+        $clinicians = $this->Bookings->Clinicians->find('list', contain: ['Users'])->all();
+        
+        $this->set(compact('booking', 'clinicians'));
     }
 
     /**
@@ -119,6 +128,8 @@ class BookingsController extends AppController
      */
     public function delete($id = null)
     {
+        $this->checkRole(['admin', 'patient']); // Only admins and patients can delete bookings
+
         $this->request->allowMethod(['post', 'delete']);
         $booking = $this->Bookings->get($id);
         if ($this->Bookings->delete($booking)) {
@@ -127,6 +138,10 @@ class BookingsController extends AppController
             $this->Flash->error(__('The booking could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        if ($this->Authentication->getIdentity()->role === 'admin') {
+            return $this->redirect(['action' => 'index']);
+        } else {
+            return $this->redirect(['action' => 'patientIndex']);
+        }
     }
 }

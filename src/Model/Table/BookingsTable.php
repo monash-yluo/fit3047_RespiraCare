@@ -86,8 +86,8 @@ class BookingsTable extends Table
         $validator
             ->scalar('status')
             ->maxLength('status', 50)
-            ->requirePresence('status', 'create')
-            ->notEmptyString('status');
+            ->notEmptyString('status')
+            ->inList('status', ['pending', 'confirmed', 'declined']);
 
         return $validator;
     }

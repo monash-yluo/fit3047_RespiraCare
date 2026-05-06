@@ -44,7 +44,7 @@ class CliniciansTable extends Table
         parent::initialize($config);
 
         $this->setTable('clinicians');
-        $this->setDisplayField('id');
+        $this->setDisplayField('user_name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

@@ -23,10 +23,10 @@ class BookingsFixture extends TestFixture
                 'patient_id' => 1,
                 'clinician_id' => 1,
                 'notes' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'scheduled_date' => '2026-03-21 04:38:19',
+                'scheduled_date' => '2026-05-06 08:56:40',
                 'status' => 'Lorem ipsum dolor sit amet',
-                'created' => '2026-03-21 04:38:19',
-                'modified' => '2026-03-21 04:38:19',
+                'created' => '2026-05-06 08:56:40',
+                'modified' => '2026-05-06 08:56:40',
             ],
         ];
         parent::init();
