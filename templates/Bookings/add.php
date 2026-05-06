@@ -9,7 +9,7 @@
 
 // Breadcrumb
 $breadcrumbs = [
-    ['title' => 'Bookings', 'url' => ['controller' => 'Bookings', 'action' => 'patientIndex']],
+    ['title' => 'Bookings', 'url' => ['controller' => 'Bookings', 'action' => 'patientClinicianIndex']],
     ['title' => 'Request New Booking', 'url' => null],
 ];
 
@@ -74,9 +74,7 @@ $this->assign('title', 'Request New Booking');
 
             <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 <div class="flex flex-col space-y-4">
-                    <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Request Booking
-                    </button>
+                    <?= $this->element('button/blue_button', ['label' => 'Request Booking', 'type' => 'submit']) ?>
                 </div>
             </div>
         </div>

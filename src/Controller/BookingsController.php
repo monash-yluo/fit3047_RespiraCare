@@ -24,14 +24,32 @@ class BookingsController extends AppController
         $this->set(compact('bookings'));
     }
 
-    public function patientIndex()
+    public function patientClinicianIndex()
     {
+        $this->checkRole(['patient', 'clinician']); // Only patients and clinicians can access this method
+
+        $patientId = null;
+        $clinicianId = null;
+        if ($this->Authentication->getIdentity()->role === 'patient') {
+            $patientId = $this->getPatientId();
+        } else if ($this->Authentication->getIdentity()->role === 'clinician') {
+            $clinicianId = $this->getClinicianId();
+        }
+
         // Auto-decline pending bookings that are past their scheduled date
         $this->Bookings->updateExpiredPendingBookings();
 
         // Count pending bookings
         $pendingCount = $this->Bookings->find()
             ->where(['Bookings.status' => 'pending'])
+            ->andWhere(function ($exp) use ($patientId, $clinicianId) {
+                if ($patientId) {
+                    return $exp->eq('Bookings.patient_id', $patientId);
+                } else if ($clinicianId) {
+                    return $exp->eq('Bookings.clinician_id', $clinicianId);
+                }
+                return null;
+            })
             ->count();
 
         // Get upcoming bookings (not paginated)
@@ -39,12 +57,28 @@ class BookingsController extends AppController
         $upcomingBookings = $this->Bookings->find()
             ->contain(['Clinicians.Users', 'Patients.Users'])
             ->where(['Bookings.scheduled_date >=' => $today->format('Y-m-d')])
+            ->andWhere(function ($exp) use ($patientId, $clinicianId) {
+                if ($patientId) {
+                    return $exp->eq('Bookings.patient_id', $patientId);
+                } else if ($clinicianId) {
+                    return $exp->eq('Bookings.clinician_id', $clinicianId);
+                }
+                return null;
+            })
             ->orderBy(['Bookings.scheduled_date' => 'ASC'])
             ->all();
 
         // Get all bookings (paginated)
         $query = $this->Bookings->find()
             ->contain(['Clinicians.Users', 'Patients.Users'])
+            ->andWhere(function ($exp) use ($patientId, $clinicianId) {
+                if ($patientId) {
+                    return $exp->eq('Bookings.patient_id', $patientId);
+                } else if ($clinicianId) {
+                    return $exp->eq('Bookings.clinician_id', $clinicianId);
+                }
+                return null;
+            })
             ->orderBy(['Bookings.scheduled_date' => 'DESC']);
         $bookings = $this->paginate($query);
 
@@ -60,7 +94,7 @@ class BookingsController extends AppController
      */
     public function view($id = null)
     {
-        $booking = $this->Bookings->get($id, contain: ['Patients', 'Clinicians']);
+        $booking = $this->Bookings->get($id, contain: ['Patients' => ['Users', 'Clinicians' => ['Users']], 'Clinicians' => ['Users']]);
         $this->set(compact('booking'));
     }
 
@@ -85,7 +119,11 @@ class BookingsController extends AppController
             if ($this->Bookings->save($booking)) {
                 $this->Flash->success(__('The booking has been saved.'));
 
-                return $this->redirect(['action' => 'patientIndex']);
+                if ($this->Authentication->getIdentity()->role === 'admin') {
+                    return $this->redirect(['action' => 'index']);
+                } else {
+                    return $this->redirect(['action' => 'patientClinicianIndex']);
+                }
             }
             $this->Flash->error(__('The booking could not be saved. Please, try again.'));
         }
@@ -93,6 +131,26 @@ class BookingsController extends AppController
         $clinicians = $this->Bookings->Clinicians->find('list', contain: ['Users'])->all();
         
         $this->set(compact('booking', 'clinicians'));
+    }
+
+    public function changeStatus($id = null, $status = null)
+    {
+        $this->checkRole(['admin', 'clinician']); // Only admins and clinicians can change booking status
+
+        $booking = $this->Bookings->get($id);
+        if (!in_array($status, ['confirmed', 'pending', 'declined'])) {
+            $this->Flash->error(__('Invalid status value.'));
+            return $this->redirect($this->referer());
+        }
+
+        $booking->status = $status;
+        if ($this->Bookings->save($booking)) {
+            $this->Flash->success(__('The booking status has been updated to {0}.', h(ucfirst($status))));
+        } else {
+            $this->Flash->error(__('The booking status could not be updated. Please, try again.'));
+        }
+
+        return $this->redirect($this->referer());
     }
 
     /**
@@ -141,7 +199,7 @@ class BookingsController extends AppController
         if ($this->Authentication->getIdentity()->role === 'admin') {
             return $this->redirect(['action' => 'index']);
         } else {
-            return $this->redirect(['action' => 'patientIndex']);
+            return $this->redirect(['action' => 'patientClinicianIndex']);
         }
     }
 }
