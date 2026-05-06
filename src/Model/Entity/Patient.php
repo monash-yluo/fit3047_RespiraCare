@@ -64,4 +64,12 @@ class Patient extends Entity
     {
         return trim($this->first_name . ' ' . $this->last_name);
     }
+
+    protected function _getUserName()
+    {
+        if (isset($this->user)) {
+            return $this->user->full_name;
+        }
+        return '';
+    }
 }

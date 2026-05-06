@@ -17,8 +17,10 @@ class BookingsController extends AppController
      */
     public function index()
     {
+        $this->checkRole(['admin']); // Only admins can access this method
+
         $query = $this->Bookings->find()
-            ->contain(['Patients', 'Clinicians']);
+            ->contain(['Patients.Users', 'Clinicians.Users']);
         $bookings = $this->paginate($query);
 
         $this->set(compact('bookings'));
@@ -129,8 +131,9 @@ class BookingsController extends AppController
         }
         
         $clinicians = $this->Bookings->Clinicians->find('list', contain: ['Users'])->all();
+        $patients = $this->Bookings->Patients->find('list', contain: ['Users'])->all();
         
-        $this->set(compact('booking', 'clinicians'));
+        $this->set(compact('booking', 'clinicians', 'patients'));
     }
 
     public function changeStatus($id = null, $status = null)

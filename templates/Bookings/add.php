@@ -3,13 +3,22 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Booking $booking
+ * @var \Cake\Collection\CollectionInterface|string[] $patients
  * @var \Cake\Collection\CollectionInterface|string[] $clinicians
  * @var $identity
  */
 
 // Breadcrumb
+$booking_url = null;
+
+if ($identity->role === 'admin') {
+    $booking_url = ['controller' => 'Bookings', 'action' => 'index'];
+} else {
+    $booking_url = ['controller' => 'Bookings', 'action' => 'patientClinicianIndex'];
+}
+
 $breadcrumbs = [
-    ['title' => 'Bookings', 'url' => ['controller' => 'Bookings', 'action' => 'patientClinicianIndex']],
+    ['title' => 'Bookings', 'url' => $booking_url],
     ['title' => 'Request New Booking', 'url' => null],
 ];
 
@@ -35,6 +44,18 @@ $this->assign('title', 'Request New Booking');
                 <h3 class="mb-4 text-lg font-semibold dark:text-white">Booking Details</h3>
 
                 <div class="grid grid-cols-1 gap-x-4 gap-y-6">
+                    <?php if ($identity->role === 'admin') : ?>
+                        <div>
+                            <label for="patient_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Patient</label>
+                            <?= $this->Form->control('patient_id', [
+                                'type' => 'select',
+                                'options' => $patients ?? [],
+                                'label' => false,
+                                'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            ]) ?>
+                        </div>
+                    <?php endif; ?>
+
                     <div>
                         <label for="clinician_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Clinician</label>
                         <?= $this->Form->control('clinician_id', [
@@ -53,6 +74,22 @@ $this->assign('title', 'Request New Booking');
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                         ]) ?>
                     </div>
+                    
+                    <?php if ($identity->role === 'admin') : ?>
+                    <div>
+                        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                        <?= $this->Form->control('status', [
+                            'type' => 'select',
+                            'options' => [
+                                'pending' => 'Pending',
+                                'confirmed' => 'Confirmed',
+                                'declined' => 'Declined',
+                            ],
+                            'label' => false,
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                        ]) ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

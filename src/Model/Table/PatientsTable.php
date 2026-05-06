@@ -49,7 +49,7 @@ class PatientsTable extends Table
         parent::initialize($config);
 
         $this->setTable('patients');
-        $this->setDisplayField('id');
+        $this->setDisplayField('user_name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

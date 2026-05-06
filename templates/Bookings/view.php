@@ -133,7 +133,6 @@ $statusColors = [
                         ) ?>
                     
                     <?php if ($identity->role === 'admin'): ?>
-                        <?= $this->element('button/blue_button', ['label' => 'Edit', 'url' => ['action' => 'edit', $booking->id], 'iconType' => 'edit']) ?>
                         <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $booking->id], 'confirm' => __('Are you sure you want to delete this booking?'), 'iconType' => 'delete']) ?>
                     <?php endif; ?>
                 </div>
