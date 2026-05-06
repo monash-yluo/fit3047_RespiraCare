@@ -24,6 +24,33 @@ class BookingsController extends AppController
         $this->set(compact('bookings'));
     }
 
+    public function patientIndex()
+    {
+        // Auto-decline pending bookings that are past their scheduled date
+        $this->Bookings->updateExpiredPendingBookings();
+
+        // Count pending bookings
+        $pendingCount = $this->Bookings->find()
+            ->where(['Bookings.status' => 'pending'])
+            ->count();
+
+        // Get upcoming bookings (not paginated)
+        $today = new \DateTime();
+        $upcomingBookings = $this->Bookings->find()
+            ->contain(['Clinicians.Users', 'Patients.Users'])
+            ->where(['Bookings.scheduled_date >=' => $today->format('Y-m-d')])
+            ->orderBy(['Bookings.scheduled_date' => 'ASC'])
+            ->all();
+
+        // Get all bookings (paginated)
+        $query = $this->Bookings->find()
+            ->contain(['Clinicians.Users', 'Patients.Users'])
+            ->orderBy(['Bookings.scheduled_date' => 'DESC']);
+        $bookings = $this->paginate($query);
+
+        $this->set(compact('pendingCount', 'upcomingBookings', 'bookings'));
+    }
+
     /**
      * View method
      *

@@ -106,4 +106,21 @@ class BookingsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Auto-decline pending bookings that are past their scheduled date
+     *
+     * @return int The number of records updated
+     */
+    public function updateExpiredPendingBookings(): int
+    {
+        $today = new \DateTime();
+        return $this->updateAll(
+            ['status' => 'declined'],
+            [
+                'status' => 'pending',
+                'scheduled_date <' => $today->format('Y-m-d'),
+            ]
+        );
+    }
 }
