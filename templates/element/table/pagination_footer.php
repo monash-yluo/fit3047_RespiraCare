@@ -9,7 +9,7 @@ $scope = $scope ?? null;
 $scopeOption = $scope ? ['scope' => $scope] : [];
 ?>
 <div
-    class="rounded-b-lg sticky bottom-0 right-0 items-center w-full p-4 bg-white border border-t-0 border-gray-200 sm:flex sm:justify-between dark:bg-gray-800 dark:border-gray-700">
+    class="rounded-b-lg sticky bottom-0 right-0 items-center w-full p-4 bg-white border border-t-1 border-gray-200 sm:flex sm:justify-between dark:bg-gray-800 dark:border-gray-700">
     <div class="flex items-center mb-4 sm:mb-0">
         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
             <?= $this->Paginator->counter(__('Showing {{start}}-{{end}} of {{count}}'), $scopeOption) ?>
