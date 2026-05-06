@@ -120,7 +120,7 @@ $statusColors = [
                 <hr class="my-6 border-gray-100 dark:border-gray-700">
 
                 <div class="flex flex-col space-y-3">
-
+                    <?php if ($identity->role === 'admin' || $identity->role === 'clinician') : ?>
                         <?= $this->Form->postLink(
                             '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg> Accept',
                             ['action' => 'changeStatus', $booking->id, 'confirmed'],
@@ -131,7 +131,7 @@ $statusColors = [
                             ['action' => 'changeStatus', $booking->id, 'declined'],
                             ['escape' => false, 'class' => 'inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800']
                         ) ?>
-                    
+                    <?php endif; ?>
                     <?php if ($identity->role === 'admin'): ?>
                         <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $booking->id], 'confirm' => __('Are you sure you want to delete this booking?'), 'iconType' => 'delete']) ?>
                     <?php endif; ?>
