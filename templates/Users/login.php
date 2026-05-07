@@ -54,6 +54,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
                     <?= $this->Form->button(__('Sign In'), [
                         'class' => 'btn text-white fw-bold px-5 py-2 rounded-3 shadow-sm',
                         'style' => 'background-color: #305BAB; border: none; font-size: 1.1rem;',
+                        'onclick' => "this.innerHTML='Signing In...'; setTimeout(() => { this.disabled=true; }, 100);",
                     ]) ?>
 
                     <?= $this->Html->link(
