@@ -20,7 +20,7 @@ $this->assign('title', 'Manage Resources');
     ]) ?>
 
     <!-- Sorting Controls -->
-    <div class="flex justify-between items-center mx-4 py-4" id="resources-filter-panel">
+    <div class="flex flex-col md:flex-row justify-between space-y-3 items-center mx-4 py-4" id="resources-filter-panel">
         <?= $this->element('table/search') ?>
 
         <div class="flex justify-end items-center space-x-3 text-sm">
@@ -35,7 +35,7 @@ $this->assign('title', 'Manage Resources');
 
     <div class="px-4 pt-6">
         <!-- Resources Grid -->
-        <div id="grid-container">
+        <div id="grid-container" class="text-center">
             <?= $this->element('table/entity_tables/resources_grid') ?>
         </div>
     </div>

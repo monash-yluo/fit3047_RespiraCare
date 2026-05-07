@@ -9,11 +9,13 @@
 
 <!-- Grid Container -->
 <?php if (count($resources) === 0) : ?>
-    <?= $this->element('table/table_empty_state', [
-        'colspan' => 1,
-        'title' => 'No resources found',
-        'message' => 'There are currently no resource records in the system.',
-    ]) ?>
+    <div class="py-8">
+        <?= $this->element('table/table_empty_state', [
+            'colspan' => 1,
+            'title' => 'No resources found',
+            'message' => 'There are currently no resource records in the system.',
+        ]) ?>
+    </div>
 <?php else : ?>
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
         <?php foreach ($resources as $resource) : ?>

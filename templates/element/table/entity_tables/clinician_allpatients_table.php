@@ -1,6 +1,6 @@
 <?php
 /**
- * @var iterable<\App\Model\Entity\Patient> $patients
+ * @var iterable<\App\Model\Entity\Patient> $allPatients
  */
 ?>
 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600 border border-b-0 border-gray-200 dark:border-gray-700">

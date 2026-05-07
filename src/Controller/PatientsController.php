@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Http\Exception\NotFoundException;
-use Cake\Log\Log;
+use Exception;
 
 /**
  * Patients Controller
@@ -94,6 +94,7 @@ class PatientsController extends AppController
         $this->checkRole(['clinician']);
 
         $search = $this->request->getQuery('search');
+        $targetTable = $this->request->getQuery('target');
         $clinicianId = $this->getClinicianId();
 
         if ($clinicianId) {
@@ -101,10 +102,7 @@ class PatientsController extends AppController
                 ->where(['Patients.clinician_id' => $clinicianId])
                 ->contain(['Users', 'Clinicians.Users']);
 
-            $allPatientsQuery = $this->Patients->find()
-                ->contain(['Users', 'Clinicians.Users']);
-
-            if (!empty($search)) {
+            if (!empty($search) && $targetTable === 'my_patients') {
                 $myPatientsQuery->where([
                     'OR' => [
                         'Users.first_name LIKE' => '%' . $search . '%',
@@ -112,7 +110,12 @@ class PatientsController extends AppController
                         'Users.phone LIKE' => '%' . $search . '%',
                     ],
                 ]);
+            }
 
+            $allPatientsQuery = $this->Patients->find()
+                ->contain(['Users', 'Clinicians.Users']);
+
+            if (!empty($search) && ($targetTable === 'all_patients' || empty($targetTable))) {
                 $allPatientsQuery->where([
                     'OR' => [
                         'Users.first_name LIKE' => '%' . $search . '%',
@@ -137,8 +140,15 @@ class PatientsController extends AppController
             if ($this->request->is('ajax')) {
                 $this->viewBuilder()->disableAutoLayout();
 
-                return $this->render('/element/table/entity_tables/clinician_combined_tables');
+                if ($targetTable === 'my_patients') {
+                    return $this->render('/element/table/entity_tables/clinician_patients_table');
+                } elseif ($targetTable === 'all_patients') {
+                    return $this->render('/element/table/entity_tables/clinician_allpatients_table');
+                } else {
+                    throw new Exception('Something went wrong!');
+                }
             }
+
         }
     }
 

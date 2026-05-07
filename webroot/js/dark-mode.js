@@ -70,39 +70,45 @@ if (preloader) {
  */
 document.addEventListener('DOMContentLoaded', function() {
     let searchTimeout;
-    const searchInput = document.getElementById('simple-search');
-    const tableContainer = document.querySelector('.ajax-table-content');
+    const searchInputs = document.querySelectorAll('.simple-search');
 
-    if (searchInput && tableContainer) {
+    if (searchInputs) {
         // Move cursor to the end of the text on load
-        const val = searchInput.value;
-        searchInput.focus();
-        searchInput.value = '';
-        searchInput.value = val;
 
-        // Listen for user typing
-        searchInput.addEventListener('input', function() {
-            // Clear the existing timer
-            clearTimeout(searchTimeout);
+        searchInputs.forEach((searchInput) => {
+            const val = searchInput.value;
+            searchInput.focus();
+            searchInput.value = '';
+            searchInput.value = val;
 
-            // Set a new timer for 0.3s
-            searchTimeout = setTimeout(function() {
-                const searchValue = searchInput?.value || '';
-                const target = searchInput.getAttribute('data-target');
-                const url = new URL(window.location.href);
-                url.searchParams.set('search', searchValue);
+            // Listen for user typing
+            searchInput.addEventListener('input', function() {
 
-                if (searchInput.value.trim() !== '') {
+                const tableWrapper = searchInput.closest('.table_wrapper');
+                const tableContainer = tableWrapper.querySelector('.ajax-table-content');
+
+                // Return if Table Container not exist
+                if (!tableContainer) return;
+
+                // Clear the existing timer
+                clearTimeout(searchTimeout);
+
+                // Set a new timer for 0.3s
+                searchTimeout = setTimeout(function() {
+                    const searchValue = searchInput?.value || '';
+                    const target = searchInput.getAttribute('data-target');
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('search', searchValue);
                     url.searchParams.set('target', target);
-                }
 
-                fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
-                    .then(response => response.text())
-                    .then(html => {tableContainer.innerHTML = html; })
-                    .catch(error => {console.error('Search failed:', error);});
+                    fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                        .then(response => response.text())
+                        .then(html => {tableContainer.innerHTML = html; })
+                        .catch(error => {console.error('Search failed:', error);});
 
-            }, 300);
-        });
+                }, 300);
+            });
+        })
     }
 });
 
@@ -182,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     let searchTimeout;
-    const searchInput = document.getElementById('simple-search');
+    const searchInput = document.querySelector('.simple-search');
     const gridContainer = document.getElementById('grid-container');
 
 
@@ -197,9 +203,9 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(searchTimeout);
 
             searchTimeout = setTimeout(function() {
-                const searchTerm = encodeURIComponent(searchInput.value);
+                const searchValue = searchInput?.value || '';
                 const url = new URL(window.location.href);
-                url.searchParams.set('search', searchTerm);
+                url.searchParams.set('search', searchValue);
 
                 fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
                     .then(response => response.text())

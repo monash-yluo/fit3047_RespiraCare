@@ -14,6 +14,7 @@ $searchableMenu = [
     ['label' => 'Patients', 'url' => ['controller' => 'Patients', 'action' => 'index']],
     ['label' => 'Reminders', 'url' => ['controller' => 'Reminders', 'action' => 'index']],
     ['label' => 'Resources', 'url' => ['controller' => 'Resources', 'action' => 'index']],
+    ['label' => 'Bookings', 'url' => ['controller' => 'Bookings', 'action' => 'index']],
     ['label' => 'Contact Messages', 'url' => ['controller' => 'ContactMessages', 'action' => 'index']],
     ['label' => 'My Profile', 'url' => ['controller' => 'Users', 'action' => 'view', $identity->id]],
     ['label' => 'Settings', 'url' => ['controller' => 'Users', 'action' => 'edit', $identity->id]],

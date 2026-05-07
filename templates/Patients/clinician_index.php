@@ -17,8 +17,28 @@ $this->assign('title', 'Manage Patients');
         'description' => 'View your assigned patients and all patients in the system.',
     ]) ?>
 
-    <div class="ajax-table-content">
-        <?= $this->element('table/entity_tables/clinician_combined_tables') ?>
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">My Patients</h2>
+
+        <?= $this->element('table/table_wrapper', [
+            'target' => 'my_patients',
+            'tableElement' => 'table/entity_tables/clinician_patients_table',
+        ]) ?>
+
+        <?= $this->element('table/pagination_footer', ['scope' => 'myPatients']) ?>
     </div>
+
+    <!-- All Patients Section -->
+    <div>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">All Patients</h2>
+
+        <?= $this->element('table/table_wrapper', [
+            'target' => 'all_patients',
+            'tableElement' => 'table/entity_tables/clinician_allpatients_table',
+        ]) ?>
+
+        <?= $this->element('table/pagination_footer', ['scope' => 'allPatients']) ?>
+    </div>
+
 
 </div>

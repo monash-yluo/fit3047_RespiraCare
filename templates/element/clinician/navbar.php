@@ -10,7 +10,8 @@ $clinicianMenu = [
 $searchableMenu = [
     ['label' => 'Dashboard', 'url' => ['controller' => 'Clinicians', 'action' => 'dashboard']],
     ['label' => 'Patients', 'url' => ['controller' => 'Patients', 'action' => 'clinicianIndex']],
-    ['label' => 'Resources', 'url' => /*['controller' => 'Resources', 'action' => 'index']*/ ['controller' => 'Clinicians', 'action' => 'dashboard']],
+    ['label' => 'Resources', 'url' => ['controller' => 'Resources', 'action' => 'index']],
+    ['label' => 'Bookings', 'url' => ['controller' => 'Bookings', 'action' => 'patient-clinician-index']],
     ['label' => 'Reminders', 'url' => ['controller' => 'Reminders', 'action' => 'index']],
     ['label' => 'My Profile', 'url' => ['controller' => 'Users', 'action' => 'view', $identity->id]],
     ['label' => 'Logout', 'url' => ['controller' => 'Users', 'action' => 'logout']],
