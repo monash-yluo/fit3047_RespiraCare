@@ -37,5 +37,6 @@ if ($url) {
         'type' => 'button',
         'escapeTitle' => false,
         'class' => $defaultClass,
+        'onclick' => 'setTimeout(() => { this.disabled=true; }, 100);',
     ], $options));
 }
