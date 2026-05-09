@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\FrozenTime;
 use Exception;
 
 /**
@@ -148,7 +148,6 @@ class PatientsController extends AppController
                     throw new Exception('Something went wrong!');
                 }
             }
-
         }
     }
 
@@ -161,13 +160,8 @@ class PatientsController extends AppController
 
         parent::initialize();
 
-        $identity = $this->Authentication->getIdentity();
-
-        if ($identity->get('role') !== 'patient') {
-            throw new NotFoundException('Page not found');
-        }
-
         // 1. 获取当前登录账户的 User ID
+        $identity = $this->Authentication->getIdentity();
         $userId = $identity->get('id');
 
         // 2. 找到该 User 关联的 Patient 记录
@@ -183,6 +177,43 @@ class PatientsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
+        $todayStart = FrozenTime::now()->startOfDay();
+        $todayEnd = FrozenTime::now()->endOfDay();
+
+        $todaysMeasurements = $this->fetchTable('PatientMeasurements')
+            ->find()
+            ->where([
+                'patient_id' => $patient->id,
+                'measured_at >=' => $todayStart,
+                'measured_at <=' => $todayEnd,
+            ])
+            ->all();
+
+        $timeSlots = [
+            'morning' => false,
+            'midday' => false,
+            'afternoon' => false,
+            'evening' => false,
+        ];
+
+        foreach ($todaysMeasurements as $measurement) {
+            // Get the hour in 24-hour format (0 to 23)
+            $hour = (int)$measurement->measured_at->format('G');
+
+            if ($hour < 12) {
+                $timeSlots['morning'] = true;
+            } elseif ($hour >= 12 && $hour < 16) {
+                $timeSlots['midday'] = true;
+            } elseif ($hour >= 16 && $hour < 20) {
+                $timeSlots['afternoon'] = true;
+            } else {
+                $timeSlots['evening'] = true;
+            }
+        }
+
+        // Count how many true
+        $completedCount = count(array_filter($timeSlots));
+
         // 3. 构建查询：只获取属于该 patient_id 的测量数据
         $query = $this->fetchTable('PatientMeasurements')
             ->find()
@@ -194,6 +225,7 @@ class PatientsController extends AppController
             'order' => ['measured_at' => 'desc'],
         ]);
 
-        $this->set(compact('patientMeasurements'));
+        $this->set(compact('patientMeasurements', 'completedCount', 'timeSlots'));
     }
+
 }
