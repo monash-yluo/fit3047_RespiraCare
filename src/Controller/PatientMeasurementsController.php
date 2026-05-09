@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\FrozenTime;
 
 /**
  * PatientMeasurements Controller
@@ -19,15 +19,25 @@ class PatientMeasurementsController extends AppController
      */
     public function index()
     {
-        $this->checkRole(['admin', 'clinician']);
-        // TEMP
-        throw new NotFoundException('Page not found');
+        $this->checkRole(['patient']);
 
         $query = $this->PatientMeasurements->find()
-            ->contain(['Patients']);
-        $patientMeasurements = $this->paginate($query);
+            ->where(['PatientMeasurements.patient_id' => $this->getPatientId()])
+            ->orderBy(['PatientMeasurements.measured_at' => 'DESC']);
 
+        // Set pagination limits
+        $this->paginate = [
+            'limit' => 10,
+        ];
+
+        $patientMeasurements = $this->paginate($query);
         $this->set(compact('patientMeasurements'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            return $this->render('/element/table/entity_tables/measurements_table');
+        }
     }
 
     /**
@@ -76,6 +86,7 @@ class PatientMeasurementsController extends AppController
             if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
                 $this->set(compact('patientMeasurement'));
+
                 return;
             }
 
@@ -89,11 +100,9 @@ class PatientMeasurementsController extends AppController
                 } elseif ($role === 'admin') {
                     return $this->redirect(['controller' => 'PatientMeasurements', 'action' => 'view', $patientMeasurement->id]);
                 }
-
             } else {
                 $this->Flash->error(__('The patient measurement could not be saved. Please, try again.'));
             }
-
         }
         $this->set(compact('patientMeasurement'));
     }
@@ -170,6 +179,7 @@ class PatientMeasurementsController extends AppController
             if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
                 $this->set(compact('patientMeasurement'));
+
                 return;
             }
 
@@ -216,5 +226,60 @@ class PatientMeasurementsController extends AppController
         }
 
         $this->set(compact('patientMeasurement'));
+    }
+
+    public function skip($timeSlot = null)
+    {
+        $this->checkRole(['patient']);
+        $this->request->allowMethod(['post', 'delete']);
+
+        // Get the patient
+        $identity = $this->Authentication->getIdentity();
+        $patient = $this->fetchTable('Patients')
+            ->find()
+            ->contain(['Users', 'Clinicians.Users'])
+            ->where(['Patients.user_id' => $identity->get('id')])
+            ->first();
+
+        if (!$patient) {
+            $this->Flash->error(__('Patient profile not found.'));
+
+            return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
+        }
+
+        // Add an empty
+        $measurement = $this->PatientMeasurements->newEmptyEntity();
+
+        $measurement->set('patient_id', $patient->id);
+        $measurement->set('measured_at', FrozenTime::now());
+        $measurement->set('notes', sprintf(
+            '%s skipped their %s measurements.',
+            $patient->user->full_name,
+            strtolower($timeSlot),
+        ));
+
+        if ($this->PatientMeasurements->save($measurement, ['validate' => false])) {
+            if (!empty($patient->clinician) && !empty($patient->clinician->user_id)) {
+                $remindersTable = $this->fetchTable('Reminders');
+                $reminder = $remindersTable->newEmptyEntity();
+
+                $reminder->set('receiver_id', $patient->clinician->user_id);
+                $reminder->set('message', sprintf(
+                    'System Alert: %s %s has skipped their %s reading on %s.',
+                    $identity->get('first_name'),
+                    $identity->get('last_name'),
+                    ucfirst($timeSlot),
+                    FrozenTime::now()->format('M d, Y h:i A'),
+                ));
+
+                $remindersTable->save($reminder);
+            }
+
+            $this->Flash->success(__('You have skipped the {0} reading.', ucfirst($timeSlot)));
+        } else {
+            $this->Flash->error(__('Unable to skip reading. Please try again.'));
+        }
+
+        return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
     }
 }

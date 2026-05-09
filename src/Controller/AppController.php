@@ -20,7 +20,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
-use Cake\Log\Log;
+use Cake\Http\Response;
 
 /**
  * Application Controller
@@ -81,19 +81,27 @@ class AppController extends Controller
             !$this->request->is('ajax') &&
             $this->request->getParam('action') !== 'goBack'
         ) {
-            $session = $this->request->getSession();
-            $history = $session->read('User.History', []);
-            $currentUrl = $this->request->getRequestTarget();
+            $statusCode = $this->response->getStatusCode();
 
-            // Prevent recording the exact same page twice in a row
-            if (end($history) !== $currentUrl) {
-                $history[] = $currentUrl;
+            $isRedirect = $statusCode >= 300 && $statusCode < 400;
+            $isError = $statusCode >= 400;
 
-                // Keep the last 10 pages in memory
-                if (count($history) > 10) {
-                    array_shift($history);
+            if (!$isRedirect && !$isError) {
+                $session = $this->request->getSession();
+                $history = $session->read('User.History', []);
+
+                $currentUrl = $this->request->getRequestTarget();
+
+
+                if (end($history) !== $currentUrl) {
+                    $history[] = $currentUrl;
+
+                    if (count($history) > 10) {
+                        array_shift($history);
+                    }
+
+                    $session->write('User.History', $history);
                 }
-                $session->write('User.History', $history);
             }
         }
 
@@ -164,7 +172,7 @@ class AppController extends Controller
         }
     }
 
-    public function goBack(): \Cake\Http\Response
+    public function goBack(): Response
     {
         $session = $this->request->getSession();
         $history = $session->read('User.History', []);
@@ -191,6 +199,7 @@ class AppController extends Controller
                 'clinician' => ['controller' => 'Clinicians', 'action' => 'dashboard'],
                 'patient'   => ['controller' => 'Patients',   'action' => 'dashboard'],
             ];
+
             return $this->redirect($dashboardRoutes[$role] ?? '/');
         }
 

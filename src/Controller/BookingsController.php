@@ -209,30 +209,6 @@ class BookingsController extends AppController
     }
 
     /**
-     * Edit method
-     *
-     * @param string|null $id Booking id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit(?string $id = null)
-    {
-        $booking = $this->Bookings->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $booking = $this->Bookings->patchEntity($booking, $this->request->getData());
-            if ($this->Bookings->save($booking)) {
-                $this->Flash->success(__('The booking has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The booking could not be saved. Please, try again.'));
-        }
-        $patients = $this->Bookings->Patients->find('list', limit: 200)->all();
-        $clinicians = $this->Bookings->Clinicians->find('list', limit: 200)->all();
-        $this->set(compact('booking', 'patients', 'clinicians'));
-    }
-
-    /**
      * Delete method
      *
      * @param string|null $id Booking id.
