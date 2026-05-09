@@ -37,4 +37,39 @@ class TimeWindowValidation
 
         return $time >= $min;
     }
+
+    /**
+     * Validate that the given time is in the future.
+     *
+     * @param mixed $value The value to validate.
+     * @return bool
+     */
+    public static function mustInFuture(mixed $value): bool
+    {
+        $time = $value instanceof \DateTimeInterface
+            ? $value
+            : new \DateTimeImmutable((string)$value);
+
+        return $time > new \DateTimeImmutable('now');
+    }
+
+    /**
+     * Validate that the given time is within the next N years.
+     *
+     * @param mixed $value The value to validate.
+     * @param int $years Max years in the future.
+     * @return bool
+     */
+    public static function withinNextYears(mixed $value, int $years): bool
+    {
+        $time = $value instanceof \DateTimeInterface
+            ? $value
+            : new \DateTimeImmutable((string)$value);
+
+        $max = new \DateTimeImmutable('+' . $years . ' years');
+
+        return $time <= $max;
+    }
+
+    
 }

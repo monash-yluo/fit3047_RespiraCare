@@ -72,12 +72,11 @@ $this->assign('title', 'Edit Resource');
                     </div>
 
                     <div>
-                        <?= $this->Form->control('published_date', [
-                            'type' => 'date',
-                            'empty' => true,
-                            'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                        ]) ?>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Published Date</label>
+                        <div class="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300 cursor-not-allowed">
+                            <?= date('Y-m-d') ?>
+                        </div>
+                        <?= $this->Form->hidden('published_date', ['value' => date('Y-m-d')]) ?>
                     </div>
                 </div>
             </div>
