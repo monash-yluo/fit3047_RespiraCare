@@ -81,7 +81,7 @@
                     <?= $this->Time->format($clinician->modified, 'MMM d, yyyy') ?>
                 </td>
 
-                <td class="p-4 space-x-2 whitespace-nowrap">
+                <td class="p-4 flex flex-col md:flex-row gap-2 items-center">
                     <?= $this->Html->link(
                         '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>',
                         ['controller' => 'Users', 'action' => 'view', $clinician->user->id],
@@ -109,7 +109,7 @@
                             'escape' => false,
                             'title' => __('Delete'),
                             'confirm' => __('Are you sure you want to delete clinician profile #{0}?', $clinician->id),
-                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900',
+                            'class' => 'temp-disable-button inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900',
                         ],
                     ) ?>
                 </td>

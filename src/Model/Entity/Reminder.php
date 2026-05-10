@@ -33,6 +33,7 @@ class Reminder extends Entity
         'receiver_id' => true,
         'sender_id' => true,
         'message' => true,
+        'is_read' => true,
         'created' => true,
         'modified' => true,
         'receiver' => true,

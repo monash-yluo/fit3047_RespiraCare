@@ -25,7 +25,10 @@ $ranges = [
 
 // 辅助函数：判断是否在正常范围内
 $isNormal = function ($value, $rangeKey) use ($ranges) {
-    if ($value === null || !isset($ranges[$rangeKey])) return true;
+    if ($value === null || !isset($ranges[$rangeKey])) {
+        return true;
+    }
+
     return $value >= $ranges[$rangeKey]['min'] && $value <= $ranges[$rangeKey]['max'];
 };
 ?>
@@ -36,7 +39,11 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
 
     <?= $this->element('table/page_header', [
         'title' => 'Measurement Details',
-        'description' => 'Recorded on' . $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY') . 'at' . $this->Time->format($patientMeasurement->measured_at, 'HH:mm'),
+        'description' => sprintf(
+            'Recorded on %s at %s',
+            $this->Time->format($patientMeasurement->measured_at, 'MMMM d, YYYY'),
+            $this->Time->format($patientMeasurement->measured_at, 'HH:mm'),
+        ),
         'showBack' => true,
     ]) ?>
 
@@ -81,12 +88,12 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
                     <div class="md:col-span-2 p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Blood Pressure</p>
                         <div class="flex items-baseline space-x-2">
-                            <?php if ($patientMeasurement->blood_pressure_systolic !== null): ?>
+                            <?php if ($patientMeasurement->blood_pressure_systolic !== null) : ?>
                                 <span class="text-3xl font-bold text-gray-900 dark:text-white"><?= h($patientMeasurement->blood_pressure_systolic) ?></span>
                                 <span class="text-2xl text-gray-300">/</span>
                                 <span class="text-3xl font-bold text-gray-900 dark:text-white"><?= h($patientMeasurement->blood_pressure_diastolic) ?></span>
                                 <span class="text-sm font-normal text-gray-500 uppercase">mmHg</span>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <span class="text-3xl font-bold text-gray-900">N/A</span>
                             <?php endif; ?>
                         </div>
@@ -122,9 +129,9 @@ $isNormal = function ($value, $rangeKey) use ($ranges) {
             <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 h-full flex flex-col">
                 <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Patient Notes</h3>
                 <div class="prose dark:prose-invert italic text-gray-600 dark:text-gray-300 flex-grow">
-                    <?php if (!empty($patientMeasurement->notes)): ?>
+                    <?php if (!empty($patientMeasurement->notes)) : ?>
                         <?= nl2br(h($patientMeasurement->notes)) ?>
-                    <?php else: ?>
+                    <?php else : ?>
                         <p class="text-gray-400">No additional notes recorded for this measurement.</p>
                     <?php endif; ?>
                 </div>

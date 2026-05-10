@@ -233,6 +233,13 @@ class PatientMeasurementsController extends AppController
         $this->checkRole(['patient']);
         $this->request->allowMethod(['post', 'delete']);
 
+        $slotTimes = [
+            'morning' => [8, 0],
+            'midday' => [12, 0],
+            'afternoon' => [16, 0],
+            'evening' => [20, 0],
+        ];
+
         // Get the patient
         $identity = $this->Authentication->getIdentity();
         $patient = $this->fetchTable('Patients')
@@ -247,11 +254,14 @@ class PatientMeasurementsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
         }
 
+        [$hour, $minute] = $slotTimes[strtolower($timeSlot)] ?? [now()->hour, now()->minute];
+        $scheduledTime = FrozenTime::now('Australia/Sydney')->setTime($hour, $minute);
+
         // Add an empty
         $measurement = $this->PatientMeasurements->newEmptyEntity();
 
         $measurement->set('patient_id', $patient->id);
-        $measurement->set('measured_at', FrozenTime::now());
+        $measurement->set('measured_at', $scheduledTime);
         $measurement->set('notes', sprintf(
             '%s skipped their %s measurements.',
             $patient->user->full_name,

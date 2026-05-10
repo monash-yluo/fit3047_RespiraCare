@@ -102,7 +102,7 @@
                             'escape' => false,
                             'title' => __('Delete'),
                             'confirm' => __('Are you sure you want to delete the resource: {0}?', $resource->title),
-                            'class' => 'inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900',
+                            'class' => 'temp-disable-button inline-flex items-center px-2.5 py-1.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900',
                         ],
                     ) ?>
                     <?php endif ?>

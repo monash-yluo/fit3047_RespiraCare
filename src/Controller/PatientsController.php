@@ -217,7 +217,18 @@ class PatientsController extends AppController
         // 3. 构建查询：只获取属于该 patient_id 的测量数据
         $query = $this->fetchTable('PatientMeasurements')
             ->find()
-            ->where(['patient_id' => $patient->id]);
+            ->where(['patient_id' => $patient->id])
+            ->andWhere(function ($exp, $q) {
+                return $exp->or([
+                    'heart_rate IS NOT NULL',
+                    'spo2 IS NOT NULL',
+                    'temperature IS NOT NULL',
+                    'respiratory_rate IS NOT NULL',
+                    'peak_flow IS NOT NULL',
+                    'blood_pressure_systolic IS NOT NULL',
+                    'blood_pressure_diastolic IS NOT NULL',
+                ]);
+            });
 
         // 4. 执行分页
         $patientMeasurements = $this->paginate($query, [

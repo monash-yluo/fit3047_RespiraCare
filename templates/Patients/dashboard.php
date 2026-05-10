@@ -109,7 +109,7 @@ foreach ($dailySchedule as $key => $slot) {
                                 [
                                     'escape' => false,
                                     'confirm' => __('Are you sure you want to skip your {0}? You cannot undo this.', $slot['title']),
-                                    'class' => 'inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-500 transition-colors'
+                                    'class' => 'temp-disable-button inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-500 transition-colors',
                                 ]
                             ) ?>
                         </div>

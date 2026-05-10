@@ -216,3 +216,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const skipButtons = document.querySelectorAll('.temp-disable-button');
+
+    skipButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (this.classList.contains('pointer-events-none')) {
+                e.preventDefault();
+                return false;
+            }
+
+            setTimeout(() => {
+                this.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                this.style.filter = 'grayscale(1)';
+            }, 10);
+        });
+    });
+});

@@ -18,7 +18,7 @@
     <?= $this->Html->css('admin-app') ?>
     <?= $this->fetch('css') ?>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
+<body class="bg-gray-50 dark:bg-gray-900 min-w-[300px]">
 
 <?= $this->fetch('navbar') ?>
 

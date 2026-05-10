@@ -2165,6 +2165,10 @@ input:checked + .toggle-bg {
   min-width: 0px;
 }
 
+.min-w-\[300px\] {
+  min-width: 300px;
+}
+
 .min-w-full {
   min-width: 100%;
 }
@@ -3162,6 +3166,11 @@ input:checked + .toggle-bg {
   border-style: none;
 }
 
+.border-amber-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(253 230 138 / var(--tw-border-opacity, 1));
+}
+
 .border-blue-100 {
   --tw-border-opacity: 1;
   border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
@@ -3264,6 +3273,16 @@ input:checked + .toggle-bg {
 .\!bg-red-100 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.bg-amber-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 243 199 / var(--tw-bg-opacity, 1));
+}
+
+.bg-amber-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(120 53 15 / var(--tw-bg-opacity, 1));
 }
 
 .bg-blue-100 {
@@ -4109,6 +4128,11 @@ input:checked + .toggle-bg {
   letter-spacing: 0.1em;
 }
 
+.text-amber-800 {
+  --tw-text-opacity: 1;
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+}
+
 .text-blue-500 {
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity, 1));
@@ -4328,6 +4352,10 @@ input:checked + .toggle-bg {
 
 .opacity-100 {
   opacity: 1;
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .mix-blend-plus-darker {
@@ -5465,11 +5493,6 @@ a.desc {
   color: rgb(250 204 21 / var(--tw-text-opacity, 1));
 }
 
-.dark\:text-blue-500:is(.dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
-}
-
 .dark\:placeholder-gray-400:is(.dark *)::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1));
@@ -5756,6 +5779,14 @@ a.desc {
     max-width: 32rem;
   }
 
+  .md\:max-w-\[250px\] {
+    max-width: 250px;
+  }
+
+  .md\:max-w-\[300px\] {
+    max-width: 300px;
+  }
+
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -5819,6 +5850,10 @@ a.desc {
 
   .lg\:max-w-\[200px\] {
     max-width: 200px;
+  }
+
+  .lg\:max-w-\[250px\] {
+    max-width: 250px;
   }
 
   .lg\:grid-cols-2 {

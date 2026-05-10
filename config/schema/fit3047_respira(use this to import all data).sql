@@ -283,6 +283,7 @@ CREATE TABLE `reminders` (
   `receiver_id` int(11) NOT NULL,
   `sender_id` int(11) DEFAULT NULL,
   `message` text NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
@@ -291,15 +292,15 @@ CREATE TABLE `reminders` (
 -- Dumping data for table `reminders`
 --
 
-INSERT INTO `reminders` (`id`, `receiver_id`, `sender_id`, `message`, `created`, `modified`) VALUES
-(1, 1, 2, 'Hi Admin, I am having trouble accessing the AI insight reports. Could you please verify my permissions?', '2026-03-21 11:30:25', '2026-03-21 11:30:25'),
-(2, 4, 2, 'John, please remember to record your SpO2 levels tonight before going to sleep.', '2026-03-21 19:30:00', '2026-03-21 19:30:00'),
-(3, 6, 3, 'Charlie, I noticed your recent logs. If the coughing persists, please schedule an urgent follow-up.', '2026-03-21 19:35:00', '2026-03-21 19:35:00'),
-(4, 5, NULL, 'System Notification: You have not updated your symptom log for 3 days. Please stay consistent!', '2026-03-21 09:00:00', '2026-03-21 09:00:00'),
-(5, 2, 1, 'Notice: The system will undergo maintenance at 23:00 tonight. Access may be limited.', '2026-03-21 14:00:00', '2026-03-21 14:00:00'),
-(6, 5, 2, 'Jane, I have updated your treatment plan based on your latest measurements. Please review.', '2026-03-21 16:20:00', '2026-03-21 16:20:00'),
-(7, 1, NULL, 'SYSTEM ALERT: High server CPU usage detected (85%+). Please check the server logs immediately.', '2026-03-21 10:15:00', '2026-03-21 10:15:00'),
-(8, 3, 2, '123', '2026-04-23 06:32:22', '2026-04-23 06:32:22');
+INSERT INTO `reminders` (`id`, `receiver_id`, `sender_id`, `message`, `is_read`, `created`, `modified`) VALUES
+(1, 1, 2, 'Hi Admin, I am having trouble accessing the AI insight reports. Could you please verify my permissions?', 1, '2026-03-21 11:30:25', '2026-03-21 11:30:25'),
+(2, 4, 2, 'John, please remember to record your SpO2 levels tonight before going to sleep.', 1, '2026-03-21 19:30:00', '2026-03-21 19:30:00'),
+(3, 6, 3, 'Charlie, I noticed your recent logs. If the coughing persists, please schedule an urgent follow-up.', 1, '2026-03-21 19:35:00', '2026-03-21 19:35:00'),
+(4, 5, NULL, 'System Notification: You have not updated your symptom log for 3 days. Please stay consistent!', 1, '2026-03-21 09:00:00', '2026-03-21 09:00:00'),
+(5, 2, 1, 'Notice: The system will undergo maintenance at 23:00 tonight. Access may be limited.', 1, '2026-03-21 14:00:00', '2026-03-21 14:00:00'),
+(6, 5, 2, 'Jane, I have updated your treatment plan based on your latest measurements. Please review.', 1, '2026-03-21 16:20:00', '2026-03-21 16:20:00'),
+(7, 1, NULL, 'SYSTEM ALERT: High server CPU usage detected (85%+). Please check the server logs immediately.', 1, '2026-03-21 10:15:00', '2026-03-21 10:15:00'),
+(8, 3, 2, '123', 1, '2026-04-23 06:32:22', '2026-04-23 06:32:22');
 
 -- --------------------------------------------------------
 
