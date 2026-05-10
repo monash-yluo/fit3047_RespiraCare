@@ -269,7 +269,7 @@ class PatientMeasurementsController extends AppController
                     $identity->get('first_name'),
                     $identity->get('last_name'),
                     ucfirst($timeSlot),
-                    FrozenTime::now()->format('M d, Y h:i A'),
+                    FrozenTime::now()->format('M d, Y'),
                 ));
 
                 $remindersTable->save($reminder);

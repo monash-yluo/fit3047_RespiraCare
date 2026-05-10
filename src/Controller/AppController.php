@@ -76,6 +76,31 @@ class AppController extends Controller
         //     $this->checkRole(['admin']); // 仅管理员允许访问
         // }
 
+        $identity = $this->Authentication->getIdentity();
+        $reminders = null;
+
+        if ($identity) {
+            $reminders = $this->fetchTable('Reminders')->find()
+                ->contain(['Senders'])
+                ->where(['Reminders.receiver_id' => $identity->get('id')])
+                ->orderBy(['Reminders.created' => 'DESC'])
+                ->limit(5)
+                ->all();
+        }
+
+        $this->set(compact('identity', 'reminders'));
+    }
+
+    /**
+     * beforeRender callback.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+
         if (
             $this->request->is('get') &&
             !$this->request->is('ajax') &&
@@ -92,7 +117,6 @@ class AppController extends Controller
 
                 $currentUrl = $this->request->getRequestTarget();
 
-
                 if (end($history) !== $currentUrl) {
                     $history[] = $currentUrl;
 
@@ -104,20 +128,6 @@ class AppController extends Controller
                 }
             }
         }
-
-        $identity = $this->Authentication->getIdentity();
-        $reminders = null;
-
-        if ($identity) {
-            $reminders = $this->fetchTable('Reminders')->find()
-                ->contain(['Senders'])
-                ->where(['Reminders.receiver_id' => $identity->get('id')])
-                ->orderBy(['Reminders.created' => 'DESC'])
-                ->limit(5)
-                ->all();
-        }
-
-        $this->set(compact('identity', 'reminders'));
     }
 
     /**
