@@ -20,7 +20,11 @@ $this->assign('title', 'View Resource');
 
     <div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
         <!-- Main Content Details -->
+        <?php if($identity->role === 'admin' || $identity->role === 'clinician'): ?>
         <div class="xl:col-span-2">
+        <?php else: ?>
+        <div class="xl:col-span-3">
+        <?php endif; ?>
             <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold dark:text-white"><?= h($resource->title) ?></h3>
@@ -40,7 +44,7 @@ $this->assign('title', 'View Resource');
                         <div class="video-container p-5">
                             <iframe
                                 width="100%"
-                                height="400"
+                                height="500"
                                 src=<?= $resource->url_link; ?>
                                 title="YouTube video player"
                             frameborder="0"
@@ -98,6 +102,7 @@ $this->assign('title', 'View Resource');
         </div>
 
         <!-- Sidebar Actions Column -->
+        <?php if($identity->role === 'admin' || $identity->role === 'clinician'): ?>
         <div class="xl:col-span-1">
             <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 <h3 class="mb-4 text-lg font-semibold dark:text-white">Actions</h3>
@@ -120,5 +125,6 @@ $this->assign('title', 'View Resource');
                 </div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </div>

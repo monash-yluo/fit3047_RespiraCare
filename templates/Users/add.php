@@ -116,7 +116,9 @@ $this->assign('title', 'Add New User');
                                     'type' => 'date',
                                     'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Date of Birth'],
                                     'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
-                                    'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
+                                    'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>'],
+                                    'max' => date('Y-m-d'),
+                                    'min' => date('Y-m-d', strtotime('-120 years'))
                                 ]) ?>
                             </div>
 

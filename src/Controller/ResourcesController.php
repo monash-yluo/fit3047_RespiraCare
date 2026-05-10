@@ -17,8 +17,12 @@ class ResourcesController extends AppController
      */
     public function index()
     {
+        $identity = $this->Authentication->getIdentity();
         $search = $this->request->getQuery('search');
         $query = $this->Resources->find();
+        if($identity->role === 'patient') {
+            $query->where(['status' => 'Active']);
+        }
 
         if (!empty($search)) {
             $query->where(['title LIKE' => '%' . $search . '%']);

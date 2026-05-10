@@ -13,10 +13,10 @@ $this->assign('title', 'Manage Resources');
 <div class="px-4 pt-6">
 
     <?= $this->element('table/page_header', [
-        'title' => 'Manage Resources',
-        'description' => 'View, add, and manage educational resources and links.',
+        'title' => $identity->role === 'admin' ? 'Manage Resources' : 'Resources',
+        'description' => $identity->role === 'admin' ? 'View, add, and manage educational resources and links.' : 'View available educational resources and links.',
         'actionLabel' => __('New Resource'),
-        'actionUrl' => ['action' => 'add'],
+        'actionUrl' => $identity->role === 'admin' ? ['action' => 'add'] : null,
     ]) ?>
 
     <!-- Sorting Controls -->

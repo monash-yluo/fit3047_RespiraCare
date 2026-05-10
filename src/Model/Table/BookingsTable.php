@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Validation\TimeWindowValidation;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -66,6 +67,8 @@ class BookingsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
+        $validator->setProvider('timeWindow', TimeWindowValidation::class);
+
         $validator
             ->integer('patient_id')
             ->notEmptyString('patient_id');
@@ -81,7 +84,17 @@ class BookingsTable extends Table
         $validator
             ->dateTime('scheduled_date')
             ->requirePresence('scheduled_date', 'create')
-            ->notEmptyDateTime('scheduled_date');
+            ->notEmptyDateTime('scheduled_date')
+            ->add('scheduled_date', 'mustInFuture', [
+                'rule' => 'mustInFuture',
+                'provider' => 'timeWindow',
+                'message' => 'Scheduled date must be in the future.'
+            ])
+            ->add('scheduled_date', 'withinNextYears', [
+                'rule' => ['withinNextYears', 1],
+                'provider' => 'timeWindow',
+                'message' => 'Scheduled date must be within the next 1 year.'
+            ]);
 
         $validator
             ->scalar('status')

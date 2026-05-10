@@ -8,7 +8,7 @@
 
 // Breadcrumb
 $breadcrumbs = [
-    ['title' => 'Symptom Logs', 'url' => $identity->role == 'patient' ? null : ['controller' => 'Patients', 'action' => 'view', $patientId]],
+    ['title' => 'Symptom Logs', 'url' => $identity->role == 'patient' ? ['controller' => 'SymptomLogs', 'action' => 'patientIndex'] : ['controller' => 'Patients', 'action' => 'view', $patientId]],
     ['title' => 'Add Symptom log', 'url' => null],
 ];
 
@@ -40,7 +40,9 @@ $this->assign('title', 'Log New Symptom');
                             'type' => 'datetime-local',
                             'label' => false,
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
-                            'default' => date('Y-m-d\TH:i')
+                            'default' => date('Y-m-d\TH:i'),
+                            'min' => date('Y-m-d\TH:i', strtotime('-5 years')),
+                            'max' => date('Y-m-d\TH:i')
                         ]) ?>
                     </div>
 
