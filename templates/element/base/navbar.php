@@ -78,10 +78,30 @@ $searchableLinks = $searchableLinks ?? [];
             </div>
 
             <div class="flex items-center gap-4">
-                <button type="button" data-dropdown-toggle="notification-dropdown" class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
+                <button type="button" data-dropdown-toggle="notification-dropdown" class="relative p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
+                    <span class="sr-only">View notifications</span>
+
+                    <!-- Bell Icon -->
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
                     </svg>
+
+                    <?php
+                    //Check if any reminder have unread
+                    $hasUnread = false;
+                    if (!empty($reminders)) {
+                        foreach ($reminders as $reminder) {
+                            if (!$reminder->is_read && $reminder->receiver_id === $identity->get('id')) {
+                                $hasUnread = true;
+                                break;
+                            }
+                        }
+                    }
+                    ?>
+
+                    <?php if ($hasUnread): ?>
+                        <div class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 right-0.5 dark:border-gray-900"></div>
+                    <?php endif; ?>
                 </button>
 
                 <div class="z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg dark:divide-gray-600 dark:bg-gray-700" id="notification-dropdown">

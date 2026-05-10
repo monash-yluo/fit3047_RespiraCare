@@ -12,9 +12,9 @@ use Cake\ORM\Entity;
  * @property int $receiver_id
  * @property int|null $sender_id
  * @property string $message
+ * @property bool $is_read
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
- *
  * @property \App\Model\Entity\User $receiver
  * @property \App\Model\Entity\User $sender
  */

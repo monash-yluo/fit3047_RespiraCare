@@ -80,6 +80,11 @@ class RemindersController extends AppController
             }
         }
 
+        if ($reminder->receiver_id === $identity->get('id') && !$reminder->is_read) {
+            $reminder->is_read = true;
+            $this->Reminders->save($reminder);
+        }
+
         $this->set(compact('reminder'));
     }
 
