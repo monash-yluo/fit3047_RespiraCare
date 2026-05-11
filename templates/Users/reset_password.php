@@ -24,46 +24,28 @@ $this->assign('title', 'Reset Password | RespiraCare');
                 <?= $this->Form->create(null, ['class' => 'needs-validation']) ?>
 
                 <div class="mb-4">
-                    <?= $this->Form->control('email', [
-                        'class' => 'form-control form-control-lg shadow-sm',
-                        'label' => ['text' => 'Email', 'class' => 'fw-bold small mb-2'],
-                        'required' => true,
-                        'autofocus' => true,
-                    ]) ?>
+                    <label class="fw-bold small mb-2 d-block">Email</label>
+                    <div class="d-flex gap-2">
+                        <?= $this->Form->control('email', [
+                            'class' => 'form-control form-control-lg shadow-sm fs-6',
+                            'label' => false,
+                            'required' => true,
+                            'autofocus' => true,
+                        ]) ?>
+                        <button type="button" class="btn text-white fw-bold px-4 py-2 rounded-3 shadow-sm" 
+                                style="background-color: #305BAB; border: none; font-size: 1rem; white-space: nowrap;"
+                                id="sendVerifyBtn"
+                                onclick="sendVerifyCode()">
+                            Send Code
+                        </button>
+                    </div>
                 </div>
 
                 <div class="mb-4">
-                    <?= $this->Form->control('first_name', [
-                        'class' => 'form-control form-control-lg shadow-sm',
-                        'label' => ['text' => 'First Name', 'class' => 'fw-bold small mb-2'],
-                        'required' => true,
-                        'autofocus' => true,
-                    ]) ?>
-                </div>
-
-                <div class="mb-4">
-                    <?= $this->Form->control('last_name', [
-                        'class' => 'form-control form-control-lg shadow-sm',
-                        'label' => ['text' => 'Last Name', 'class' => 'fw-bold small mb-2'],
-                        'required' => true,
-                        'autofocus' => true,
-                    ]) ?>
-                </div>
-
-                <div class="mb-4">
-                    <?= $this->Form->control('new_password', [
-                        'class' => 'form-control form-control-lg shadow-sm',
-                        'label' => ['text' => 'New Password', 'class' => 'fw-bold small mb-2'],
-                        'type' => 'password',
-                        'required' => true,
-                    ]) ?>
-                </div>
-
-                <div class="mb-4">
-                    <?= $this->Form->control('confirm_new_password', [
-                        'class' => 'form-control form-control-lg shadow-sm',
-                        'label' => ['text' => 'Confirm New Password', 'class' => 'fw-bold small mb-2'],
-                        'type' => 'password',
+                    <?= $this->Form->control('verify_code', [
+                        'class' => 'form-control form-control-lg shadow-sm fs-6',
+                        'label' => ['text' => 'Verify Code', 'class' => 'fw-bold small mb-2'],
+                        'placeholder' => 'Enter the code sent to your email',
                         'required' => true,
                     ]) ?>
                 </div>
@@ -106,5 +88,52 @@ $this->assign('title', 'Reset Password | RespiraCare');
 </section>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+function sendVerifyCode() {
+    const email = document.querySelector('input[name="email"]').value;
+    const btn = document.getElementById('sendVerifyBtn');
+    
+    if (!email) {
+        alert('Please enter your email address first');
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.innerHTML = 'Sending...';
+    
+    fetch('<?= $this->Url->build(['controller' => 'Users', 'action' => 'sendVerifyCode']) ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('input[name="_csrfToken"]').value
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Verification code sent to your email!');
+            btn.innerHTML = 'Code Sent ✓';
+            btn.style.backgroundColor = '#28a745';
+        } else {
+            alert(data.message || 'Failed to send verification code');
+            btn.disabled = false;
+            btn.innerHTML = 'Send Code';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert(`Error: ${error.message}`);
+        btn.disabled = false;
+        btn.innerHTML = 'Send Code';
+    });
+}
+</script>
 
 

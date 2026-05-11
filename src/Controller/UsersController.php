@@ -6,9 +6,12 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Mailer\Mailer;
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use SplFileInfo;
+
+use function Cake\Error\debug;
 
 /**
  * Users Controller
@@ -26,7 +29,7 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-        $this->Authentication->allowUnauthenticated(['login', 'logout', 'resetPassword']);
+        $this->Authentication->allowUnauthenticated(['login', 'logout', 'resetPassword', 'sendVerifyCode']);
     }
 
     /**
@@ -656,7 +659,7 @@ class UsersController extends AppController
      * Reset password method.
      *
      * Allows a user to reset their password after verifying their identity
-     * through first name, last name, and email. It also includes
+     * through email and verification code. It also includes
      * CAPTCHA verification to prevent abuse.
      *
      * @return \Cake\Http\Response|null|void Redirects on successful password reset, otherwise renders the view.
@@ -673,7 +676,7 @@ class UsersController extends AppController
 
             $http = new Client();
             $response = $http->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                'secret' => Configure::read('Turnstile.secretKey'), // 改用 Configure::read('Turnstile.secretKey')
+                'secret' => Configure::read('Turnstile.secretKey'),
                 'response' => $token,
                 'remoteip' => $this->request->clientIp(),
             ]);
@@ -684,39 +687,136 @@ class UsersController extends AppController
             if (!($outcome['success'] ?? false)) {
                 $this->Flash->error(__('CAPTCHA verification failed. Please try again.'));
 
-                return; // 停止执行，让用户停留在登录页
+                return;
             }
 
-            // 1. 基础验证：确保两次输入的新密码一致
+            // --- 3. 验证邮箱验证码 ---
+            $email = $data['email'] ?? null;
+            $verifyCode = $data['verify_code'] ?? null;
+
+            if (!$email || !$verifyCode) {
+                $this->Flash->error(__('Email and verification code are required.'));
+
+                return;
+            }
+
+            // 检查验证码是否正确
+            $codeKey = 'reset_code_' . $email;
+            $storedCode = \Cake\Cache\Cache::read($codeKey);
+
+            if ($storedCode === null || $storedCode != $verifyCode) {
+                $this->Flash->error(__('Invalid or expired verification code. Please request a new code.'));
+
+                return;
+            }
+
+            // 验证码正确，清除缓存
+            \Cake\Cache\Cache::delete($codeKey);
+
+            // --- 4. 验证密码一致性 ---
             if (empty($data['new_password']) || $data['new_password'] !== $data['confirm_new_password']) {
                 $this->Flash->error(__('New passwords do not match or are empty.'));
 
                 return;
             }
 
-            // 2. 根据 first_name, last_name, email 查找用户
+            // --- 5. 查找用户并更新密码 ---
             $user = $this->Users->find()
-                ->where([
-                    'first_name' => $data['first_name'],
-                    'last_name' => $data['last_name'],
-                    'email' => $data['email'],
-                ])
+                ->where(['email' => $email])
                 ->first();
 
-            if ($user) {
-                // 3. 修改密码并保存
-                $user->password = $data['new_password'];
+            if (!$user) {
+                $this->Flash->error(__('User not found.'));
 
-                if ($this->Users->save($user)) {
-                    $this->Flash->success(__('Your password has been reset successfully.'));
-
-                    return $this->redirect(['action' => 'login']);
-                }
-                $this->Flash->error(__('Unable to update the password. Please try again.'));
-            } else {
-                // 4. 用户信息不匹配
-                $this->Flash->error(__('User details do not match our records.'));
+                return;
             }
+
+            // 更新密码
+            $user->password = $data['new_password'];
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Your password has been reset successfully.'));
+
+                return $this->redirect(['action' => 'login']);
+            }
+
+            $this->Flash->error(__('Unable to update the password. Please try again.'));
+        }
+    }
+    
+    /**
+     * Send verify code to email
+     *
+     * @return \Cake\Http\Response
+     */
+    public function sendVerifyCode()
+    {
+        if (!$this->request->is('post')) {
+            return $this->response
+                ->withStatus(405)
+                ->withType('application/json')
+                ->withStringBody(json_encode(['success' => false, 'message' => 'Method not allowed']));
+        }
+
+        $data = $this->request->getData();
+        $email = $data['email'] ?? null;
+
+        if (!$email) {
+            return $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode([
+                    'success' => false,
+                    'message' => 'Email is required'
+                ]));
+        }
+
+        // 检查邮箱是否存在
+        $user = $this->Users->findByEmail($email)->first();
+        if (!$user) {
+            return $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode([
+                    'success' => false,
+                    'message' => 'Email not found in our records'
+                ]));
+        }
+
+        // 生成验证码
+        $verifyCode = rand(100000, 999999);
+        
+        try {
+            // 保存验证码到缓存（有效期10分钟）
+            $codeKey = 'reset_code_' . $email;
+            \Cake\Cache\Cache::write($codeKey, $verifyCode, 'default', '+10 minutes');
+
+
+            // 发送邮件
+            $mailer = new Mailer();
+            $mailer->setTransport('mailtrap');
+            $mailer->setTo($email)
+                ->setSubject('Password Reset Verification Code - RespiraCare');
+            
+            $mailer->viewBuilder()
+                ->setVar('verifyCode', $verifyCode)
+                ->setVar('userName', $user->first_name)
+                ->setTemplate('reset_code_email')
+                ->setLayout('email');
+            
+            $mailer->send();
+            
+            return $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode([
+                    'success' => true,
+                    'message' => 'Verification code sent successfully'
+                ]));
+        } catch (Exception $e) {
+            return $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ]));
         }
     }
 }
