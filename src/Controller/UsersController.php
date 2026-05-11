@@ -800,7 +800,7 @@ class UsersController extends AppController
 
             // 发送邮件
             $mailer = new Mailer();
-            $mailer->setTransport('mailtrap');
+            $mailer->setTransport('cpanel');
             $mailer->setTo($email)
                 ->setSubject('Password Reset Verification Code - RespiraCare');
             
