@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use DateTime;
+use Cake\Mailer\Mailer;
 
 /**
  * Bookings Controller
@@ -222,6 +223,32 @@ class BookingsController extends AppController
         $booking->status = $status;
         if ($this->Bookings->save($booking)) {
             $this->Flash->success(__('The booking status has been updated to {0}.', h(ucfirst($status))));
+
+            // 如果确认预约，发送确认邮件给患者
+            if ($status === 'confirmed') {
+                $booking = $this->Bookings->get($id, contain: ['Patients.Users', 'Clinicians.Users']);
+
+                try {
+                    $mailer = new Mailer();
+                    $mailer->setTo($booking->patient->user->email)
+                        ->setEmailFormat('both')
+                        ->setSubject('Booking Confirmed - RespiraCare');
+    
+                    $mailer->viewBuilder()
+                        ->setVar('booking', $booking)
+                        ->setVar('patientName', $booking->patient->user->first_name)
+                        ->setVar('clinicianName', $booking->clinician->user->first_name . ' ' . $booking->clinician->user->last_name)
+                        ->setTemplate('booking_comfirm')
+                        ->setLayout('email');
+    
+                    $mailer->send();
+                } catch (\Exception $e) {
+                    // Log the error and show a flash message, but don't fail the booking update
+                    \Cake\Log\Log::error('Failed to send booking confirmation email: ' . $e->getMessage());
+                    $this->Flash->error(__('Booking status updated, but failed to send confirmation email. Please contact support.'));
+                }
+            }
+
         } else {
             $this->Flash->error(__('The booking status could not be updated. Please, try again.'));
         }
