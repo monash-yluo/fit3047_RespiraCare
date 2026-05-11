@@ -11,7 +11,7 @@ Hello <?= h($userName) ?>,
 
 You have requested to reset your password. Please use the verification code below to proceed:
 
-<?= h($verifyCode) ?>
+<?= h($verifyCode) . "\n" ?>
 
 IMPORTANT: This code will expire in 10 minutes.
 

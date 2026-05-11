@@ -802,6 +802,7 @@ class UsersController extends AppController
             $mailer = new Mailer();
             // $mailer->setTransport('cpanel');
             $mailer->setTo($email)
+                ->setEmailFormat('both')
                 ->setSubject('Password Reset Verification Code - RespiraCare');
             
             $mailer->viewBuilder()
