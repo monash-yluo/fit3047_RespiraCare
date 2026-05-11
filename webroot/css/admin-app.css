@@ -1732,6 +1732,11 @@ input:checked + .toggle-bg {
   margin-bottom: 1.5rem;
 }
 
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
 .\!mb-1 {
   margin-bottom: 0.25rem !important;
 }
@@ -2063,6 +2068,10 @@ input:checked + .toggle-bg {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-px {
+  height: 1px;
 }
 
 .max-h-\[100px\] {

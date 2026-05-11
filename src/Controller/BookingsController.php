@@ -82,66 +82,82 @@ class BookingsController extends AppController
 
     public function patientClinicianIndex()
     {
-        $this->checkRole(['patient', 'clinician']); // Only patients and clinicians can access this method
+        $this->checkRole(['patient', 'clinician']);
+
+        $identity = $this->Authentication->getIdentity();
+        $role = $identity->role;
 
         $patientId = null;
         $clinicianId = null;
-        if ($this->Authentication->getIdentity()->role === 'patient') {
+
+        if ($role === 'patient') {
             $patientId = $this->getPatientId();
-        } elseif ($this->Authentication->getIdentity()->role === 'clinician') {
+        } elseif ($role === 'clinician') {
             $clinicianId = $this->getClinicianId();
         }
 
-        // Auto-decline pending bookings that are past their scheduled date
+        // Auto-decline expired pending bookings
         $this->Bookings->updateExpiredPendingBookings();
 
-        // Count pending bookings
+        // Shared booking filter
+        $bookingConditions = function ($exp) use ($patientId, $clinicianId) {
+            if ($patientId) {
+                return $exp->eq('Bookings.patient_id', $patientId);
+            }
+
+            if ($clinicianId) {
+                return $exp->eq('Bookings.clinician_id', $clinicianId);
+            }
+
+            return $exp;
+        };
+
+        // Pending bookings count
         $pendingCount = $this->Bookings->find()
             ->where(['Bookings.status' => 'pending'])
-            ->andWhere(function ($exp) use ($patientId, $clinicianId) {
-                if ($patientId) {
-                    return $exp->eq('Bookings.patient_id', $patientId);
-                } elseif ($clinicianId) {
-                    return $exp->eq('Bookings.clinician_id', $clinicianId);
-                }
-
-                return null;
-            })
+            ->andWhere($bookingConditions)
             ->count();
 
-        // Get upcoming bookings (not paginated)
         $today = new DateTime();
-        $upcomingBookings = $this->Bookings->find()
+
+        // Base query
+        $baseQuery = $this->Bookings->find()
             ->contain(['Clinicians.Users', 'Patients.Users'])
-            ->where(['Bookings.scheduled_date >=' => $today->format('Y-m-d')])
-            ->andWhere(function ($exp) use ($patientId, $clinicianId) {
-                if ($patientId) {
-                    return $exp->eq('Bookings.patient_id', $patientId);
-                } elseif ($clinicianId) {
-                    return $exp->eq('Bookings.clinician_id', $clinicianId);
-                }
+            ->andWhere($bookingConditions);
 
-                return null;
-            })
-            ->orderBy(['Bookings.scheduled_date' => 'ASC'])
-            ->all();
+        // Upcoming bookings
+        $upcomingQuery = clone $baseQuery;
 
-        // Get all bookings (paginated)
-        $query = $this->Bookings->find()
-            ->contain(['Clinicians.Users', 'Patients.Users'])
-            ->andWhere(function ($exp) use ($patientId, $clinicianId) {
-                if ($patientId) {
-                    return $exp->eq('Bookings.patient_id', $patientId);
-                } elseif ($clinicianId) {
-                    return $exp->eq('Bookings.clinician_id', $clinicianId);
-                }
+        $upcomingQuery
+            ->where([
+                'Bookings.scheduled_date >=' => $today->format('Y-m-d'),
+            ])
+            ->orderBy([
+                'Bookings.scheduled_date' => 'ASC',
+            ]);
 
-                return null;
-            })
-            ->orderBy(['Bookings.scheduled_date' => 'DESC']);
-        $bookings = $this->paginate($query);
+        // All bookings
+        $query = clone $baseQuery;
 
-        $this->set(compact('pendingCount', 'upcomingBookings', 'bookings'));
+        $query->orderBy([
+            'Bookings.scheduled_date' => 'DESC',
+        ]);
+
+        $bookings = $this->paginate($query, [
+            'scope' => 'allBookings',
+            'limit' => 10,
+        ]);
+
+        $upcomingBookings = $this->paginate($upcomingQuery, [
+            'scope' => 'upcomingBookings',
+            'limit' => 10,
+        ]);
+
+        $this->set(compact(
+            'pendingCount',
+            'upcomingBookings',
+            'bookings'
+        ));
     }
 
     /**
