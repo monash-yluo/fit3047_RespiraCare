@@ -254,7 +254,7 @@ class PatientMeasurementsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
         }
 
-        [$hour, $minute] = $slotTimes[strtolower($timeSlot)] ?? [now()->hour, now()->minute];
+        [$hour, $minute] = $slotTimes[strtolower($timeSlot)] ?? [FrozenTime::now('Australia/Sydney')->hour, FrozenTime::now('Australia/Sydney')->minute];
         $scheduledTime = FrozenTime::now('Australia/Sydney')->setTime($hour, $minute);
 
         // Add an empty
