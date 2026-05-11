@@ -77,7 +77,7 @@ class AppController extends Controller
         // }
 
         $identity = $this->Authentication->getIdentity();
-        $reminders = null;
+        $navbarReminders = null;
 
         if ($identity) {
             $navbarReminders = $this->fetchTable('Reminders')->find()
