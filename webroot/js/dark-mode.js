@@ -227,9 +227,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
 
+            // For buttons with confirm, set a timeout to restore in case user clicks Cancel
+            const hasConfirm = this.getAttribute('onclick')?.includes('confirm(') || 
+                             this.getAttribute('data-confirm');
+            const btn = this;
+            
             setTimeout(() => {
-                this.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
-                this.style.filter = 'grayscale(1)';
+                btn.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                btn.style.filter = 'grayscale(1)';
+                
+                // If button has confirm dialog, auto-restore after 2 seconds in case user cancelled
+                if (hasConfirm) {
+                    setTimeout(() => {
+                        // Check if page is still here (if page navigated, this won't execute)
+                        if (document.body) {
+                            btn.classList.remove('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                            btn.style.filter = '';
+                        }
+                    }, 500);
+                }
             }, 10);
         });
     });
