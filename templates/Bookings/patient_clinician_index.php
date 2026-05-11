@@ -71,7 +71,12 @@ $statusColors = [
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/bookings_clinician_table',
         ]) ?>
+
+        <!-- Pagination -->
+        <?= $this->element('table/pagination_footer', ['scope' => 'upcomingBookings']) ?>
     </div>
+
+    <div class="h-px my-10 bg-gray-200 border-0 dark:bg-gray-700"></div>
 
     <!-- All Bookings Table -->
     <div>
@@ -83,5 +88,7 @@ $statusColors = [
         ]) ?>
 
         <!-- Pagination -->
-        <?= $this->element('table/pagination_footer') ?>
+        <?= $this->element('table/pagination_footer', ['scope' => 'allBookings']) ?>
     </div>
+
+</div>

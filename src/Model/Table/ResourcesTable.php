@@ -63,7 +63,7 @@ class ResourcesTable extends Table
         $validator
             ->date('published_date')
             ->allowEmptyDate('published_date');
-            
+
 
         $validator
             ->scalar('type')
@@ -82,7 +82,7 @@ class ResourcesTable extends Table
             ->maxLength('status', 50)
             ->requirePresence('status', 'create')
             ->notEmptyString('status')
-            ->inList('status', ['Active', 'Draft', 'Archived'], 'Please select a valid status.');
+            ->inList('status', ['active', 'draft', 'archived'], 'Please select a valid status.');
 
         return $validator;
     }

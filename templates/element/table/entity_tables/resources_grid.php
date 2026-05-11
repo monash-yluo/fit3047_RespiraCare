@@ -9,7 +9,7 @@
 
 <!-- Grid Container -->
 <?php if (count($resources) === 0) : ?>
-    <div class="py-8">
+    <div class="py-8 text-center">
         <?= $this->element('table/table_empty_state', [
             'colspan' => 1,
             'title' => 'No resources found',

@@ -24,6 +24,14 @@ class RemindersController extends AppController
         $query = $this->Reminders->find()
             ->contain(['Receivers', 'Senders']);
 
+        $isReadParam = $this->request->getQuery('is_read');
+
+        if ($isReadParam === 'unread') {
+            $query->where(['Reminders.is_read' => 0]);
+        } elseif ($isReadParam === 'read') {
+            $query->where(['Reminders.is_read' => 1]);
+        }
+
         // Only admins can see all reminders, others can only see their own
         $identity = $this->Authentication->getIdentity();
         if ($identity && $identity->role !== 'admin') {

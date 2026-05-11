@@ -250,3 +250,223 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    let filterRequest;
+    const filterButtons = document.querySelectorAll('[data-ajax-filter="true"]');
+
+    if (filterButtons.length > 0) {
+
+        filterButtons.forEach((filterBtn) => {
+
+            filterBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Skip if already active
+                if (filterBtn.classList.contains('active-filter')) return;
+
+                const tableWrapper = filterBtn.closest('.data-table');
+                const tableContainer = tableWrapper.querySelector('.ajax-table-content');
+                if (!tableContainer) return;
+
+                const paramName = filterBtn.getAttribute('data-filter-param');
+                const paramValue = filterBtn.getAttribute('data-filter-value');
+                const backendTarget = filterBtn.getAttribute('data-target');
+
+                const url = new URL(window.location.href);
+
+                // Remove filter if empty
+                if (!paramValue) {
+                    url.searchParams.delete(paramName);
+                } else {
+                    url.searchParams.set(paramName, paramValue);
+                }
+
+                // Append the target parameter for the backend
+                if (backendTarget) {
+                    url.searchParams.set('target', backendTarget);
+                }
+
+                // Reset pagination
+                url.searchParams.delete('page');
+
+                // Abort previous request
+                if (filterRequest) {
+                    filterRequest.abort();
+                }
+
+                filterRequest = new AbortController();
+
+                // Loading state
+                tableContainer.classList.add('opacity-50', 'pointer-events-none');
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    signal: filterRequest.signal
+                })
+                    .then(response => response.text())
+                    .then(html => {
+
+                        tableContainer.innerHTML = html;
+                        tableContainer.classList.remove('opacity-50', 'pointer-events-none');
+
+                        // Update the browser URL so refreshes work
+                        window.history.pushState({}, '', url);
+
+                        // Update active states
+                        const group = filterBtn.closest('[role="group"]');
+
+                        if (!group) return;
+
+                        const siblings = group.querySelectorAll('.filter-btn');
+
+                        const activeClasses = [
+                            'active-filter',
+                            'bg-white',
+                            'text-gray-900',
+                            'shadow',
+                            'dark:bg-gray-800',
+                            'dark:text-white'
+                        ];
+
+                        const inactiveClasses = [
+                            'text-gray-500',
+                            'hover:text-gray-900',
+                            'dark:text-gray-400',
+                            'dark:hover:text-white',
+                            'hover:bg-gray-50',
+                            'dark:hover:bg-gray-600'
+                        ];
+
+                        siblings.forEach((btn) => {
+
+                            btn.classList.remove(...activeClasses, ...inactiveClasses);
+
+                            if (btn === filterBtn) {
+                                btn.classList.add(...activeClasses);
+                            } else {
+                                btn.classList.add(...inactiveClasses);
+                            }
+                        });
+                    })
+                    .catch(error => {
+
+                        if (error.name !== 'AbortError') {
+                            console.error('Filter failed:', error);
+                            tableContainer.classList.remove('opacity-50', 'pointer-events-none');
+                        }
+                    });
+            });
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    let gridFilterRequest;
+    const filterSelects = document.querySelectorAll('[data-ajax-filter-select="true"]');
+    const gridContainer = document.getElementById('grid-container');
+
+    if (filterSelects.length > 0 && gridContainer) {
+        filterSelects.forEach((select) => {
+            select.addEventListener('change', function() {
+                const paramName = this.getAttribute('data-filter-param');
+                const paramValue = this.value;
+                const url = new URL(window.location.href);
+
+                if (!paramValue) {
+                    url.searchParams.delete(paramName);
+                } else {
+                    url.searchParams.set(paramName, paramValue);
+                }
+
+                url.searchParams.delete('page');
+
+                if (gridFilterRequest) {
+                    gridFilterRequest.abort();
+                }
+                gridFilterRequest = new AbortController();
+
+                gridContainer.classList.add('opacity-50', 'pointer-events-none');
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    signal: gridFilterRequest.signal
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        gridContainer.innerHTML = html;
+                        gridContainer.classList.remove('opacity-50', 'pointer-events-none');
+
+                        // Sync browser address bar
+                        window.history.pushState({}, '', url.toString());
+                    })
+                    .catch(error => {
+                        if (error.name !== 'AbortError') {
+                            console.error('Grid filter failed:', error);
+                            gridContainer.classList.remove('opacity-50', 'pointer-events-none');
+                        }
+                    });
+            });
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    let dropdownRequest;
+    const filterSelects = document.querySelectorAll('[data-ajax-filter-select="true"]');
+    const tableContainer = document.querySelector('.ajax-table-content');
+
+    if (filterSelects.length > 0 && tableContainer) {
+        filterSelects.forEach((select) => {
+            select.addEventListener('change', function() {
+                const paramName = this.getAttribute('data-filter-param');
+                const paramValue = this.value;
+                const url = new URL(window.location.href);
+
+                // Update the specific parameter
+                if (!paramValue) {
+                    url.searchParams.delete(paramName);
+                } else {
+                    url.searchParams.set(paramName, paramValue);
+                }
+
+                // Reset pagination
+                url.searchParams.delete('page');
+
+                // Abort previous request
+                if (dropdownRequest) {
+                    dropdownRequest.abort();
+                }
+                dropdownRequest = new AbortController();
+
+                // Loading state
+                tableContainer.classList.add('opacity-50', 'pointer-events-none');
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    signal: dropdownRequest.signal
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        tableContainer.innerHTML = html;
+                        tableContainer.classList.remove('opacity-50', 'pointer-events-none');
+
+                        // Update browser address bar
+                        window.history.pushState({}, '', url.toString());
+                    })
+                    .catch(error => {
+                        if (error.name !== 'AbortError') {
+                            console.error('Filter failed:', error);
+                            tableContainer.classList.remove('opacity-50', 'pointer-events-none');
+                        }
+                    });
+            });
+        });
+    }
+});

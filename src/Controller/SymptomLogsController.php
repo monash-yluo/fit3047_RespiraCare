@@ -10,21 +10,6 @@ namespace App\Controller;
  */
 class SymptomLogsController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
-    {
-        $this->checkRole(['admin', 'clinician']);
-
-        $query = $this->SymptomLogs->find()
-            ->contain(['Patients']);
-        $symptomLogs = $this->paginate($query);
-
-        $this->set(compact('symptomLogs'));
-    }
 
     /**
      * View method

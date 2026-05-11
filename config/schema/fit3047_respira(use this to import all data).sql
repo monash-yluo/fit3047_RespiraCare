@@ -162,8 +162,8 @@ CREATE TABLE `contact_messages` (
 --
 
 INSERT INTO `contact_messages` (`id`, `patient_id`, `first_name`, `last_name`, `email`, `category`, `status`, `message`, `notes`, `created`, `modified`) VALUES
-(1, 1, 'John', 'Doe', 'john.patient@example.com', 'Support', 'open', 'The mobile app is not syncing my data.', NULL, '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, NULL, 'Visitor', 'User', 'visitor@web.com', 'Inquiry', 'new', 'Are you currently accepting new patients?', NULL, '2026-03-21 15:02:11', '2026-03-21 15:02:11');
+(1, 1, 'John', 'Doe', 'john.patient@example.com', 'Technical Support', 'replied', 'The mobile app is not syncing my data.', NULL, '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(2, NULL, 'Visitor', 'User', 'visitor@web.com', 'General Inquiry', 'new', 'Are you currently accepting new patients?', NULL, '2026-03-21 15:02:11', '2026-03-21 15:02:11');
 
 -- --------------------------------------------------------
 

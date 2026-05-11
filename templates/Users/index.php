@@ -7,6 +7,13 @@
 
 $this->setLayout($identity->role);
 $this->assign('title', 'Manage Users');
+
+$buildUrl = function($role) {
+    $params = array_merge($this->request->getQueryParams(), ['role' => $role === 'all' ? null : $role]);
+    return $this->Url->build(['?' => $params]);
+};
+$currentRole = $this->request->getQuery('role', 'all');
+
 ?>
 
 <div class="px-4 pt-6">
@@ -20,6 +27,15 @@ $this->assign('title', 'Manage Users');
 
     <?= $this->element('table/table_wrapper', [
         'tableElement' => 'table/entity_tables/users_table',
+        'filterConfig' => [
+            'paramName' => 'role',
+            'options' => [
+                '' => 'All',
+                'admin' => 'Admins',
+                'patient' => 'Patients',
+                'clinician' => 'Clinicians',
+            ],
+        ],
     ]) ?>
     <?= $this->element('table/pagination_footer') ?>
 

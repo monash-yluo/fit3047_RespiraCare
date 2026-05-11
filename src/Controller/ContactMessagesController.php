@@ -52,6 +52,17 @@ class ContactMessagesController extends AppController
             ]);
         }
 
+        $status = $this->request->getQuery('status');
+        $category = $this->request->getQuery('category');
+
+        if (!empty($status)) {
+            $query->where(['ContactMessages.status' => $status]);
+        }
+
+        if (!empty($category)) {
+            $query->where(['ContactMessages.category' => $category]);
+        }
+
         $this->paginate = [
             'limit' => 10,
             'order' => ['created' => 'DESC'],
