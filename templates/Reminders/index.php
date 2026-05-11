@@ -21,6 +21,14 @@ $this->assign('title', 'System Reminders');
 
     <?= $this->element('table/table_wrapper', [
         'tableElement' => 'table/entity_tables/reminders_table',
+        'filterConfig' => [
+            'paramName' => 'is_read',
+            'options' => [
+                '' => 'All',
+                'unread' => 'Unread',
+                'read' => 'Read',
+            ],
+        ],
     ]) ?>
 
     <?= $this->element('table/pagination_footer') ?>

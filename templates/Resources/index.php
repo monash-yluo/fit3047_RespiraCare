@@ -14,33 +14,59 @@ $this->assign('title', 'Manage Resources');
 
     <?= $this->element('table/page_header', [
         'title' => $identity->role === 'admin' ? 'Manage Resources' : 'Resources',
-        'description' => $identity->role === 'admin' ? 'View, add, and manage educational resources and links.' : 'View available educational resources and links.',
+        'description' => $identity->role === 'admin' ? 'View, add, and manage educational resources.' : 'View available educational resources.',
         'actionLabel' => __('New Resource'),
         'actionUrl' => $identity->role === 'admin' ? ['action' => 'add'] : null,
     ]) ?>
 
+    <div class="flex flex-row gap-3 mb-1 items-center">
+        <!-- Filter by Type -->
+        <div class="w-48">
+            <?= $this->element('table/filter_dropdown', [
+                'paramName' => 'type',
+                'options' => [
+                    '' => 'All Types',
+                    'Article' => 'Articles',
+                    'Video' => 'Videos',
+                    'PDF' => 'PDFs',
+                    'External Link' => 'Links',
+                    'Guide' => 'Guides'
+                ]
+            ]) ?>
+        </div>
+
+        <?php if ($identity->role === 'admin') : ?>
+            <div class="w-48">
+                <?= $this->element('table/filter_dropdown', [
+                    'paramName' => 'status',
+                    'options' => [
+                        '' => 'All Status',
+                        'active' => 'Active',
+                        'draft' => 'Draft',
+                        'archived' => 'Archived',
+                    ]
+                ]) ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
     <!-- Sorting Controls -->
-    <div class="flex flex-col md:flex-row justify-between space-y-3 items-center mx-4 py-4" id="resources-filter-panel">
+    <div class="flex flex-col md:flex-row justify-between space-y-3 items-center py-4" id="resources-filter-panel">
         <?= $this->element('table/search') ?>
 
         <div class="flex justify-end items-center space-x-3 text-sm">
             <span class="text-gray-500 dark:text-gray-400 font-medium">Sort by:</span>
-            <?= $this->Paginator->sort('title', 'Title', ['class' => 'text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-semibold transition-colors']) ?>
-            <span class="text-gray-300 dark:text-gray-600">|</span>
-            <?= $this->Paginator->sort('published_date', 'Date', ['class' => 'text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-semibold transition-colors']) ?>
-            <span class="text-gray-300 dark:text-gray-600">|</span>
-            <?= $this->Paginator->sort('type', 'Type', ['class' => 'text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-semibold transition-colors']) ?>
+            <?= $this->Paginator->sort('title', 'Title', ['class' => 'font-semibold transition-colors']) ?>
+            <span class="text-gray-300">|</span>
+            <?= $this->Paginator->sort('published_date', 'Date', ['class' => 'font-semibold transition-colors']) ?>
+            <span class="text-gray-300">|</span>
+            <?= $this->Paginator->sort('type', 'Type', ['class' => 'font-semibold transition-colors']) ?>
         </div>
     </div>
 
-    <div class="px-4 pt-6">
-        <!-- Resources Grid -->
-        <div id="grid-container" class="text-center">
-            <?= $this->element('table/entity_tables/resources_grid') ?>
-        </div>
+    <div id="grid-container">
+        <?= $this->element('table/entity_tables/resources_grid') ?>
     </div>
 
-    <!-- Same pagination element works perfectly below a grid -->
     <?= $this->element('table/pagination_footer') ?>
-
 </div>

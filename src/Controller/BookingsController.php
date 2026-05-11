@@ -25,6 +25,11 @@ class BookingsController extends AppController
             ->contain(['Patients.Users', 'Clinicians.Users']);
 
         $search = $this->request->getQuery('search');
+        $status = $this->request->getQuery('status');
+
+        if (!empty($status)) {
+            $query->where(['Bookings.status' => $status]);
+        }
 
         if (!empty($search)) {
             // Find Patient by Search

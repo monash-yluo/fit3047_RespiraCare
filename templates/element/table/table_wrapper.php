@@ -14,12 +14,19 @@ $hasSearch = $hasSearch ?? true;
 $tableElement = $tableElement ?? false;
 $target = $target ?? true;
 
+$filterConfig = $filterConfig ?? false;
+
 if (empty($tableElement)) {
     throw new NotFoundException('table_wrapper requires a $tableElement to be passed.');
 }
 
 ?>
-<div class="flex flex-col">
+<div class="data-table flex flex-col">
+
+    <?php if (!empty($filterConfig)) : ?>
+        <?= $this->element('table/filter_tabs', $filterConfig) ?>
+    <?php endif; ?>
+
     <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
             <div class="table_wrapper overflow-hidden shadow">

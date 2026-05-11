@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\SymptomType> $symptomTypes
  */
+
 ?>
 <div class="symptomTypes index content">
     <?= $this->Html->link(__('New Symptom Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>

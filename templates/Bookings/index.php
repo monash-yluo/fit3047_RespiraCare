@@ -21,6 +21,15 @@ $this->assign('title', 'Manage Bookings');
 
     <?= $this->element('table/table_wrapper', [
         'tableElement' => 'table/entity_tables/bookings_table',
+        'filterConfig' => [
+            'paramName' => 'status',
+            'options' => [
+                '' => 'All',
+                'pending' => 'Pending',
+                'confirmed' => 'Confirmed',
+                'declined' => 'declined',
+            ],
+        ],
     ]) ?>
 
     <?= $this->element('table/pagination_footer') ?>

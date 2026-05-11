@@ -55,6 +55,14 @@ class UsersController extends AppController
             ]);
         }
 
+        $filter = $this->request->getQuery('role');
+
+        if (!empty($filter)) {
+            $query->where([
+                'Users.role' => $filter
+            ]);
+        }
+
         $this->paginate = [
             'limit' => 10,
             'order' => ['Users.created' => 'DESC'],

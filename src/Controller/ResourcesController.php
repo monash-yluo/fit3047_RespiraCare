@@ -28,6 +28,20 @@ class ResourcesController extends AppController
             $query->where(['title LIKE' => '%' . $search . '%']);
         }
 
+        $type = $this->request->getQuery('type');
+        if (!empty($type)) {
+            $query->where(['Resources.type' => $type]);
+        }
+
+        $status = $this->request->getQuery('status');
+        if (!empty($status)) {
+            $query->where(['Resources.status' => $status]);
+        } else {
+            if ($identity->role !== 'admin') {
+                $query->where(['Resources.status' => 'active']);
+            }
+        }
+
         $this->paginate = [
             'limit' => 12,
             'order' => ['created' => 'DESC'],
