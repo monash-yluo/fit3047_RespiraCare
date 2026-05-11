@@ -80,15 +80,15 @@ class AppController extends Controller
         $reminders = null;
 
         if ($identity) {
-            $reminders = $this->fetchTable('Reminders')->find()
+            $navbarReminders = $this->fetchTable('Reminders')->find()
                 ->contain(['Senders'])
                 ->where(['Reminders.receiver_id' => $identity->get('id')])
-                ->orderBy(['Reminders.created' => 'DESC'])
+                ->orderBy(['Reminders.is_read' => 'ASC', 'Reminders.created' => 'DESC'])
                 ->limit(5)
                 ->all();
         }
 
-        $this->set(compact('identity', 'reminders'));
+        $this->set(compact('identity', 'navbarReminders'));
     }
 
     /**

@@ -89,8 +89,8 @@ $searchableLinks = $searchableLinks ?? [];
                     <?php
                     //Check if any reminder have unread
                     $hasUnread = false;
-                    if (!empty($reminders)) {
-                        foreach ($reminders as $reminder) {
+                    if (!empty($navbarReminders)) {
+                        foreach ($navbarReminders as $reminder) {
                             if (!$reminder->is_read && $reminder->receiver_id === $identity->get('id')) {
                                 $hasUnread = true;
                                 break;
@@ -107,9 +107,9 @@ $searchableLinks = $searchableLinks ?? [];
                 <div class="z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg dark:divide-gray-600 dark:bg-gray-700" id="notification-dropdown">
                     <div class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">Notifications</div>
                     <div>
-                        <?php if (!empty($reminders)) : ?>
-                            <?php foreach ($reminders as $reminder) : ?>
-                                <a href="<?= $this->Url->build(['controller' => 'Reminders', 'action' => 'view', $reminder->id]) ?>" class="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
+                        <?php if (!empty($navbarReminders)) : ?>
+                            <?php foreach ($navbarReminders as $reminder) : ?>
+                                <a href="<?= $this->Url->build(['controller' => 'Reminders', 'action' => 'view', $reminder->id]) ?>" class="flex px-4 py-3 border-b dark:border-gray-600 <?= !$reminder->is_read ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-gray-100 dark:hover:bg-gray-600' ?>">
                                     <div class="w-full pl-3">
                                         <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
                                             <span class="font-semibold text-gray-900 dark:text-white"><?= $reminder->sender ? h($reminder->sender->full_name) : 'System' ?></span>: <?= h($reminder->message) ?>
