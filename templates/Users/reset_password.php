@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  */
@@ -25,14 +26,16 @@ $this->assign('title', 'Reset Password | RespiraCare');
 
                 <div class="mb-4">
                     <label class="fw-bold small mb-2 d-block">Email</label>
-                    <div class="d-flex gap-2">
-                        <?= $this->Form->control('email', [
-                            'class' => 'form-control form-control-lg shadow-sm fs-6',
-                            'label' => false,
-                            'required' => true,
-                            'autofocus' => true,
-                        ]) ?>
-                        <button type="button" class="btn text-white fw-bold px-4 py-2 rounded-3 shadow-sm" 
+                    <div class="d-flex gap-2 w-100">
+                        <div class="flex-grow-1">
+                            <?= $this->Form->control('email', [
+                                'class' => 'form-control form-control-lg shadow-sm fs-6 w-100',
+                                'label' => false,
+                                'required' => true,
+                                'autofocus' => true,
+                            ]) ?>
+                        </div>
+                        <button type="button" class="btn text-white fw-bold px-4 rounded-3 shadow-sm" 
                                 style="background-color: #305BAB; border: none; font-size: 1rem; white-space: nowrap;"
                                 id="sendVerifyBtn"
                                 onclick="sendVerifyCode()">
@@ -51,10 +54,30 @@ $this->assign('title', 'Reset Password | RespiraCare');
                 </div>
 
                 <div class="mb-4">
+                    <?= $this->Form->control('password', [
+                        'type' => 'password',
+                        'class' => 'form-control form-control-lg shadow-sm fs-6',
+                        'label' => ['text' => 'New Password', 'class' => 'fw-bold small mb-2'],
+                        'placeholder' => 'Enter your new password',
+                        'required' => true,
+                    ]) ?>
+                </div>
+
+                <div class="mb-4">
+                    <?= $this->Form->control('password_confirm', [
+                        'type' => 'password',
+                        'class' => 'form-control form-control-lg shadow-sm fs-6',
+                        'label' => ['text' => 'Confirm Password', 'class' => 'fw-bold small mb-2'],
+                        'placeholder' => 'Confirm your new password',
+                        'required' => true,
+                    ]) ?>
+                </div>
+
+                <div class="mb-4">
                     <div class="cf-turnstile"
-                         data-sitekey="<?= h(Configure::read('Turnstile.siteKey')) ?>"
-                         data-theme="light"
-                         data-size="normal"></div>
+                        data-sitekey="<?= h(Configure::read('Turnstile.siteKey')) ?>"
+                        data-theme="light"
+                        data-size="normal"></div>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between mt-2">
@@ -75,7 +98,7 @@ $this->assign('title', 'Reset Password | RespiraCare');
             </div>
 
             <div class="col-lg-7 d-none d-lg-block text-center rounded-circle bg-white p-4"
-                 data-aos="fade-left">
+                data-aos="fade-left">
                 <?= $this->Html->image('admin-login-vector.png', [
                     'class' => 'img-fluid',
                     'alt' => 'RespiraCare Administrator Dashboard',
@@ -90,50 +113,50 @@ $this->assign('title', 'Reset Password | RespiraCare');
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
-function sendVerifyCode() {
-    const email = document.querySelector('input[name="email"]').value;
-    const btn = document.getElementById('sendVerifyBtn');
-    
-    if (!email) {
-        alert('Please enter your email address first');
-        return;
+    function sendVerifyCode() {
+        const email = document.querySelector('input[name="email"]').value;
+        const btn = document.getElementById('sendVerifyBtn');
+
+        if (!email) {
+            alert('Please enter your email address first');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = 'Sending...';
+
+        fetch('<?= $this->Url->build(['controller' => 'Users', 'action' => 'sendVerifyCode']) ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('input[name="_csrfToken"]').value
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Verification code sent to your email!');
+                    btn.innerHTML = 'Code Sent ✓';
+                    btn.style.backgroundColor = '#28a745';
+                } else {
+                    alert(data.message || 'Failed to send verification code');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Send Code';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
+                btn.disabled = false;
+                btn.innerHTML = 'Send Code';
+            });
     }
-    
-    btn.disabled = true;
-    btn.innerHTML = 'Sending...';
-    
-    fetch('<?= $this->Url->build(['controller' => 'Users', 'action' => 'sendVerifyCode']) ?>', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('input[name="_csrfToken"]').value
-        },
-        body: JSON.stringify({ email: email })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            alert('Verification code sent to your email!');
-            btn.innerHTML = 'Code Sent ✓';
-            btn.style.backgroundColor = '#28a745';
-        } else {
-            alert(data.message || 'Failed to send verification code');
-            btn.disabled = false;
-            btn.innerHTML = 'Send Code';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert(`Error: ${error.message}`);
-        btn.disabled = false;
-        btn.innerHTML = 'Send Code';
-    });
-}
 </script>
-
-

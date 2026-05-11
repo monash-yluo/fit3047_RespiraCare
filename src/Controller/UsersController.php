@@ -718,20 +718,30 @@ class UsersController extends AppController
                 return;
             }
 
-            // 验证码正确，清除缓存
-            \Cake\Cache\Cache::delete($codeKey);
+            // --- 4. 验证新密码 ---
+            $password = $data['password'] ?? null;
+            $passwordConfirm = $data['password_confirm'] ?? null;
 
-            // --- 4. 验证密码一致性 ---
-            if (empty($data['new_password']) || $data['new_password'] !== $data['confirm_new_password']) {
-                $this->Flash->error(__('New passwords do not match or are empty.'));
+            if (!$password || !$passwordConfirm) {
+                $this->Flash->error(__('Password and confirmation are required.'));
+
+                return;
+            }
+
+            if ($password !== $passwordConfirm) {
+                $this->Flash->error(__('Passwords do not match.'));
+
+                return;
+            }
+
+            if (strlen($password) < 8) {
+                $this->Flash->error(__('Password must be at least 8 characters long.'));
 
                 return;
             }
 
             // --- 5. 查找用户并更新密码 ---
-            $user = $this->Users->find()
-                ->where(['email' => $email])
-                ->first();
+            $user = $this->Users->findByEmail($email)->first();
 
             if (!$user) {
                 $this->Flash->error(__('User not found.'));
@@ -740,15 +750,20 @@ class UsersController extends AppController
             }
 
             // 更新密码
-            $user->password = $data['new_password'];
+            $user->password = $password;
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('Your password has been reset successfully.'));
+                // 验证码正确，清除缓存
+                \Cake\Cache\Cache::delete($codeKey);
 
-                return $this->redirect(['action' => 'login']);
+                $this->Flash->success(__('Your password has been reset successfully. Please log in with your new password.'));
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            } else {
+                $this->Flash->error(__('Failed to reset password. Please try again.'));
+
+                return;
             }
-
-            $this->Flash->error(__('Unable to update the password. Please try again.'));
         }
     }
     
