@@ -87,7 +87,7 @@ $this->assign('title', 'Edit Resource');
             <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 <h3 class="mb-4 text-lg font-semibold dark:text-white">Actions</h3>
                 <div class="flex flex-col space-y-4">
-                    <button type="submit" class="inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors">
+                    <button type="submit" class="temp-disable-button inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors">
                         Update Resource
                     </button>
 
@@ -97,7 +97,7 @@ $this->assign('title', 'Edit Resource');
                         [
                             'escape' => false,
                             'confirm' => __('Are you sure you want to delete the resource: {0}?', $resource->title),
-                            'class' => 'inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900 transition-colors',
+                            'class' => 'temp-disable-button inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900 transition-colors',
                         ]
                     ) ?>
                 </div>

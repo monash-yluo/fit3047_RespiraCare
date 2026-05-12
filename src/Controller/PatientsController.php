@@ -74,6 +74,7 @@ class PatientsController extends AppController
             ->where(['patient_id' => $patient->id]);
 
         $patientMeasurements = $this->paginate($measurementsQuery, [
+            'scope' => 'measurements',
             'limit' => 5,
             'order' => ['created' => 'desc'],
         ]);
@@ -83,6 +84,7 @@ class PatientsController extends AppController
             ->contain(['SymptomTypes']);
 
         $symptomLogs = $this->paginate($symptomsQuery, [
+            'scope' => 'symptoms',
             'limit' => 5,
             'order' => ['created' => 'desc'],
         ]);

@@ -97,7 +97,7 @@ $slugify = function ($text) {
                                         'escape' => false,
                                         'title' => __('Restore Previous Version'),
                                         'confirm' => __("Are you sure you want to restore the previous version for this item?\n{0}/{1}\nNote: You cannot cancel this action!", $contentBlock['parent'], $contentBlock['slug']),
-                                        'class' => 'inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-500 dark:hover:bg-primary-600 dark:focus:ring-primary-800 transition-colors',
+                                        'class' => 'temp-disable-button inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-500 dark:hover:bg-primary-600 dark:focus:ring-primary-800 transition-colors',
                                     ],
                                 ) ?>
                             <?php } ?>
@@ -131,7 +131,7 @@ $slugify = function ($text) {
                             [
                                 'escape' => false,
                                 'confirm' => __('Delete "{0}"? This may affect existing logs.', $type->name),
-                                'class' => 'flex items-center justify-center'
+                                'class' => 'temp-disable-button flex items-center justify-center'
                             ]
                         ) ?>
                     </div>

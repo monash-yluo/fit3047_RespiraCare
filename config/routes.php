@@ -115,6 +115,12 @@ return function (RouteBuilder $routes): void {
             ['status' => 301],
         );
 
+        $builder->redirect(
+            '/ai-insights/*',
+            ['controller' => 'Pages', 'action' => 'index'],
+            ['status' => 301],
+        );
+
         $builder->connect('/go-back', ['controller' => 'App', 'action' => 'goBack']);
 
         /*

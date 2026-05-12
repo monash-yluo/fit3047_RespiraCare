@@ -9,6 +9,35 @@
 (function() {
   "use strict";
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const skipButtons = document.querySelectorAll('.temp-disable-button');
+
+        skipButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+
+                if (this.classList.contains('pointer-events-none')) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                const form = this.form || this.closest('form');
+
+                if (form && typeof form.checkValidity === 'function') {
+                    if (!form.checkValidity()) {
+                        return;
+                    }
+                }
+
+                const btn = this;
+
+                setTimeout(() => {
+                    btn.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                    btn.style.filter = 'grayscale(0.1)';
+                }, 10);
+            });
+        });
+    });
+
   /**
    * Apply .scrolled class to the body as the page is scrolled down
    */
@@ -216,3 +245,4 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+

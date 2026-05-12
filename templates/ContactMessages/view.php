@@ -36,14 +36,14 @@ $this->assign('title', 'Contact Messages');
                 <?= $this->element('button/back_button') ?>
 
                 <?= $this->Form->button(__('Save Changes'), [
-                    'class' => 'text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800',
+                    'class' => 'temp-disable-button text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800',
                     'type' => 'submit',
                     'form' => 'main-edit-form',
                 ]) ?>
 
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contactMessage->id], [
                     'confirm' => __('Are you sure you want to delete this message?'),
-                    'class' => 'text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900',
+                    'class' => 'temp-disable-button text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900',
                 ]) ?>
             </div>
         </div>

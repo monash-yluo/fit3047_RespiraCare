@@ -47,6 +47,7 @@ themeToggleBtn.addEventListener('click', function() {
 /**
  * Preloader
  */
+/*
 const preloader = document.querySelector('#preloader');
 
 if (preloader) {
@@ -64,6 +65,7 @@ if (preloader) {
         });
     }
 }
+*/
 
 /**
  * Auto SearchingBar
@@ -222,19 +224,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     skipButtons.forEach(button => {
         button.addEventListener('click', function(e) {
+
             if (this.classList.contains('pointer-events-none')) {
                 e.preventDefault();
                 return false;
             }
 
+            const form = this.form || this.closest('form');
+            if (form && typeof form.checkValidity === 'function') {
+                if (!form.checkValidity()) {
+                    return;
+                }
+            }
+
             // For buttons with confirm, set a timeout to restore in case user clicks Cancel
-            const hasConfirm = this.getAttribute('onclick')?.includes('confirm(') ||
-                             this.getAttribute('data-confirm');
+            const hasConfirm = this.getAttribute('onclick')?.includes('confirm(') || this.getAttribute('data-confirm');
             const btn = this;
+
+            const parentRow = this.closest('tr');
+            const siblingActions = parentRow ? parentRow.querySelectorAll('a, button') : [];
 
             setTimeout(() => {
                 btn.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
-                btn.style.filter = 'grayscale(1)';
+                btn.style.filter = 'grayscale(0.1)';
+
+                siblingActions.forEach(actionBtn => {
+                    actionBtn.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                    actionBtn.style.filter = 'grayscale(0.1)';
+                });
 
                 // If button has confirm dialog, auto-restore after 2 seconds in case user cancelled
                 if (hasConfirm) {
@@ -243,8 +260,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (document.body) {
                             btn.classList.remove('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
                             btn.style.filter = '';
+
+                                siblingActions.forEach(actionBtn => {
+                                actionBtn.classList.remove('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                                actionBtn.style.filter = '';
+                            });
                         }
-                    }, 500);
+                    }, 1500);
                 }
             }, 10);
         });

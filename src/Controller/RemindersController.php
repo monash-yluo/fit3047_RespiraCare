@@ -127,30 +127,6 @@ class RemindersController extends AppController
     }
 
     /**
-     * Edit method
-     *
-     * @param string|null $id Reminder id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit(?string $id = null)
-    {
-        $reminder = $this->Reminders->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $reminder = $this->Reminders->patchEntity($reminder, $this->request->getData());
-            if ($this->Reminders->save($reminder)) {
-                $this->Flash->success(__('The reminder has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The reminder could not be saved. Please, try again.'));
-        }
-        $receivers = $this->Reminders->Receivers->find('list', limit: 200)->all();
-        $senders = $this->Reminders->Senders->find('list', limit: 200)->all();
-        $this->set(compact('reminder', 'receivers', 'senders'));
-    }
-
-    /**
      * Delete method
      *
      * @param string|null $id Reminder id.

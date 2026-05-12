@@ -35,7 +35,7 @@ $this->assign('title', 'Reset Password | RespiraCare');
                                 'autofocus' => true,
                             ]) ?>
                         </div>
-                        <button type="button" class="btn text-white fw-bold px-4 rounded-3 shadow-sm" 
+                        <button type="button" class="btn text-white fw-bold px-4 rounded-3 shadow-sm"
                                 style="background-color: #305BAB; border: none; font-size: 1rem; white-space: nowrap;"
                                 id="sendVerifyBtn"
                                 onclick="sendVerifyCode()">
@@ -82,9 +82,8 @@ $this->assign('title', 'Reset Password | RespiraCare');
 
                 <div class="d-flex align-items-center justify-content-between mt-2">
                     <?= $this->Form->button(__('Reset Password'), [
-                        'class' => 'btn text-white fw-bold px-5 py-2 rounded-3 shadow-sm',
+                        'class' => 'temp-disable-button btn text-white fw-bold px-5 py-2 rounded-3 shadow-sm',
                         'style' => 'background-color: #305BAB; border: none; font-size: 1.1rem;',
-                        'onclick' => "this.innerHTML='Resetting...'; setTimeout(() => { this.disabled=true; }, 100);",
                     ]) ?>
 
                     <?= $this->Html->link(

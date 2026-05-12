@@ -127,7 +127,7 @@ $statusColors = [
                                 ['action' => 'changeStatus', $booking->id, 'confirmed'],
                                 [
                                     'escape' => false,
-                                    'class' => 'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
+                                    'class' => 'temp-disable-button w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
                             text-gray-700 border border-gray-200 bg-white
                             hover:bg-green-50 hover:text-green-800 hover:border-green-300
                             dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700
@@ -144,7 +144,7 @@ $statusColors = [
                                 [
                                     'escape' => false,
                                     'confirm' => __('Are you sure to decline this booking?'),
-                                    'class' => 'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
+                                    'class' => 'temp-disable-button w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
                             text-gray-700 border border-gray-200 bg-white
                             hover:bg-red-50 hover:text-red-800 hover:border-red-300
                             dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700
@@ -163,7 +163,7 @@ $statusColors = [
                             [
                                 'escape' => false,
                                 'confirm' => __('Permanently delete this booking?'),
-                                'class' => 'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
+                                'class' => 'temp-disable-button w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
                             text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900 transition-all'
                             ]
                         ) ?>

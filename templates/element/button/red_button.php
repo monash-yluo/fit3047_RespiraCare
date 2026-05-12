@@ -18,7 +18,7 @@ $icons = [
 
 $icon = $icons[$iconType] ?? '';
 $buttonContent = $icon . h($label);
-$defaultClass = 'inline-flex items-center justify-center py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-red-600 dark:text-white dark:border-red-600 dark:hover:text-white dark:hover:bg-red-700';
+$defaultClass = 'temp-disable-button inline-flex items-center justify-center py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-red-600 dark:text-white dark:border-red-600 dark:hover:text-white dark:hover:bg-red-700';
 
 if ($url) {
     // Render as postLink for delete operations
@@ -37,6 +37,5 @@ if ($url) {
         'type' => 'button',
         'escapeTitle' => false,
         'class' => $defaultClass,
-        'onclick' => 'setTimeout(() => { this.disabled=true; }, 100);',
     ], $options));
 }

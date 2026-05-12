@@ -98,9 +98,8 @@ $this->assign('title', 'Contact Us | Respira Care');
 
                         <div class="col-12 mt-4 text-center">
                             <?= $this->Form->button(__('Send Message'), [
-                                'class' => 'btn text-white fw-bold rounded-pill px-5 py-3 w-100 shadow-sm',
+                                'class' => 'temp-disable-button btn text-white fw-bold rounded-pill px-5 py-3 w-100 shadow-sm',
                                 'style' => 'background-color: #305BAB; border: none; font-size: 1.1rem;',
-                                'onclick' => "this.innerHTML='Sending...'; setTimeout(() => { this.disabled=true; }, 100);",
                             ]) ?>
                         </div>
                     </div>

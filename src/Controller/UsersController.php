@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
@@ -10,8 +11,6 @@ use Cake\Mailer\Mailer;
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use SplFileInfo;
-
-use function Cake\Error\debug;
 
 /**
  * Users Controller
@@ -62,7 +61,7 @@ class UsersController extends AppController
 
         if (!empty($filter)) {
             $query->where([
-                'Users.role' => $filter
+                'Users.role' => $filter,
             ]);
         }
 
@@ -710,7 +709,7 @@ class UsersController extends AppController
 
             // 检查验证码是否正确
             $codeKey = 'reset_code_' . $email;
-            $storedCode = \Cake\Cache\Cache::read($codeKey);
+            $storedCode = Cache::read($codeKey);
 
             if ($storedCode === null || $storedCode != $verifyCode) {
                 $this->Flash->error(__('Invalid or expired verification code. Please request a new code.'));
@@ -754,7 +753,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 // 验证码正确，清除缓存
-                \Cake\Cache\Cache::delete($codeKey);
+                Cache::delete($codeKey);
 
                 $this->Flash->success(__('Your password has been reset successfully. Please log in with your new password.'));
 
@@ -766,7 +765,7 @@ class UsersController extends AppController
             }
         }
     }
-    
+
     /**
      * Send verify code to email
      *
@@ -789,7 +788,7 @@ class UsersController extends AppController
                 ->withType('application/json')
                 ->withStringBody(json_encode([
                     'success' => false,
-                    'message' => 'Email is required'
+                    'message' => 'Email is required',
                 ]));
         }
 
@@ -800,18 +799,17 @@ class UsersController extends AppController
                 ->withType('application/json')
                 ->withStringBody(json_encode([
                     'success' => false,
-                    'message' => 'Email not found in our records'
+                    'message' => 'Email not found in our records',
                 ]));
         }
 
         // 生成验证码
         $verifyCode = rand(100000, 999999);
-        
+
         try {
             // 保存验证码到缓存（有效期10分钟）
             $codeKey = 'reset_code_' . $email;
-            \Cake\Cache\Cache::write($codeKey, $verifyCode, 'default', '+10 minutes');
-
+            Cache::write($codeKey, $verifyCode, 'default', '+10 minutes');
 
             // 发送邮件
             $mailer = new Mailer();
@@ -819,20 +817,20 @@ class UsersController extends AppController
             $mailer->setTo($email)
                 ->setEmailFormat('both')
                 ->setSubject('Password Reset Verification Code - RespiraCare');
-            
+
             $mailer->viewBuilder()
                 ->setVar('verifyCode', $verifyCode)
                 ->setVar('userName', $user->first_name)
                 ->setTemplate('reset_code_email')
                 ->setLayout('email');
-            
+
             $mailer->send();
-            
+
             return $this->response
                 ->withType('application/json')
                 ->withStringBody(json_encode([
                     'success' => true,
-                    'message' => 'Verification code sent successfully'
+                    'message' => 'Verification code sent successfully',
                 ]));
         } catch (Exception $e) {
             return $this->response

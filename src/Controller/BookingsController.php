@@ -155,10 +155,12 @@ class BookingsController extends AppController
         }
 
         $bookings = $this->paginate($query, [
+            'scope' => 'bookings',
             'limit' => 10,
         ]);
 
         $upcomingBookings = $this->paginate($upcomingQuery, [
+            'scope' => 'upcomingBookings',
             'limit' => 10,
         ]);
 
