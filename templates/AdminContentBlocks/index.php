@@ -109,4 +109,49 @@ $slugify = function ($text) {
 
     <?php } ?>
 
+
+    <!-- Symptoms types section -->
+    <div class="mb-8">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <span>Symptom Categories</span>
+            <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-full dark:bg-gray-700 dark:text-gray-400">
+            <?= $symptomTypes->count() ?> Total
+        </span>
+        </h4>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="flex flex-wrap items-center gap-3">
+                <?php foreach ($symptomTypes as $type): ?>
+                    <div class="group inline-flex items-center px-4 py-1.5 text-sm font-semibold text-primary-700 bg-primary-50 border border-primary-100 rounded-full dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-800 transition-all hover:bg-primary-100 dark:hover:bg-primary-900/50">
+                        <?= h($type->name) ?>
+
+                        <?= $this->Form->postLink(
+                            '<svg class="w-4 h-4 ml-2 text-primary-400 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>',
+                            ['controller' => 'SymptomTypes', 'action' => 'delete', $type->id],
+                            [
+                                'escape' => false,
+                                'confirm' => __('Delete "{0}"? This may affect existing logs.', $type->name),
+                                'class' => 'flex items-center justify-center'
+                            ]
+                        ) ?>
+                    </div>
+                <?php endforeach; ?>
+
+                <!-- Add Symptoms Type -->
+                <?= $this->Html->link(
+                    '<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> New Type',
+                    ['controller' => 'SymptomTypes', 'action' => 'add'],
+                    [
+                        'escape' => false,
+                        'class' => 'inline-flex items-center px-4 py-1.5 text-sm font-bold text-gray-500 border-2 border-dashed border-gray-300 rounded-full hover:border-primary-500 hover:text-primary-600 dark:border-gray-600 dark:hover:border-primary-500 transition-all'
+                    ]
+                ) ?>
+            </div>
+
+            <p class="mt-4 text-[11px] text-gray-400 dark:text-gray-500 italic">
+                * Deleting a type will remove the association from previous patient logs but will not delete the logs themselves.
+            </p>
+        </div>
+    </div>
+
 </div>
