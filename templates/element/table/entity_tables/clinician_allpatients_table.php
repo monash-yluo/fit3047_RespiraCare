@@ -2,27 +2,29 @@
 /**
  * @var iterable<\App\Model\Entity\Patient> $allPatients
  */
+
+$this->Paginator->setPaginated($allPatients);
 ?>
 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600 border border-b-0 border-gray-200 dark:border-gray-700">
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            <?= $this->Paginator->sort('id', 'ID', ['scope' => 'allPatients']) ?>
+            <?= $this->Paginator->sort('id', 'ID') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            <?= $this->Paginator->sort('user_id', 'Patient Name', ['scope' => 'allPatients']) ?>
+            <?= $this->Paginator->sort('user_id', 'Patient Name') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            <?= $this->Paginator->sort('clinician_id', 'Assigned Clinician', ['scope' => 'allPatients']) ?>
+            <?= $this->Paginator->sort('clinician_id', 'Assigned Clinician') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden lg:table-cell">
-            <?= $this->Paginator->sort('dob', 'DOB', ['scope' => 'allPatients']) ?>
+            <?= $this->Paginator->sort('dob', 'DOB') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden lg:table-cell">
-            <?= $this->Paginator->sort('sex', 'Sex', ['scope' => 'allPatients']) ?>
+            <?= $this->Paginator->sort('sex', 'Sex') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            <?= $this->Paginator->sort('phone', 'Phone', ['scope' => 'allPatients']) ?>
+            <?= $this->Paginator->sort('phone', 'Phone') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= __('Actions') ?>

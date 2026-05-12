@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $this->fetch('title') ?></title>
 
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <?= $this->Html->css('admin-app') ?>
     <?= $this->fetch('css') ?>
 </head>

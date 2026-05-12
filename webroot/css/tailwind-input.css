@@ -204,3 +204,64 @@ a.desc {
     color: var(--nav-color);
     font-weight: 600;
 }
+
+ body .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-title {
+     font-size: 12px !important;
+     color: #111827 !important;
+     background-color: #f3f4f6 !important;
+     margin-bottom: 0 !important;
+     display: block !important;
+ }
+
+body .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text {
+    font-size: 12px !important;
+    color: #4b5563 !important;
+}
+
+body .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text-y-label {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+body .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text-y-value {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+}
+
+body .apexcharts-canvas .apexcharts-tooltip {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    border-radius: 0.5rem !important;
+}
+
+body .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-series-group {
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+}
+
+body.dark .apexcharts-canvas .apexcharts-tooltip {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+body.dark .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-title {
+    background-color: #374151 !important;
+    border-bottom-color: #4b5563 !important;
+    color: #f9fafb !important;
+}
+body.dark .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text,
+body.dark .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text-y-label {
+    color: #9ca3af !important;
+}
+body.dark .apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-text-y-value {
+    color: #f9fafb !important;
+}
+
+body .apexcharts-canvas .apexcharts-legend-text {
+    font-size: 13px !important;
+    color: #4b5563 !important;
+    font-family: 'Inter', sans-serif !important;
+}

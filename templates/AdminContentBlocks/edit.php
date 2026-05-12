@@ -23,7 +23,7 @@ $this->assign('title', 'Edit Content Block - Content Blocks');
 
     <div class="mb-6">
         <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-            
+
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 <?= $contentBlock->label ?>
             </h3>
@@ -90,13 +90,13 @@ $this->assign('title', 'Edit Content Block - Content Blocks');
 
             <div class="flex gap-3">
                 <?= $this->Form->button(__('Save'), [
-                    'class' => 'inline-flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors',
+                    'class' => 'temp-disable-button inline-flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors',
                 ]) ?>
                 <?= $this->Html->link(
                     __('Cancel'),
                     ['action' => 'index'],
                     [
-                        'class' => 'inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700 transition-colors',
+                        'class' => 'temp-disable-button inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700 transition-colors',
                     ]
                 ) ?>
             </div>

@@ -107,6 +107,38 @@ $breadcrumbs = [
         </div>
     <?php endif; ?>
 
+    <div class="grid w-full grid-cols-1 gap-6 mb-8 xl:grid-cols-2">
+
+        <!-- Chart 1: Cardio & Oxygen -->
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white">Cardio & Oxygen</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Heart Rate (bpm) and SPO2 (%)</p>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium text-rose-700 bg-rose-50 rounded-lg dark:bg-rose-900/30 dark:text-rose-400 border border-rose-100 dark:border-rose-800">
+                    Last 7 Days
+                </span>
+            </div>
+            <div id="cardio-chart" class="w-full h-64"></div>
+        </div>
+
+        <!-- Chart 2: Temp & Respiration -->
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white">Body Temp & Respiration</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Temperature (°C) and Resp. Rate (bpm)</p>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium text-amber-700 bg-amber-50 rounded-lg dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800">
+                    Last 7 Days
+                </span>
+            </div>
+            <div id="temp-chart" class="w-full h-64"></div>
+        </div>
+
+    </div>
+
     <!-- Health Measurements Section -->
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
@@ -124,6 +156,8 @@ $breadcrumbs = [
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/patient_measurements_table',
         ]) ?>
+
+        <?= $this->element('table/pagination_footer', ['paginatedData' => $patientMeasurements]) ?>
     </div>
 
     <!-- Symptom Logs Section -->
@@ -143,6 +177,92 @@ $breadcrumbs = [
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/patient_symptoms_table',
         ]) ?>
+
+        <?= $this->element('table/pagination_footer', ['paginatedData' => $symptomLogs]) ?>
     </div>
 
 </div>
+
+<?php $this->append('script'); ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartDates = <?= json_encode($chartDates ?? []) ?>;
+
+            // Data Arrays
+            const hrData = <?= json_encode($hrData ?? []) ?>;
+            const spo2Data = <?= json_encode($spo2Data ?? []) ?>;
+            const tempData = <?= json_encode($tempData ?? []) ?>;
+            const rrData = <?= json_encode($rrData ?? []) ?>;
+
+            // Shared Configuration
+            const commonOptions = {
+                chart: {
+                    height: 250,
+                    type: 'area',
+                    fontFamily: 'Inter, sans-serif',
+                    toolbar: { show: false }
+                },
+                stroke: { curve: 'smooth', width: 3 },
+                dataLabels: { enabled: false },
+                markers: { size: 4, strokeWidth: 2, hover: { size: 6 } },
+                xaxis: {
+                    categories: chartDates,
+                    tooltip: { enabled: false },
+                    labels: { style: { colors: '#6B7280', fontFamily: 'Inter, sans-serif' } },
+                },
+                yaxis: {
+                    labels: { style: { colors: '#6B7280', fontFamily: 'Inter, sans-serif' } },
+                },
+                legend: { position: 'top', horizontalAlign: 'right', labels: { colors: '#6B7280' } }
+            };
+
+            // Initialise Cardio & Oxygen Chart
+            const cardioOptions = {
+                ...commonOptions,
+                series: [
+                    { name: 'Heart Rate', data: hrData },
+                    { name: 'SPO2', data: spo2Data }
+                ],
+                colors: ['#ef4444', '#3b82f6'],
+                tooltip: {
+                    enabled: true, shared: true, intersect: false,
+                    style: { fontFamily: 'Inter, sans-serif' },
+                    y: {
+                        formatter: function (val, { seriesIndex }) {
+                            if (val === null) return "No data";
+                            return seriesIndex === 0 ? val + " bpm" : val + " %";
+                        }
+                    }
+                }
+            };
+
+            if (document.getElementById("cardio-chart")) {
+                new ApexCharts(document.getElementById("cardio-chart"), cardioOptions).render();
+            }
+
+            // Initialise Temperature & Respiration Chart
+            const tempOptions = {
+                ...commonOptions,
+                series: [
+                    { name: 'Temperature', data: tempData },
+                    { name: 'Respiratory Rate', data: rrData }
+                ],
+                colors: ['#f59e0b', '#10b981'],
+                tooltip: {
+                    enabled: true, shared: true, intersect: false,
+                    style: { fontFamily: 'Inter, sans-serif' },
+                    y: {
+                        formatter: function (val, { seriesIndex }) {
+                            if (val === null) return "No data";
+                            return seriesIndex === 0 ? val + " °C" : val + " breaths/min";
+                        }
+                    }
+                }
+            };
+
+            if (document.getElementById("temp-chart")) {
+                new ApexCharts(document.getElementById("temp-chart"), tempOptions).render();
+            }
+        });
+    </script>
+<?php $this->end(); ?>

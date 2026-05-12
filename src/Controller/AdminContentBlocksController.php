@@ -49,7 +49,6 @@ class AdminContentBlocksController extends BaseContentBlocksController
         $query = $this->SymptomTypes->find()->orderBy(['name' => 'ASC']);
         $symptomTypes = $this->paginate($query, [
             'limit' => 100,
-            'scope' => 'symptoms',
         ]);
 
         $this->set(compact('symptomTypes'));

@@ -155,12 +155,10 @@ class BookingsController extends AppController
         }
 
         $bookings = $this->paginate($query, [
-            'scope' => 'allBookings',
             'limit' => 10,
         ]);
 
         $upcomingBookings = $this->paginate($upcomingQuery, [
-            'scope' => 'upcomingBookings',
             'limit' => 10,
         ]);
 
@@ -252,14 +250,14 @@ class BookingsController extends AppController
                     $mailer->setTo($booking->patient->user->email)
                         ->setEmailFormat('both')
                         ->setSubject('Booking Confirmed - RespiraCare');
-    
+
                     $mailer->viewBuilder()
                         ->setVar('booking', $booking)
                         ->setVar('patientName', $booking->patient->user->first_name)
                         ->setVar('clinicianName', $booking->clinician->user->first_name . ' ' . $booking->clinician->user->last_name)
                         ->setTemplate('booking_comfirm')
                         ->setLayout('email');
-    
+
                     $mailer->send();
                 } catch (\Exception $e) {
                     // Log the error and show a flash message, but don't fail the booking update

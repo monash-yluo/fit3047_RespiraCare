@@ -1,6 +1,8 @@
 <?php
 /**
- * @var \App\Model\Entity\Patient $patient
+ * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\SymptomLog> $symptomLogs
+ * @var \App\Model\Entity\Identity $identity
  */
 ?>
 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600 border border-b-0 border-gray-200 dark:border-gray-700">
@@ -25,20 +27,20 @@
     </thead>
 
     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-    <?php if (empty($patient->symptom_logs)): ?>
+    <?php if (!isset($symptomLogs) || $symptomLogs->isEmpty()): ?>
         <?= $this->element('table/table_empty_state', [
             'title' => 'No records found',
             'message' => 'No symptoms have been recorded yet.'
         ]) ?>
     <?php else: ?>
-        <?php foreach ($patient->symptom_logs as $log): ?>
+        <?php foreach ($symptomLogs as $log): ?>
             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                     <div class="text-sm font-semibold text-gray-900 dark:text-white">
-                        <?= $this->Time->format($log->logged_at, 'dd MMM, YYYY') ?>
+                        <?= $this->Time->format($log->logged_at ?? $log->created, 'dd MMM, YYYY') ?>
                     </div>
                     <div class="text-xs text-gray-500 dark:text-gray-400 font-mono">
-                        <?= $this->Time->format($log->logged_at, 'HH:mm') ?>
+                        <?= $this->Time->format($log->logged_at ?? $log->created, 'HH:mm') ?>
                     </div>
                 </td>
 

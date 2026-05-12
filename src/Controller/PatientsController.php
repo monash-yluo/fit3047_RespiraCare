@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\I18n\FrozenTime;
+use DateTime;
 use Exception;
 
 /**
@@ -63,8 +64,85 @@ class PatientsController extends AppController
     {
         $this->checkRole(['admin', 'clinician']);
 
-        $patient = $this->Patients->get($id, contain: ['Users', 'Clinicians.Users', 'PatientMeasurements', 'SymptomLogs' => ['SymptomTypes']]);
-        $this->set(compact('patient'));
+        // Data for Table
+        $patient = $this->Patients->get($id, contain: [
+            'Users',
+            'Clinicians.Users',
+        ]);
+
+        $measurementsQuery = $this->Patients->PatientMeasurements->find()
+            ->where(['patient_id' => $patient->id]);
+
+        $patientMeasurements = $this->paginate($measurementsQuery, [
+            'limit' => 5,
+            'order' => ['created' => 'desc'],
+        ]);
+
+        $symptomsQuery = $this->Patients->SymptomLogs->find()
+            ->where(['patient_id' => $id])
+            ->contain(['SymptomTypes']);
+
+        $symptomLogs = $this->paginate($symptomsQuery, [
+            'limit' => 5,
+            'order' => ['created' => 'desc'],
+        ]);
+
+        $startDate = (new DateTime('-6 days'))->format('Y-m-d 00:00:00');
+        $chartMeasurements = $this->Patients->PatientMeasurements->find()
+            ->where([
+                'patient_id' => $id,
+                'created >=' => $startDate,
+            ])
+            ->orderBy(['created' => 'asc'])
+            ->all();
+
+        // Chart Variable
+        $chartDatesMap = [];
+        $hrDataMap = [];
+        $spo2DataMap = [];
+        $tempDataMap = [];
+        $rrDataMap = [];
+
+        $today = new DateTime();
+        for ($i = 6; $i >= 0; $i--) {
+            $dateObj = clone $today;
+            $dateObj->modify("-$i days");
+            $dateKey = $dateObj->format('Y-m-d');
+
+            $chartDatesMap[$dateKey] = $dateObj->format('M d');
+            $hrDataMap[$dateKey] = null;
+            $spo2DataMap[$dateKey] = null;
+            $tempDataMap[$dateKey] = null;
+            $rrDataMap[$dateKey] = null;
+        }
+
+        // Data for Measurement Chart
+        foreach ($chartMeasurements as $measurement) {
+            $dateKey = $measurement->created->format('Y-m-d');
+            if (array_key_exists($dateKey, $chartDatesMap)) {
+                $hrDataMap[$dateKey] = $measurement->heart_rate;
+                $spo2DataMap[$dateKey] = $measurement->spo2;
+                $tempDataMap[$dateKey] = $measurement->temperature;
+                $rrDataMap[$dateKey] = $measurement->respiratory_rate;
+            }
+        }
+
+        $chartDates = array_values($chartDatesMap);
+        $hrData = array_values($hrDataMap);
+        $spo2Data = array_values($spo2DataMap);
+        $tempData = array_values($tempDataMap);
+        $rrData = array_values($rrDataMap);
+
+        $this->set(compact(
+            'patient',
+            'patientMeasurements',
+            'symptomLogs',
+            'chartDates',
+            'hrData',
+            'spo2Data',
+            'tempData',
+            'rrData',
+        ));
     }
 
     /**
@@ -126,12 +204,10 @@ class PatientsController extends AppController
             }
 
             $myPatients = $this->paginate($myPatientsQuery, [
-                'scope' => 'myPatients',
                 'limit' => 10,
             ]);
 
             $allPatients = $this->paginate($allPatientsQuery, [
-                'scope' => 'allPatients',
                 'limit' => 10,
             ]);
 
@@ -238,5 +314,4 @@ class PatientsController extends AppController
 
         $this->set(compact('patientMeasurements', 'completedCount', 'timeSlots'));
     }
-
 }
