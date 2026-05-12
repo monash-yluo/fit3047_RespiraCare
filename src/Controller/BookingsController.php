@@ -251,7 +251,8 @@ class BookingsController extends AppController
                     $mailer = new Mailer();
                     $mailer->setTo($booking->patient->user->email)
                         ->setEmailFormat('both')
-                        ->setSubject('Booking Confirmed - RespiraCare');
+                        ->setSubject('Booking Confirmed - RespiraCare')
+                        ->setReplyTo($booking->clinician->user->email);
     
                     $mailer->viewBuilder()
                         ->setVar('booking', $booking)
