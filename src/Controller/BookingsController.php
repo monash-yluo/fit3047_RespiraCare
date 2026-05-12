@@ -173,7 +173,7 @@ class BookingsController extends AppController
             } elseif ($target === 'allBookings') {
                 return $this->render('/element/table/entity_tables/bookings_all_table');
             } else {
-                throw new Exception('Something went wrong!');
+                throw new \Exception('Something went wrong!');
             }
         }
     }
@@ -249,7 +249,8 @@ class BookingsController extends AppController
                     $mailer = new Mailer();
                     $mailer->setTo($booking->patient->user->email)
                         ->setEmailFormat('both')
-                        ->setSubject('Booking Confirmed - RespiraCare');
+                        ->setSubject('Booking Confirmed - RespiraCare')
+                        ->setReplyTo($booking->clinician->user->email);
 
                     $mailer->viewBuilder()
                         ->setVar('booking', $booking)
@@ -259,6 +260,8 @@ class BookingsController extends AppController
                         ->setLayout('email');
 
                     $mailer->send();
+
+                    $this->Flash->success(__('The booking status has been updated and a confirmation email has been sent to the patient.'));
                 } catch (\Exception $e) {
                     // Log the error and show a flash message, but don't fail the booking update
                     \Cake\Log\Log::error('Failed to send booking confirmation email: ' . $e->getMessage());

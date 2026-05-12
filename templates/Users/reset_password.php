@@ -113,6 +113,29 @@ $this->assign('title', 'Reset Password | RespiraCare');
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
+    let countdownTimer = null;
+
+    function startCountdown(btn) {
+        let remaining = 60;
+        btn.disabled = true;
+        btn.style.backgroundColor = '#9db4d3';
+
+        const updateButton = () => {
+            btn.innerHTML = `Resend in ${remaining}s`;
+            remaining--;
+
+            if (remaining < 0) {
+                clearInterval(countdownTimer);
+                btn.disabled = false;
+                btn.innerHTML = 'Send Code';
+                btn.style.backgroundColor = '#305BAB';
+            }
+        };
+
+        updateButton();
+        countdownTimer = setInterval(updateButton, 1000);
+    }
+
     function sendVerifyCode() {
         const email = document.querySelector('input[name="email"]').value;
         const btn = document.getElementById('sendVerifyBtn');
@@ -144,12 +167,12 @@ $this->assign('title', 'Reset Password | RespiraCare');
             .then(data => {
                 if (data.success) {
                     alert('Verification code sent to your email!');
-                    btn.innerHTML = 'Code Sent ✓';
-                    btn.style.backgroundColor = '#28a745';
+                    startCountdown(btn);
                 } else {
                     alert(data.message || 'Failed to send verification code');
                     btn.disabled = false;
                     btn.innerHTML = 'Send Code';
+                    btn.style.backgroundColor = '#305BAB';
                 }
             })
             .catch(error => {
@@ -157,6 +180,7 @@ $this->assign('title', 'Reset Password | RespiraCare');
                 alert(`Error: ${error.message}`);
                 btn.disabled = false;
                 btn.innerHTML = 'Send Code';
+                btn.style.backgroundColor = '#305BAB';
             });
     }
 </script>
