@@ -92,7 +92,9 @@ $statusColors = [
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Booking History</h2>
 
         <?= $this->element('table/table_wrapper', [
+            'target' => 'allBookings',
             'hasSearch' => false,
+            'hasDateFilter' => true,
             'tableElement' => 'table/entity_tables/bookings_all_table',
             'filterConfig' => [
                 'paramName' => 'status',

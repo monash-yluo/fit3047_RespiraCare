@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use DateTime;
+
 /**
  * Resources Controller
  *
@@ -40,6 +42,14 @@ class ResourcesController extends AppController
             if ($identity->role !== 'admin') {
                 $query->where(['Resources.status' => 'active']);
             }
+        }
+
+        $preset = $this->request->getQuery('date_preset');
+
+        if ($preset === 'today') {
+            $query->where(['Resources.published_date >=' => new DateTime('today')]);
+        } elseif (in_array($preset, ['7', '30', '90'])) {
+            $query->where(['Resources.published_date >=' => new DateTime("-{$preset} days")]);
         }
 
         $this->paginate = [

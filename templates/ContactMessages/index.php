@@ -52,6 +52,7 @@ $this->assign('title', 'Contact Messages');
 
     <?= $this->element('table/table_wrapper', [
         'tableElement' => 'table/entity_tables/contact_messages_table',
+        'hasDateFilter' => true,
     ]) ?>
 
     <?= $this->element('table/pagination_footer') ?>

@@ -11,6 +11,7 @@
 use Cake\Http\Exception\NotFoundException;
 
 $hasSearch = $hasSearch ?? true;
+$hasDateFilter = $hasDateFilter ?? false;
 $tableElement = $tableElement ?? false;
 $target = $target ?? true;
 
@@ -31,9 +32,25 @@ if (empty($tableElement)) {
         <div class="inline-block min-w-full align-middle">
             <div class="table_wrapper overflow-hidden shadow">
 
-                <?php if ($hasSearch) : ?>
-                    <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-900 border border-b-0 border-gray-200 dark:border-gray-700">
-                        <?= $this->element('table/search', ['target' => $target]) ?>
+                <?php if ($hasSearch || $hasDateFilter) : ?>
+                    <div class="p-4 bg-white dark:bg-gray-900 border border-b-0 border-gray-200 dark:border-gray-700">
+                        <div class="flex flex-col sm:flex-row gap-3 w-full">
+
+                            <!-- Search Bar -->
+                            <?php if ($hasSearch) : ?>
+                                <div class="flex-1">
+                                    <?= $this->element('table/search', ['target' => $target]) ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <!-- Date Filter Dropdown -->
+                            <?php if ($hasDateFilter) : ?>
+                                <div class="w-full sm:w-48 flex-shrink-0">
+                                    <?= $this->element('table/date_filter', ['target' => $target]) ?>
+                                </div>
+                            <?php endif; ?>
+
+                        </div>
                     </div>
                 <?php endif; ?>
 

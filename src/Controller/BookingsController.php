@@ -68,6 +68,14 @@ class BookingsController extends AppController
             ]);
         }
 
+        $preset = $this->request->getQuery('date_preset');
+
+        if ($preset === 'today') {
+            $query->where(['Bookings.scheduled_date >=' => new DateTime('today')]);
+        } elseif (in_array($preset, ['7', '30', '90'])) {
+            $query->where(['Bookings.scheduled_date >=' => new DateTime("-{$preset} days")]);
+        }
+
         $this->paginate = [
             'limit' => 10,
             'order' => ['Bookings.created' => 'DESC'],
@@ -90,6 +98,7 @@ class BookingsController extends AppController
         $identity = $this->Authentication->getIdentity();
         $target = $this->request->getQuery('target');
         $status = $this->request->getQuery('status');
+        $preset = $this->request->getQuery('date_preset');
         $role = $identity->role;
 
         $patientId = null;
@@ -101,15 +110,12 @@ class BookingsController extends AppController
             $clinicianId = $this->getClinicianId();
         }
 
-        // Auto-decline expired pending bookings
         $this->Bookings->updateExpiredPendingBookings();
 
-        // Shared booking filter
         $bookingConditions = function ($exp) use ($patientId, $clinicianId) {
             if ($patientId) {
                 return $exp->eq('Bookings.patient_id', $patientId);
             }
-
             if ($clinicianId) {
                 return $exp->eq('Bookings.clinician_id', $clinicianId);
             }
@@ -117,7 +123,6 @@ class BookingsController extends AppController
             return $exp;
         };
 
-        // Pending bookings count
         $pendingCount = $this->Bookings->find()
             ->where(['Bookings.status' => 'pending'])
             ->andWhere($bookingConditions)
@@ -125,37 +130,33 @@ class BookingsController extends AppController
 
         $today = new DateTime();
 
-        // Base query
         $baseQuery = $this->Bookings->find()
             ->contain(['Clinicians.Users', 'Patients.Users'])
             ->andWhere($bookingConditions);
 
-        // Upcoming bookings
         $upcomingQuery = clone $baseQuery;
-
         $upcomingQuery
-            ->where([
-                'Bookings.scheduled_date >=' => $today->format('Y-m-d'),
-            ])
-            ->orderBy([
-                'Bookings.scheduled_date' => 'ASC',
-            ]);
+            ->where(['Bookings.scheduled_date >=' => $today->format('Y-m-d')])
+            ->orderBy(['Bookings.scheduled_date' => 'ASC']);
 
-        // All bookings
         $query = clone $baseQuery;
+        $query->orderBy(['Bookings.scheduled_date' => 'DESC']);
 
-        $query->orderBy([
-            'Bookings.scheduled_date' => 'DESC',
-        ]);
+        if ($target === 'allBookings') {
+            if (!empty($status)) {
+                $query->where(['Bookings.status' => $status]);
+            }
 
-        if (!empty($status) && ($target === 'upcomingBookings')) {
-            $upcomingQuery->where(['Bookings.status' => $status]);
+            if (!empty($preset)) {
+                if ($preset === 'today') {
+                    $query->where(['Bookings.scheduled_date >=' => new DateTime('today')]);
+                } elseif (in_array($preset, ['7', '30', '90'])) {
+                    $query->where(['Bookings.scheduled_date >=' => new DateTime("-{$preset} days")]);
+                }
+            }
         }
 
-        if (!empty($status) && ($target === 'allBookings')) {
-            $query->where(['Bookings.status' => $status]);
-        }
-
+        // 3. Paginate with Scopes
         $bookings = $this->paginate($query, [
             'scope' => 'bookings',
             'limit' => 10,
@@ -168,7 +169,7 @@ class BookingsController extends AppController
 
         $this->set(compact('pendingCount', 'upcomingBookings', 'bookings'));
 
-        // Ajax
+        // Handle AJAX
         if ($this->request->is('ajax')) {
             $this->viewBuilder()->disableAutoLayout();
 
@@ -177,7 +178,7 @@ class BookingsController extends AppController
             } elseif ($target === 'allBookings') {
                 return $this->render('/element/table/entity_tables/bookings_all_table');
             } else {
-                throw new \Exception('Something went wrong!');
+                throw new Exception('Something went wrong!');
             }
         }
     }
@@ -266,13 +267,12 @@ class BookingsController extends AppController
                     $mailer->send();
 
                     $this->Flash->success(__('The booking status has been updated and a confirmation email has been sent to the patient.'));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // Log the error and show a flash message, but don't fail the booking update
-                    \Cake\Log\Log::error('Failed to send booking confirmation email: ' . $e->getMessage());
+                    Log::error('Failed to send booking confirmation email: ' . $e->getMessage());
                     $this->Flash->error(__('Booking status updated, but failed to send confirmation email. Please contact support.'));
                 }
             }
-
         } else {
             $this->Flash->error(__('The booking status could not be updated. Please, try again.'));
         }
@@ -311,7 +311,7 @@ class BookingsController extends AppController
         $this->request->allowMethod(['get', 'ajax']);
         $this->viewBuilder()->setClassName('Json');
 
-        $this->log("Testing");
+        $this->log('Testing');
 
         if (!$clinicianId) {
             return $this->set(['blocked' => []])->viewBuilder()->setOption('serialize', ['blocked']);
@@ -322,7 +322,7 @@ class BookingsController extends AppController
             ->where([
                 'clinician_id' => $clinicianId,
                 'status !=' => 'declined',
-                'scheduled_date >=' => new \DateTime('today'),
+                'scheduled_date >=' => new DateTime('today'),
             ])
             ->all();
 
@@ -333,7 +333,7 @@ class BookingsController extends AppController
             // Format exactly Flatpickr
             $blocked[] = [
                 'from' => $booking->scheduled_date->format('Y-m-d H:i'),
-                'to' => (clone $booking->scheduled_date)->modify("+{$duration} minutes")->format('Y-m-d H:i')
+                'to' => (clone $booking->scheduled_date)->modify("+{$duration} minutes")->format('Y-m-d H:i'),
             ];
         }
 

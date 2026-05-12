@@ -26,6 +26,14 @@ class AdminsController extends AppController
             ]);
         }
 
+        $preset = $this->request->getQuery('date_preset');
+
+        if ($preset === 'today') {
+            $query->where(['ContactMessages.created >=' => new DateTime('today')]);
+        } elseif (in_array($preset, ['7', '30', '90'])) {
+            $query->where(['ContactMessages.created >=' => new DateTime("-{$preset} days")]);
+        }
+
         $contactMessages = $this->paginate($query, [
             'limit' => 10,
             'order' => ['created' => 'desc'],

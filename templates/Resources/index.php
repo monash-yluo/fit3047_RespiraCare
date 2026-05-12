@@ -48,6 +48,10 @@ $this->assign('title', 'Manage Resources');
                 ]) ?>
             </div>
         <?php endif; ?>
+
+        <div class="w-48">
+            <?= $this->element('table/date_filter', ['class' => "p-2.5 bg-white"]); ?>
+        </div>
     </div>
 
     <!-- Sorting Controls -->

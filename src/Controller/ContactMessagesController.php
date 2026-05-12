@@ -6,6 +6,7 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Response;
+use DateTime;
 
 /**
  * ContactMessages Controller
@@ -67,6 +68,14 @@ class ContactMessagesController extends AppController
             'limit' => 10,
             'order' => ['created' => 'DESC'],
         ];
+
+        $preset = $this->request->getQuery('date_preset');
+
+        if ($preset === 'today') {
+            $query->where(['ContactMessages.created >=' => new DateTime('today')]);
+        } elseif (in_array($preset, ['7', '30', '90'])) {
+            $query->where(['ContactMessages.created >=' => new DateTime("-{$preset} days")]);
+        }
 
         $contactMessages = $this->paginate($query);
         $this->set(compact('contactMessages'));

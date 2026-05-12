@@ -71,6 +71,7 @@ $this->assign('title', 'Dashboard Overview');
 
     <?= $this->element('table/table_wrapper', [
         'tableElement' => 'table/entity_tables/admin_dashboard_table',
+        'hasDateFilter' => true,
     ]) ?>
 
     <?= $this->element('table/pagination_footer') ?>

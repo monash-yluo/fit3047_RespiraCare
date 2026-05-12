@@ -10,6 +10,7 @@ namespace App\Controller;
  */
 
 use Cake\Http\Exception\NotFoundException;
+use DateTime;
 
 class RemindersController extends AppController
 {
@@ -52,6 +53,14 @@ class RemindersController extends AppController
                     'Senders.last_name LIKE' => '%' . $search . '%',
                 ],
             ]);
+        }
+
+        $preset = $this->request->getQuery('date_preset');
+
+        if ($preset === 'today') {
+            $query->where(['Reminders.created >=' => new DateTime('today')]);
+        } elseif (in_array($preset, ['7', '30', '90'])) {
+            $query->where(['Reminders.created >=' => new DateTime("-{$preset} days")]);
         }
 
         $this->paginate = [

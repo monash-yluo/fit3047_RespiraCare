@@ -20,6 +20,7 @@ $this->assign('title', 'Manage Bookings');
     ]) ?>
 
     <?= $this->element('table/table_wrapper', [
+        'hasDateFilter' => true,
         'tableElement' => 'table/entity_tables/bookings_table',
         'filterConfig' => [
             'paramName' => 'status',
