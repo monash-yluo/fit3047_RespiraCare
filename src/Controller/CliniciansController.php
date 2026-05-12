@@ -122,13 +122,24 @@ class CliniciansController extends AppController
                             'PatientMeasurements.temperature >' => 40,
                             'PatientMeasurements.heart_rate >' => 110,
                             'PatientMeasurements.heart_rate <' => 50,
-                        ]
+                        ],
                     ]);
                 })
                 ->distinct(['Patients.id'])
                 ->count();
 
-            $this->set(compact('patients', 'patientCount', 'reminderCount', 'urgentPatientCount'));
+            $todaysBookings = $this->fetchTable('Bookings')->find()
+                ->contain(['Patients.Users'])
+                ->where([
+                    'Bookings.clinician_id' => $clinicianId,
+                    'Bookings.status !=' => 'declined',
+                    'Bookings.scheduled_date >=' => date('Y-m-d 00:00:00'),
+                    'Bookings.scheduled_date <=' => date('Y-m-d 23:59:59'),
+                ])
+                ->orderBy(['Bookings.scheduled_date' => 'ASC'])
+                ->all();
+
+            $this->set(compact('patients', 'patientCount', 'reminderCount', 'urgentPatientCount', 'todaysBookings'));
 
             if ($this->request->is('ajax')) {
                 $this->viewBuilder()->disableAutoLayout();
