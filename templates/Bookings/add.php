@@ -26,6 +26,16 @@ $this->setLayout($identity->role);
 $this->assign('title', 'Request New Booking');
 ?>
 
+<?= $this->Html->css(
+    'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css',
+    ['block' => 'css'],
+) ?>
+
+<?= $this->Html->script(
+    'https://cdn.jsdelivr.net/npm/flatpickr',
+    ['block' => 'script'],
+) ?>
+
 <div class="px-4 pt-6">
 
     <?= $this->element('admin/breadcrumb', ['breadcrumbs' => $breadcrumbs]); ?>
@@ -59,6 +69,7 @@ $this->assign('title', 'Request New Booking');
                     <div>
                         <label for="clinician_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Clinician</label>
                         <?= $this->Form->control('clinician_id', [
+                            'id' => 'clinician-id',
                             'type' => 'select',
                             'options' => $clinicians,
                             'label' => false,
@@ -70,10 +81,26 @@ $this->assign('title', 'Request New Booking');
                         <label for="scheduled_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preferred Appointment Date & Time</label>
                         <?= $this->Form->control('scheduled_date', [
                             'type' => 'datetime-local',
+                            'id' => 'scheduled_date',
                             'label' => false,
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5',
                             'min' => date('Y-m-d\TH:i'),
-                            'max' => date('Y-m-d\TH:i', strtotime('+1 year')),
+                        ]) ?>
+                    </div>
+
+                    <div>
+                        <label for="duration" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration</label>
+                        <?= $this->Form->control('duration', [
+                            'type' => 'select',
+                            'options' => [
+                                30 => '30 Minutes',
+                                45 => '45 Minutes',
+                                60 => '1 Hour',
+                                90 => '1 Hours & 30 Minutes',
+                            ],
+                            'default' => 30, // Sets a sensible default
+                            'label' => false,
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
                         ]) ?>
                     </div>
 
@@ -120,3 +147,79 @@ $this->assign('title', 'Request New Booking');
     </div>
     <?= $this->Form->end() ?>
 </div>
+
+<?php $this->append('script'); ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const clinicianSelect = document.getElementById('clinician-id');
+        const dateInput = document.getElementById('scheduled_date');
+        const durationSelect = document.getElementById('duration');
+
+        let blockedSlots = [];
+
+        function fetchAvailability(clinicianId) {
+            if (!clinicianId) return;
+
+            fetch(`/bookings/get-booked-slots/${clinicianId}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    blockedSlots = data.blocked || [];
+                    validateDate();
+                })
+                .catch(error => console.error('Error fetching availability:', error));
+        }
+
+        // 2. The Validation Function
+        function validateDate() {
+            if (!dateInput.value) return;
+
+            const selected = new Date(dateInput.value);
+
+            const hours = selected.getHours();
+            if (hours < 9 || hours >= 17) {
+                alert('Please select a time during clinic hours (9:00 AM - 5:00 PM).');
+                dateInput.value = '';
+                return;
+            }
+
+            let newStart = selected.getTime();
+            let durationMins = durationSelect ? parseInt(durationSelect.value) : 30;
+            let newEnd = newStart + (durationMins * 60000);
+
+            for (let i = 0; i < blockedSlots.length; i++) {
+                // Safari-safe date parsing
+                let slotFrom = new Date(blockedSlots[i].from.replace(/-/g, '/')).getTime();
+                let slotTo = new Date(blockedSlots[i].to.replace(/-/g, '/')).getTime();
+
+                // Overlap formula
+                if (newStart < slotTo && newEnd > slotFrom) {
+                    alert("This time overlaps with an existing appointment! Please choose another time.");
+                    dateInput.value = '';
+                    return;
+                }
+            }
+        }
+
+        // 3. Attach Event Listeners
+        dateInput.addEventListener('change', validateDate);
+
+        if (durationSelect) {
+            durationSelect.addEventListener('change', validateDate);
+        }
+
+        // Listen for clinician changes
+        document.body.addEventListener('change', function(e) {
+            if (e.target && e.target.id === 'clinician-id') {
+                fetchAvailability(e.target.value);
+            }
+        });
+
+        // Trigger fetch on load if editing/refreshing
+        if (clinicianSelect && clinicianSelect.value) {
+            fetchAvailability(clinicianSelect.value);
+        }
+    });
+</script>
+<?php $this->end(); ?>

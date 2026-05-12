@@ -112,6 +112,11 @@ class PatientsTable extends Table
             ]);
 
         $validator
+            ->integer('duration')
+            ->notEmptyString('duration')
+            ->inList('duration', [30, 45, 60, 90], 'Invalid duration selected');
+
+        $validator
             ->scalar('sex')
             ->maxLength('sex', 50)
             ->allowEmptyString('sex');

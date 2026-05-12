@@ -25,6 +25,9 @@ $statusColors = [
             <?= $this->Paginator->sort('scheduled_date', 'Scheduled Date') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+            <?= $this->Paginator->sort('duration', 'Duration') ?>
+        </th>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('status', 'Status') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden md:table-cell">
@@ -70,9 +73,13 @@ $statusColors = [
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
-                        <span class="text-xs font-medium px-2.5 py-0.5 rounded <?= $statusColors[$booking->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300' ?>">
-                            <?= h($booking->status) ?>
-                        </span>
+                    <?= sprintf('%s mins', $booking->duration); ?>
+                </td>
+
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <span class="text-xs font-medium px-2.5 py-0.5 rounded <?= $statusColors[$booking->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300' ?>">
+                        <?= h($booking->status) ?>
+                    </span>
                 </td>
 
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white hidden md:table-cell">

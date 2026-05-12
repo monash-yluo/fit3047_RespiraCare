@@ -8,24 +8,29 @@ $statusColors = [
     'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
     'declined' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
 ];
+
+$this->Paginator->setPaginated($bookings);
 ?>
 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600 border border-b-0 border-gray-200 dark:border-gray-700">
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            Patient
+            <?= $this->Paginator->sort('patient_id', 'Patient') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            Clinician
+            <?= $this->Paginator->sort('clinician_id', 'Clinician') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            Date & Time
+            <?= $this->Paginator->sort('scheduled_date', 'Scheduled Date') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-            Status
+            <?= $this->Paginator->sort('duration', 'Duration') ?>
+        </th>
+        <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+            <?= $this->Paginator->sort('status', 'Status') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden md:table-cell">
-            Created
+            <?= $this->Paginator->sort('created', 'Created') ?>
         </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= __('Actions') ?>
@@ -55,6 +60,9 @@ $statusColors = [
                     <div class="text-xs text-gray-500 dark:text-gray-400 font-mono">
                         <?= $this->Time->format($booking->scheduled_date, 'HH:mm') ?>
                     </div>
+                </td>
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <?= sprintf('%s mins', $booking->duration); ?>
                 </td>
                 <td class="p-4">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusColors[$booking->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' ?>">

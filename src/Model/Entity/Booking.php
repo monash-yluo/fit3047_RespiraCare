@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property int $clinician_id
  * @property string|null $notes
  * @property \Cake\I18n\DateTime $scheduled_date
+ * @property int $duration
  * @property string $status
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
@@ -36,6 +37,7 @@ class Booking extends Entity
         'clinician_id' => true,
         'notes' => true,
         'scheduled_date' => true,
+        'duration' => true,
         'status' => true,
         'created' => true,
         'modified' => true,

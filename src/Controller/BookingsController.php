@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use DateTime;
+use Cake\Log\Log;
 use Cake\Mailer\Mailer;
+use DateTime;
+use Exception;
 
 /**
  * Bookings Controller
@@ -302,5 +304,40 @@ class BookingsController extends AppController
         } else {
             return $this->redirect(['action' => 'patientClinicianIndex']);
         }
+    }
+
+    public function getBookedSlots($clinicianId = null)
+    {
+        $this->request->allowMethod(['get', 'ajax']);
+        $this->viewBuilder()->setClassName('Json');
+
+        $this->log("Testing");
+
+        if (!$clinicianId) {
+            return $this->set(['blocked' => []])->viewBuilder()->setOption('serialize', ['blocked']);
+        }
+
+        // Find all future, non-cancelled bookings for this clinician
+        $bookings = $this->Bookings->find()
+            ->where([
+                'clinician_id' => $clinicianId,
+                'status !=' => 'declined',
+                'scheduled_date >=' => new \DateTime('today'),
+            ])
+            ->all();
+
+        $blocked = [];
+        foreach ($bookings as $booking) {
+            $duration = $booking->duration ?? 30;
+
+            // Format exactly Flatpickr
+            $blocked[] = [
+                'from' => $booking->scheduled_date->format('Y-m-d H:i'),
+                'to' => (clone $booking->scheduled_date)->modify("+{$duration} minutes")->format('Y-m-d H:i')
+            ];
+        }
+
+        $this->set(compact('blocked'));
+        $this->viewBuilder()->setOption('serialize', ['blocked']);
     }
 }

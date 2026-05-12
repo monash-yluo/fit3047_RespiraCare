@@ -506,7 +506,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id);
         $oldImageFilename = $user->image_path;
 
-        if ($user->email === 'admin@respiracare.com') {
+        if ($user->email === 'admin@dev.u26s1188.iedev.org') {
             $this->Flash->error(__('The master administrator account cannot be deleted.'));
 
             return $this->redirect(['action' => 'index']);

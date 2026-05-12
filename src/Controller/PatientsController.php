@@ -310,7 +310,7 @@ class PatientsController extends AppController
 
         // 4. 执行分页
         $patientMeasurements = $this->paginate($query, [
-            'limit' => 10,
+            'limit' => 5,
             'order' => ['measured_at' => 'desc'],
         ]);
 

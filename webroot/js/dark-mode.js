@@ -334,6 +334,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         tableContainer.innerHTML = html;
                         tableContainer.classList.remove('opacity-50', 'pointer-events-none');
 
+                        window.history.pushState(null, '', fetchUrl);
+
                         // Update active states
                         const group = filterBtn.closest('[role="group"]');
 
@@ -420,6 +422,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         gridContainer.innerHTML = html;
                         gridContainer.classList.remove('opacity-50', 'pointer-events-none');
 
+                        window.history.pushState(null, '', url);
+
                     })
                     .catch(error => {
                         if (error.name !== 'AbortError') {
@@ -478,6 +482,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(html => {
                         tableContainer.innerHTML = html;
                         tableContainer.classList.remove('opacity-50', 'pointer-events-none');
+
+                        window.history.pushState(null, '', fetchUrl);
 
                     })
                     .catch(error => {

@@ -57,6 +57,7 @@ CREATE TABLE `bookings` (
   `clinician_id` int(11) NOT NULL,
   `notes` text DEFAULT NULL,
   `scheduled_date` datetime NOT NULL,
+  `duration` int(2) NOT NULL DEFAULT 30,
   `status` varchar(50) NOT NULL DEFAULT 'pending',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL
