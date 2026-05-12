@@ -39,32 +39,35 @@ foreach ($dailySchedule as $key => $slot) {
         </h1>
     </div>
 
-    <!-- Timeline Vitals Tracker Card -->
-    <div class="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <div class="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-3">
 
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Daily Vitals Tracker</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Stay on track with your recovery schedule.</p>
-            </div>
-            <!-- Progress Badge -->
-            <div class="inline-flex items-center justify-center px-3 py-1 text-sm font-bold rounded-full bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300">
-                <?= $completedCount ?> / <?= $totalRequired ?> Completed
-            </div>
-        </div>
+        <div class="lg:col-span-2">
+            <!-- Timeline Vitals Tracker Card -->
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
 
-        <!-- Vertical Timeline -->
-        <ol class="relative ml-4 border-l-2 border-gray-200 dark:border-gray-700">
-            <?php foreach ($dailySchedule as $key => $slot): ?>
-                <?php
-                $isCompleted = $timeSlots[$key];
-                $isNext = ($key === $nextSlotKey);
-                ?>
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Daily Vitals Tracker</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Stay on track with your recovery schedule.</p>
+                    </div>
+                    <!-- Progress Badge -->
+                    <div class="inline-flex items-center justify-center px-3 py-1 text-sm font-bold rounded-full bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300">
+                        <?= $completedCount ?> / <?= $totalRequired ?> Completed
+                    </div>
+                </div>
 
-                <li class="mb-8 ml-8">
-                    <!-- The Dot / Icon -->
-                    <span class="absolute flex items-center justify-center w-8 h-8 -left-4 rounded-full ring-4 ring-white dark:ring-gray-800
+                <!-- Vertical Timeline -->
+                <ol class="relative ml-4 border-l-2 border-gray-200 dark:border-gray-700">
+                    <?php foreach ($dailySchedule as $key => $slot): ?>
+                        <?php
+                        $isCompleted = $timeSlots[$key];
+                        $isNext = ($key === $nextSlotKey);
+                        ?>
+
+                        <li class="mb-8 ml-8">
+                            <!-- The Dot / Icon -->
+                            <span class="absolute flex items-center justify-center w-8 h-8 -left-4 rounded-full ring-4 ring-white dark:ring-gray-800
                         <?= $isCompleted ? 'bg-green-100 dark:bg-green-900' : ($isNext ? 'bg-primary-100 dark:bg-primary-900' : 'bg-gray-100 dark:bg-gray-700') ?>">
 
                         <?php if ($isCompleted): ?>
@@ -79,51 +82,134 @@ foreach ($dailySchedule as $key => $slot) {
                         <?php endif; ?>
                     </span>
 
-                    <!-- Content -->
-                    <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-                        <?= $slot['title'] ?>
+                            <!-- Content -->
+                            <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+                                <?= $slot['title'] ?>
 
-                        <!-- Status Badges -->
-                        <?php if ($isCompleted): ?>
-                            <span class="px-2.5 py-0.5 ml-3 text-xs font-medium text-green-800 bg-green-100 rounded dark:bg-green-900 dark:text-green-300">Done</span>
-                        <?php elseif ($isNext): ?>
-                            <span class="px-2.5 py-0.5 ml-3 text-xs font-medium text-primary-800 bg-primary-100 rounded dark:bg-primary-900 dark:text-primary-300">Action Required</span>
-                        <?php endif; ?>
-                    </h3>
+                                <!-- Status Badges -->
+                                <?php if ($isCompleted): ?>
+                                    <span class="px-2.5 py-0.5 ml-3 text-xs font-medium text-green-800 bg-green-100 rounded dark:bg-green-900 dark:text-green-300">Done</span>
+                                <?php elseif ($isNext): ?>
+                                    <span class="px-2.5 py-0.5 ml-3 text-xs font-medium text-primary-800 bg-primary-100 rounded dark:bg-primary-900 dark:text-primary-300">Action Required</span>
+                                <?php endif; ?>
+                            </h3>
 
-                    <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                        <?= $slot['time'] ?> <span class="mx-1">&bull;</span> <?= $slot['desc'] ?>
-                    </time>
+                            <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                                <?= $slot['time'] ?> <span class="mx-1">&bull;</span> <?= $slot['desc'] ?>
+                            </time>
 
-                    <?php if ($isNext): ?>
-                        <div class="mt-4 flex flex-wrap items-center gap-3">
-                            <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'add']) ?>"
-                               class="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 shadow-sm">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                Log <?= $slot['title'] ?>
-                            </a>
+                            <?php if ($isNext): ?>
+                                <div class="mt-4 flex flex-wrap items-center gap-3">
+                                    <a href="<?= $this->Url->build(['controller' => 'PatientMeasurements', 'action' => 'add']) ?>"
+                                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 shadow-sm">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                        Log <?= $slot['title'] ?>
+                                    </a>
 
-                            <?= $this->Form->postLink(
-                                'Skip',
-                                ['controller' => 'PatientMeasurements', 'action' => 'skip', $key],
-                                [
-                                    'escape' => false,
-                                    'confirm' => __('Are you sure you want to skip your {0}? You cannot undo this.', $slot['title']),
-                                    'class' => 'temp-disable-button inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-500 transition-colors',
-                                ]
-                            ) ?>
-                        </div>
-                    <?php endif; ?>
-                </li>
-            <?php endforeach; ?>
-        </ol>
+                                    <?= $this->Form->postLink(
+                                        'Skip',
+                                        ['controller' => 'PatientMeasurements', 'action' => 'skip', $key],
+                                        [
+                                            'escape' => false,
+                                            'confirm' => __('Are you sure you want to skip your {0}? You cannot undo this.', $slot['title']),
+                                            'class' => 'temp-disable-button inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-500 transition-colors',
+                                        ]
+                                    ) ?>
+                                </div>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
 
-        <!-- Final state when all are done -->
-        <?php if ($completedCount >= $totalRequired): ?>
-            <div class="p-4 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                <span class="font-medium">Excellent work!</span> You have completed all your required readings for today.
+                <!-- Final state when all are done -->
+                <?php if ($completedCount >= $totalRequired): ?>
+                    <div class="p-4 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                        <span class="font-medium">Excellent work!</span> You have completed all your required readings for today.
+                    </div>
+                <?php endif; ?>
+
             </div>
-        <?php endif; ?>
+        </div>
+
+
+        <div class="lg:col-span-1 flex flex-col gap-6 h-full">
+            <div class="flex-1 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Next Appointment</h3>
+
+                <?php if ($upcomingBooking): ?>
+                    <div class="flex items-center p-4 mb-4 rounded-lg bg-primary-50 dark:bg-primary-900/30">
+                        <div class="flex-shrink-0">
+                            <svg class="w-10 h-10 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-bold text-primary-900 dark:text-primary-100">
+                                <?= $upcomingBooking->scheduled_date->format('l, j M') ?>
+                            </p>
+                            <p class="text-xs text-primary-700 dark:text-primary-300">
+                                at <?= $upcomingBooking->scheduled_date->format('g:i A') ?>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 uppercase dark:text-gray-400">Clinician</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">
+                            Dr. <?= h($upcomingBooking->clinician->user->first_name) ?> <?= h($upcomingBooking->clinician->user->last_name) ?>
+                        </p>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 uppercase dark:text-gray-400">Duration</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">
+                            <?= h($upcomingBooking->duration) ?> mins
+                        </p>
+                    </div>
+
+                    <a href="<?= $this->Url->build(['controller' => 'Bookings', 'action' => 'view', $upcomingBooking->id]) ?>"
+                       class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        View Details
+                    </a>
+                <?php else: ?>
+                    <div class="py-6 text-center">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">No upcoming appointments.</p>
+                        <a href="<?= $this->Url->build(['controller' => 'Bookings', 'action' => 'add']) ?>" class="mt-2 text-sm font-medium text-primary-600 hover:underline">
+                            Book a session
+                        </a>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                <h3 class="mb-4 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Support</h3>
+                <ul class="space-y-3">
+                    <li>
+                        <?= $this->Html->link(
+                            '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>' .
+                            __('Message the clinic'),
+                            ['controller' => 'ContactMessages', 'action' => 'contact'],
+                            [
+                                'escape' => false,
+                                'class' => 'flex items-center text-sm text-gray-900 dark:text-white hover:text-primary-600'
+                            ]
+                        ) ?>
+                    </li>
+
+                    <li>
+                        <?= $this->Html->link(
+                            '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z" clip-rule="evenodd"/></svg>' .
+                            __('Explore resources'),
+                            ['controller' => 'Resources', 'action' => 'index'],
+                            [
+                                'escape' => false,
+                                'class' => 'flex items-center text-sm text-gray-900 dark:text-white hover:text-primary-600'
+                            ]
+                        ) ?>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
 
     </div>
 

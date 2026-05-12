@@ -287,6 +287,16 @@ class PatientsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
+        $upcomingBooking = $this->fetchTable('Bookings')->find()
+            ->contain(['Clinicians.Users'])
+            ->where([
+                'Bookings.patient_id' => $patient->get('id'),
+                'Bookings.scheduled_date >=' => new DateTime(),
+                'Bookings.status' => 'confirmed',
+            ])
+            ->orderBy(['Bookings.scheduled_date' => 'ASC'])
+            ->first();
+
         $todayStart = FrozenTime::now()->startOfDay();
         $todayEnd = FrozenTime::now()->endOfDay();
 
@@ -346,17 +356,18 @@ class PatientsController extends AppController
             'order' => ['measured_at' => 'desc'],
         ]);
 
-        $this->set(compact('patientMeasurements', 'completedCount', 'timeSlots'));
+        $this->set(compact('patientMeasurements', 'completedCount', 'timeSlots', 'upcomingBooking'));
     }
 
     private function applyDateFilter($query, $preset)
     {
         if ($preset === 'today') {
-            return $query->where(['created >=' => new \DateTime('today')]);
+            return $query->where(['created >=' => new DateTime('today')]);
         }
         if (in_array($preset, ['7', '30', '90'])) {
-            return $query->where(['created >=' => new \DateTime("-{$preset} days")]);
+            return $query->where(['created >=' => new DateTime("-{$preset} days")]);
         }
+
         return $query;
     }
 }

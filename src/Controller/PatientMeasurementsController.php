@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\I18n\FrozenTime;
+use DateTime;
 
 /**
  * PatientMeasurements Controller
@@ -21,22 +22,27 @@ class PatientMeasurementsController extends AppController
     {
         $this->checkRole(['patient']);
 
+        $datePreset = $this->request->getQuery('date_preset');
+        $patientId = $this->getPatientId();
+
         $query = $this->PatientMeasurements->find()
-            ->where(['PatientMeasurements.patient_id' => $this->getPatientId()])
+            ->where(['PatientMeasurements.patient_id' => $patientId])
             ->orderBy(['PatientMeasurements.measured_at' => 'DESC']);
 
-        // Set pagination limits
-        $this->paginate = [
-            'limit' => 10,
-        ];
+        if (!empty($datePreset)) {
+            $query = $this->applyDateFilter($query, $datePreset);
+        }
 
-        $patientMeasurements = $this->paginate($query);
+        $patientMeasurements = $this->paginate($query, [
+            'limit' => 10,
+        ]);
+
         $this->set(compact('patientMeasurements'));
 
         if ($this->request->is('ajax')) {
             $this->viewBuilder()->disableAutoLayout();
 
-            return $this->render('/element/table/entity_tables/measurements_table');
+            return $this->render('/element/table/entity_tables/patient_measurements_table');
         }
     }
 
@@ -291,5 +297,26 @@ class PatientMeasurementsController extends AppController
         }
 
         return $this->redirect(['controller' => 'Patients', 'action' => 'dashboard']);
+    }
+
+    private function applyDateFilter($query, $preset)
+    {
+        $date = null;
+        switch ($preset) {
+            case 'today':
+                $date = new DateTime('today');
+                break;
+            case '7':
+                $date = new DateTime('-7 days');
+                break;
+            case '30':
+                $date = new DateTime('-30 days');
+                break;
+            case '90':
+                $date = new DateTime('-90 days');
+                break;
+        }
+
+        return $date ? $query->where(['PatientMeasurements.measured_at >=' => $date]) : $query;
     }
 }

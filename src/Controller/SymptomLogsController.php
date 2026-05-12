@@ -111,6 +111,8 @@ class SymptomLogsController extends AppController
         $this->checkRole(['patient']);
 
         $patientId = $this->getPatientId();
+        $datePreset = $this->request->getQuery('date_preset');
+        $symptomType = $this->request->getQuery('symptoms_type');
 
         if (!$patientId) {
             $this->Flash->error(__('Patient profile not found.'));
@@ -120,14 +122,29 @@ class SymptomLogsController extends AppController
 
         $query = $this->SymptomLogs->find()
             ->where(['patient_id' => $patientId])
-            ->contain(['SymptomTypes']);
+            ->contain(['SymptomTypes'])
+            ->orderBy(['SymptomLogs.created' => 'DESC']);
+
+        if (!empty($datePreset)) {
+            $query = $this->applyDateFilter($query, $datePreset);
+        }
+
+        if ($symptomType === 'no_symptom') {
+            $query->notMatching('SymptomTypes');
+        } elseif ($symptomType === 'with_symtoms') {
+            $query->matching('SymptomTypes')->distinct(['SymptomLogs.id']);
+        }
 
         $symptomLogs = $this->paginate($query, [
             'limit' => 10,
-            'order' => ['started_at' => 'desc'],
         ]);
 
         $this->set(compact('symptomLogs'));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+            return $this->render('/element/table/entity_tables/patient_symptoms_table');
+        }
     }
 
     public function add(?string $patientId = null)
@@ -201,4 +218,18 @@ class SymptomLogsController extends AppController
         $this->set(compact('symptomLog'));
     }
 
+    /**
+     * Helper to keep logic clean
+     */
+    private function applyDateFilter($query, $preset)
+    {
+        $start = null;
+        switch ($preset) {
+            case 'today': $start = new \DateTime('today'); break;
+            case '7': $start = new \DateTime('-7 days'); break;
+            case '30': $start = new \DateTime('-30 days'); break;
+            case '90': $start = new \DateTime('-90 days'); break;
+        }
+        return $start ? $query->where(['SymptomLogs.created >=' => $start]) : $query;
+    }
 }

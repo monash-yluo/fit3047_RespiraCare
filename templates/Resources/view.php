@@ -51,7 +51,7 @@ $this->assign('title', 'View Resource');
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen
-                            class="rounded-lg shadow-sm">
+                            class="rounded-lg shadow-md">
                             </iframe>
                         </div>
                     <?php endif; ?>

@@ -19,6 +19,8 @@ $this->assign('title', 'Vitals & Measurements');
     ]) ?>
 
     <?= $this->element('table/table_wrapper', [
+        'target' => 'patientMeasurements',
+        'hasDateFilter' => true,
         'hasSearch' => false,
         'tableElement' => 'table/entity_tables/measurements_table',
     ]) ?>

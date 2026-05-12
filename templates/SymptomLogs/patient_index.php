@@ -17,8 +17,18 @@ $this->assign('title', 'Symptom History');
     ]) ?>
 
     <?= $this->element('table/table_wrapper', [
+        'target' => 'symptomLogs',
+        'hasDateFilter' => true,
         'hasSearch' => false,
         'tableElement' => 'table/entity_tables/symptoms_table',
+        'filterConfig' => [
+            'paramName' => 'symptoms_type',
+            'options' => [
+                '' => 'All',
+                'no_symptom' => 'No symptom',
+                'with_symtoms' => 'Have symptoms',
+            ],
+        ],
     ]) ?>
 
 </div>
