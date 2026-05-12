@@ -37,9 +37,6 @@ $getSeverityProps = function($severity) {
 
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>
-        <th scope="col" class="p-4 w-4">
-            <input type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-        </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('logged_at', 'Log Time') ?>
         </th>
@@ -67,13 +64,6 @@ $getSeverityProps = function($severity) {
     <?php else: ?>
         <?php foreach ($symptomLogs as $log): ?>
             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-
-                <td class="w-4 p-4">
-                    <div class="flex items-center">
-                        <input id="checkbox-<?= $log->id ?>" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                    </div>
-                </td>
-
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                     <div class="text-sm font-semibold text-gray-900 dark:text-white">
                         <?= $this->Time->format($log->logged_at, 'dd MMM, YYYY') ?>

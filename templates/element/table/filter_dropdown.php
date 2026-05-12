@@ -8,7 +8,7 @@
 $paramName = $paramName ?? 'filter';
 $options = $options ?? [];
 $currentValue = $this->request->getQuery($paramName, '');
-$target = $target ?? '.ajax-table-content';
+$target = $target ?? null;
 ?>
 
 <div class="flex items-center space-x-2">

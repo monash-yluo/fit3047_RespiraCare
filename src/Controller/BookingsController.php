@@ -85,6 +85,8 @@ class BookingsController extends AppController
         $this->checkRole(['patient', 'clinician']);
 
         $identity = $this->Authentication->getIdentity();
+        $target = $this->request->getQuery('target');
+        $status = $this->request->getQuery('status');
         $role = $identity->role;
 
         $patientId = null;
@@ -143,6 +145,14 @@ class BookingsController extends AppController
             'Bookings.scheduled_date' => 'DESC',
         ]);
 
+        if (!empty($status) && ($target === 'upcomingBookings')) {
+            $upcomingQuery->where(['Bookings.status' => $status]);
+        }
+
+        if (!empty($status) && ($target === 'allBookings')) {
+            $query->where(['Bookings.status' => $status]);
+        }
+
         $bookings = $this->paginate($query, [
             'scope' => 'allBookings',
             'limit' => 10,
@@ -153,11 +163,20 @@ class BookingsController extends AppController
             'limit' => 10,
         ]);
 
-        $this->set(compact(
-            'pendingCount',
-            'upcomingBookings',
-            'bookings'
-        ));
+        $this->set(compact('pendingCount', 'upcomingBookings', 'bookings'));
+
+        // Ajax
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            if ($target === 'upcomingBookings') {
+                return $this->render('/element/table/entity_tables/bookings_clinician_table');
+            } elseif ($target === 'allBookings') {
+                return $this->render('/element/table/entity_tables/bookings_all_table');
+            } else {
+                throw new Exception('Something went wrong!');
+            }
+        }
     }
 
     /**

@@ -70,6 +70,15 @@ $statusColors = [
         <?= $this->element('table/table_wrapper', [
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/bookings_clinician_table',
+            'filterConfig' => [
+                'paramName' => 'status',
+                'target' => 'upcomingBookings',
+                'options' => [
+                    '' => 'All',
+                    'pending' => 'Pending',
+                    'confirmed' => 'Confirmed',
+                ],
+            ],
         ]) ?>
 
         <!-- Pagination -->
@@ -85,6 +94,16 @@ $statusColors = [
         <?= $this->element('table/table_wrapper', [
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/bookings_all_table',
+            'filterConfig' => [
+                'paramName' => 'status',
+                'target' => 'allBookings',
+                'options' => [
+                    '' => 'All',
+                    'pending' => 'Pending',
+                    'confirmed' => 'Confirmed',
+                    'declined' => 'Declined',
+                ],
+            ],
         ]) ?>
 
         <!-- Pagination -->

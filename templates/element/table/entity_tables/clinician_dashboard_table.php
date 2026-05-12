@@ -6,12 +6,6 @@
 <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600 border border-b-0 border-gray-200 dark:border-gray-700">
     <thead class="bg-gray-100 dark:bg-gray-700">
     <tr>
-        <th scope="col" class="p-4 w-4">
-            <div class="flex items-center">
-                <input id="checkbox-all" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                <label for="checkbox-all" class="sr-only">checkbox</label>
-            </div>
-        </th>
         <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
             <?= $this->Paginator->sort('id', 'ID') ?>
         </th>
@@ -43,13 +37,6 @@
     <?php elseif (isset($patients)) : ?>
         <?php foreach ($patients as $patient) : ?>
             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <td class="w-4 p-4">
-                    <div class="flex items-center">
-                        <input id="checkbox-<?= $patient->id ?>" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="checkbox-<?= $patient->id ?>" class="sr-only">checkbox</label>
-                    </div>
-                </td>
-
                 <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
                     <?= $this->Number->format($patient->id) ?>
                 </td>

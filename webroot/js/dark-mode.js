@@ -228,14 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // For buttons with confirm, set a timeout to restore in case user clicks Cancel
-            const hasConfirm = this.getAttribute('onclick')?.includes('confirm(') || 
+            const hasConfirm = this.getAttribute('onclick')?.includes('confirm(') ||
                              this.getAttribute('data-confirm');
             const btn = this;
-            
+
             setTimeout(() => {
                 btn.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
                 btn.style.filter = 'grayscale(1)';
-                
+
                 // If button has confirm dialog, auto-restore after 2 seconds in case user cancelled
                 if (hasConfirm) {
                     setTimeout(() => {
@@ -267,28 +267,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const tableWrapper = filterBtn.closest('.data-table');
                 const tableContainer = tableWrapper.querySelector('.ajax-table-content');
+
                 if (!tableContainer) return;
 
                 const paramName = filterBtn.getAttribute('data-filter-param');
                 const paramValue = filterBtn.getAttribute('data-filter-value');
-                const backendTarget = filterBtn.getAttribute('data-target');
+                const targetValue = filterBtn.getAttribute('data-target');
 
-                const url = new URL(window.location.href);
+                const displayUrl = new URL(window.location.href);
 
                 // Remove filter if empty
                 if (!paramValue) {
-                    url.searchParams.delete(paramName);
+                    displayUrl.searchParams.delete(paramName);
                 } else {
-                    url.searchParams.set(paramName, paramValue);
-                }
-
-                // Append the target parameter for the backend
-                if (backendTarget) {
-                    url.searchParams.set('target', backendTarget);
+                    displayUrl.searchParams.set(paramName, paramValue);
                 }
 
                 // Reset pagination
-                url.searchParams.delete('page');
+                displayUrl.searchParams.delete('page');
+                const fetchUrl = new URL(displayUrl.toString());
+                if (targetValue) {
+                    fetchUrl.searchParams.set('target', targetValue);
+                }
 
                 // Abort previous request
                 if (filterRequest) {
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Loading state
                 tableContainer.classList.add('opacity-50', 'pointer-events-none');
 
-                fetch(url, {
+                fetch(fetchUrl, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     },
@@ -311,9 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         tableContainer.innerHTML = html;
                         tableContainer.classList.remove('opacity-50', 'pointer-events-none');
-
-                        // Update the browser URL so refreshes work
-                        window.history.pushState({}, '', url);
 
                         // Update active states
                         const group = filterBtn.closest('[role="group"]');
@@ -401,8 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         gridContainer.innerHTML = html;
                         gridContainer.classList.remove('opacity-50', 'pointer-events-none');
 
-                        // Sync browser address bar
-                        window.history.pushState({}, '', url.toString());
                     })
                     .catch(error => {
                         if (error.name !== 'AbortError') {
@@ -425,17 +420,22 @@ document.addEventListener('DOMContentLoaded', function() {
             select.addEventListener('change', function() {
                 const paramName = this.getAttribute('data-filter-param');
                 const paramValue = this.value;
-                const url = new URL(window.location.href);
+                const targetValue = this.getAttribute('data-target');
+                const displayUrl = new URL(window.location.href);
 
                 // Update the specific parameter
                 if (!paramValue) {
-                    url.searchParams.delete(paramName);
+                    displayUrl.searchParams.delete(paramName);
                 } else {
-                    url.searchParams.set(paramName, paramValue);
+                    displayUrl.searchParams.set(paramName, paramValue);
                 }
 
                 // Reset pagination
-                url.searchParams.delete('page');
+                displayUrl.searchParams.delete('page');
+                const fetchUrl = new URL(displayUrl.toString());
+                if (targetValue) {
+                    fetchUrl.searchParams.set('target', targetValue);
+                }
 
                 // Abort previous request
                 if (dropdownRequest) {
@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Loading state
                 tableContainer.classList.add('opacity-50', 'pointer-events-none');
 
-                fetch(url, {
+                fetch(fetchUrl, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     },
@@ -457,8 +457,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         tableContainer.innerHTML = html;
                         tableContainer.classList.remove('opacity-50', 'pointer-events-none');
 
-                        // Update browser address bar
-                        window.history.pushState({}, '', url.toString());
                     })
                     .catch(error => {
                         if (error.name !== 'AbortError') {
