@@ -116,6 +116,4 @@ $this->assign('title', 'Dashboard Overview');
         'tableElement' => 'table/entity_tables/clinician_dashboard_table',
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

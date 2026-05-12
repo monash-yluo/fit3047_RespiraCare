@@ -23,6 +23,4 @@ $this->assign('title', 'Vitals & Measurements');
         'tableElement' => 'table/entity_tables/measurements_table',
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

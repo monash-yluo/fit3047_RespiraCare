@@ -80,9 +80,6 @@ $statusColors = [
                 ],
             ],
         ]) ?>
-
-        <!-- Pagination -->
-        <?= $this->element('table/pagination_footer', ['paginatedData' => $upcomingBookings]) ?>
     </div>
 
     <div class="h-px my-10 bg-gray-200 border-0 dark:bg-gray-700"></div>
@@ -107,9 +104,6 @@ $statusColors = [
                 ],
             ],
         ]) ?>
-
-        <!-- Pagination -->
-        <?= $this->element('table/pagination_footer', ['paginatedData' => $bookings]) ?>
     </div>
 
 </div>

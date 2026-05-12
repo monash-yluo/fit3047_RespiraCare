@@ -96,3 +96,6 @@ $this->Paginator->setPaginated($bookings);
     <?php endif; ?>
     </tbody>
 </table>
+
+<!-- Pagination -->
+<?= $this->element('table/pagination_footer', ['paginatedData' => $bookings]) ?>

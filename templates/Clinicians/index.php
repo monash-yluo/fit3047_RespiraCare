@@ -21,6 +21,4 @@ $this->assign('title', 'Manage Clinicians');
         'tableElement' => 'table/entity_tables/clinicians_table',
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

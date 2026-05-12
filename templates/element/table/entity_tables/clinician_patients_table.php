@@ -87,3 +87,5 @@ $this->Paginator->setPaginated($myPatients);
     <?php endif; ?>
     </tbody>
 </table>
+
+<?= $this->element('table/pagination_footer', ['paginatedData' => $myPatients]) ?>

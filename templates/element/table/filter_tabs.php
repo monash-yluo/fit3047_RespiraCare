@@ -1,16 +1,18 @@
 <?php
 $paramName = $paramName ?? 'filter';
+$urlTarget = $this->request->getQuery('target');
 $options = $options ?? [];
 $class = $class ?? '';
 $target = $target ?? null;
 
 $currentValue = $this->request->getQuery($paramName);
+$selectedValue = $urlTarget === $target || empty($urlTarget) ? $currentValue : '';
 ?>
 
 <div class="mb-4 inline-flex flex-col sm:flex-row sm:items-center sm:justify-start space-y-3 sm:space-y-0 gap-2 p-1 bg-gray-100 rounded-xl dark:bg-gray-700 <?= $class ?>" role="group">
     <?php foreach ($options as $value => $label) : ?>
         <?php
-        $isActive = (string)$currentValue === (string)$value;
+        $isActive = (string)$selectedValue === (string)$value;
         ?>
         <button type="button"
                 data-ajax-filter="true"

@@ -37,6 +37,4 @@ $currentRole = $this->request->getQuery('role', 'all');
             ],
         ],
     ]) ?>
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

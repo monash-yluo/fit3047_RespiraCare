@@ -142,6 +142,12 @@ class BookingsController extends AppController
         $query = clone $baseQuery;
         $query->orderBy(['Bookings.scheduled_date' => 'DESC']);
 
+        if ($target === 'upcomingBookings') {
+            if (!empty($status)) {
+                $upcomingQuery->where(['Bookings.status' => $status]);
+            }
+        }
+
         if ($target === 'allBookings') {
             if (!empty($status)) {
                 $query->where(['Bookings.status' => $status]);

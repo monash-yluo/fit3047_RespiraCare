@@ -24,8 +24,6 @@ $this->assign('title', 'Manage Patients');
             'target' => 'my_patients',
             'tableElement' => 'table/entity_tables/clinician_patients_table',
         ]) ?>
-
-        <?= $this->element('table/pagination_footer', ['paginatedData' => $myPatients]) ?>
     </div>
 
     <!-- All Patients Section -->
@@ -36,8 +34,6 @@ $this->assign('title', 'Manage Patients');
             'target' => 'all_patients',
             'tableElement' => 'table/entity_tables/clinician_allpatients_table',
         ]) ?>
-
-        <?= $this->element('table/pagination_footer', ['paginatedData' => $allPatients]) ?>
     </div>
 
 

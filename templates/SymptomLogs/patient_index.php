@@ -21,6 +21,4 @@ $this->assign('title', 'Symptom History');
         'tableElement' => 'table/entity_tables/symptoms_table',
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

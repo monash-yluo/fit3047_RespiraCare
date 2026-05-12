@@ -153,12 +153,14 @@ $breadcrumbs = [
         </div>
 
         <?= $this->element('table/table_wrapper', [
+            'target' => 'measurements',
+            'hasDateFilter' => true,
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/patient_measurements_table',
         ]) ?>
-
-        <?= $this->element('table/pagination_footer', ['paginatedData' => $patientMeasurements]) ?>
     </div>
+
+    <div class="h-px my-10 bg-gray-200 border-0 dark:bg-gray-700"></div>
 
     <!-- Symptom Logs Section -->
     <div>
@@ -174,11 +176,22 @@ $breadcrumbs = [
         </div>
 
         <?= $this->element('table/table_wrapper', [
+            'target' => 'symptoms',
+            'hasDateFilter' => true,
             'hasSearch' => false,
             'tableElement' => 'table/entity_tables/patient_symptoms_table',
+            'filterConfig' => [
+                'paramName' => 'symptoms_type',
+                'target' => 'symptoms',
+                'options' => [
+                    '' => 'All',
+                    'no_symptom' => 'No symptom',
+                    'with_symtoms' => 'Have symptoms',
+                ],
+            ],
         ]) ?>
 
-        <?= $this->element('table/pagination_footer', ['paginatedData' => $symptomLogs]) ?>
+
     </div>
 
 </div>

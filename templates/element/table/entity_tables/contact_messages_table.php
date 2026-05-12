@@ -108,3 +108,6 @@ $getStatusClass = function ($status) {
     <?php endif; ?>
     </tbody>
 </table>
+
+
+<?= $this->element('table/pagination_footer') ?>

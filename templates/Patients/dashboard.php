@@ -133,6 +133,4 @@ foreach ($dailySchedule as $key => $slot) {
         'tableElement' => 'table/entity_tables/patient_dashboard_table',
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

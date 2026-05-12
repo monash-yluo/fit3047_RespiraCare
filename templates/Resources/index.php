@@ -72,5 +72,4 @@ $this->assign('title', 'Manage Resources');
         <?= $this->element('table/entity_tables/resources_grid') ?>
     </div>
 
-    <?= $this->element('table/pagination_footer') ?>
 </div>

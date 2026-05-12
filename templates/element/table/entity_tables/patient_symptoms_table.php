@@ -120,3 +120,5 @@
     <?php endif; ?>
     </tbody>
 </table>
+
+<?= $this->element('table/pagination_footer', ['paginatedData' => $symptomLogs]) ?>

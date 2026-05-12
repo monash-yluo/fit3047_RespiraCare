@@ -32,6 +32,4 @@ $this->assign('title', 'System Reminders');
         ],
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

@@ -64,6 +64,10 @@ class PatientsController extends AppController
     {
         $this->checkRole(['admin', 'clinician']);
 
+        $target = $this->request->getQuery('target');
+        $datePreset = $this->request->getQuery('date_preset');
+        $symptomType = $this->request->getQuery('symptoms_type');
+
         // Data for Table
         $patient = $this->Patients->get($id, contain: [
             'Users',
@@ -72,6 +76,10 @@ class PatientsController extends AppController
 
         $measurementsQuery = $this->Patients->PatientMeasurements->find()
             ->where(['patient_id' => $patient->id]);
+
+        if ($target === 'measurements' && !empty($datePreset)) {
+            $measurementsQuery = $this->applyDateFilter($measurementsQuery, $datePreset);
+        }
 
         $patientMeasurements = $this->paginate($measurementsQuery, [
             'scope' => 'measurements',
@@ -82,6 +90,19 @@ class PatientsController extends AppController
         $symptomsQuery = $this->Patients->SymptomLogs->find()
             ->where(['patient_id' => $id])
             ->contain(['SymptomTypes']);
+
+        if ($target === 'symptoms') {
+            if (!empty($datePreset)) {
+                $symptomsQuery = $this->applyDateFilter($symptomsQuery, $datePreset);
+            }
+
+            if ($symptomType === 'no_symptom') {
+                $symptomsQuery->notMatching('SymptomTypes');
+            } elseif ($symptomType === 'with_symtoms') {
+                $symptomsQuery->matching('SymptomTypes');
+                $symptomsQuery->distinct(['SymptomLogs.id']);
+            }
+        }
 
         $symptomLogs = $this->paginate($symptomsQuery, [
             'scope' => 'symptoms',
@@ -145,6 +166,17 @@ class PatientsController extends AppController
             'tempData',
             'rrData',
         ));
+
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->disableAutoLayout();
+
+            if ($target === 'measurements') {
+                return $this->render('/element/table/entity_tables/patient_measurements_table');
+            }
+            if ($target === 'symptoms') {
+                return $this->render('/element/table/entity_tables/patient_symptoms_table');
+            }
+        }
     }
 
     /**
@@ -315,5 +347,16 @@ class PatientsController extends AppController
         ]);
 
         $this->set(compact('patientMeasurements', 'completedCount', 'timeSlots'));
+    }
+
+    private function applyDateFilter($query, $preset)
+    {
+        if ($preset === 'today') {
+            return $query->where(['created >=' => new \DateTime('today')]);
+        }
+        if (in_array($preset, ['7', '30', '90'])) {
+            return $query->where(['created >=' => new \DateTime("-{$preset} days")]);
+        }
+        return $query;
     }
 }

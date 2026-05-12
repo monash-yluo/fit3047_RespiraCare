@@ -73,8 +73,6 @@ $this->assign('title', 'Dashboard Overview');
         'tableElement' => 'table/entity_tables/admin_dashboard_table',
         'hasDateFilter' => true,
     ]) ?>
-
-    <?= $this->element('table/pagination_footer') ?>
 </div>
 
 <?php $this->append('script'); ?>

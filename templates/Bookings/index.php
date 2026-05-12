@@ -32,7 +32,4 @@ $this->assign('title', 'Manage Bookings');
             ],
         ],
     ]) ?>
-
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>

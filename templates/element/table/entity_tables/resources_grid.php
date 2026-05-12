@@ -111,3 +111,5 @@
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
+
+<?= $this->element('table/pagination_footer') ?>

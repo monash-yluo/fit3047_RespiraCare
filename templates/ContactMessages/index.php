@@ -55,6 +55,4 @@ $this->assign('title', 'Contact Messages');
         'hasDateFilter' => true,
     ]) ?>
 
-    <?= $this->element('table/pagination_footer') ?>
-
 </div>
