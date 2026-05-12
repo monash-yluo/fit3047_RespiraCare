@@ -76,7 +76,7 @@ $this->assign('title', 'Request New Booking');
                             'max' => date('Y-m-d\TH:i', strtotime('+1 year')),
                         ]) ?>
                     </div>
-                    
+
                     <?php if ($identity->role === 'admin') : ?>
                     <div>
                         <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>

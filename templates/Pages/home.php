@@ -25,10 +25,10 @@ $this->assign('title', 'Respira Care');
                     <?= h($this->ContentBlock->text('home-hero-description')) ?>
                 </p>
                 <div class="d-flex">
-                    <a href="<?= $this->Url->build(['controller' => 'ContactMessages', 'action' => 'contact']) ?>"
+                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'Login']) ?>"
                        class="btn text-white rounded-pill px-4 py-2 shadow-sm fw-bold"
                        style="background-color: #305BAB; border: none; transition: 0.3s;">
-                        Contact Us
+                        Log In
                     </a>
                 </div>
             </div>
@@ -115,7 +115,7 @@ $this->assign('title', 'Respira Care');
                 <?php $doctorImagePath = $this->ContentBlock->imagePath("doctor-image-{$i}"); ?>
                 <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="<?= h((string)($i * 100)) ?>">
                     <div class="card h-100 text-center px-4 py-5 border-0 shadow text-dark rounded-3 lh-lg">
-                        
+
                         <?php if (!empty($doctorImagePath)): ?>
                             <div class="mx-auto mb-4 shadow-sm rounded-circle bg-white dark:bg-gray-800 overflow-hidden border border-gray-200 dark:border-gray-600"
                                  style="width: 120px; height: 120px;">

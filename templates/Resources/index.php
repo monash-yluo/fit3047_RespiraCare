@@ -52,7 +52,7 @@ $this->assign('title', 'Manage Resources');
 
     <!-- Sorting Controls -->
     <div class="flex flex-col md:flex-row justify-between space-y-3 items-center py-4" id="resources-filter-panel">
-        <?= $this->element('table/search') ?>
+        <?= $this->element('table/search', ['class' => 'bg-white']) ?>
 
         <div class="flex justify-end items-center space-x-3 text-sm">
             <span class="text-gray-500 dark:text-gray-400 font-medium">Sort by:</span>

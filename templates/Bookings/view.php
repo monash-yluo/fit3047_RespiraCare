@@ -119,21 +119,54 @@ $statusColors = [
 
                 <hr class="my-6 border-gray-100 dark:border-gray-700">
 
-                <div class="flex flex-col space-y-3">
+                <div class="flex flex-col gap-2">
                     <?php if ($identity->role === 'admin' || $identity->role === 'clinician') : ?>
-                        <?= $this->Form->postLink(
-                            '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg> Accept',
-                            ['action' => 'changeStatus', $booking->id, 'confirmed'],
-                            ['escape' => false, 'class' => 'inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800']
-                        ) ?>
-                        <?= $this->Form->postLink(
-                            '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg> Decline',
-                            ['action' => 'changeStatus', $booking->id, 'declined'],
-                            ['escape' => false, 'class' => 'inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800']
-                        ) ?>
+                        <?php if ($booking->status !== 'confirmed'): ?>
+                            <?= $this->Form->postLink(
+                                '<i class="w-4 h-4" data-lucide="circle-check"></i> Confirm appointment',
+                                ['action' => 'changeStatus', $booking->id, 'confirmed'],
+                                [
+                                    'escape' => false,
+                                    'class' => 'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
+                            text-gray-700 border border-gray-200 bg-white
+                            hover:bg-green-50 hover:text-green-800 hover:border-green-300
+                            dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700
+                            dark:hover:bg-green-950 dark:hover:text-green-300 dark:hover:border-green-700
+                            transition-all'
+                                ]
+                            ) ?>
+                        <?php endif; ?>
+
+                        <?php if ($booking->status !== 'declined'): ?>
+                            <?= $this->Form->postLink(
+                                '<i class="w-4 h-4" data-lucide="circle-x"></i> Decline request',
+                                ['action' => 'changeStatus', $booking->id, 'declined'],
+                                [
+                                    'escape' => false,
+                                    'confirm' => __('Are you sure to decline this booking?'),
+                                    'class' => 'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
+                            text-gray-700 border border-gray-200 bg-white
+                            hover:bg-red-50 hover:text-red-800 hover:border-red-300
+                            dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700
+                            dark:hover:bg-red-950 dark:hover:text-red-300 dark:hover:border-red-700
+                            transition-all'
+                                ]
+                            ) ?>
+                        <?php endif; ?>
                     <?php endif; ?>
+
                     <?php if ($identity->role === 'admin'): ?>
-                        <?= $this->element('button/red_button', ['label' => 'Delete', 'url' => ['action' => 'delete', $booking->id], 'confirm' => __('Are you sure you want to delete this booking?'), 'iconType' => 'delete']) ?>
+                        <hr class="border-gray-100 dark:border-gray-700 my-1">
+                        <?= $this->Form->postLink(
+                            '<i class="w-4 h-4" data-lucide="trash-2"></i> Delete record',
+                            ['action' => 'delete', $booking->id],
+                            [
+                                'escape' => false,
+                                'confirm' => __('Permanently delete this booking?'),
+                                'class' => 'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg
+                            text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900 transition-all'
+                            ]
+                        ) ?>
                     <?php endif; ?>
                 </div>
             </div>

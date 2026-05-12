@@ -204,7 +204,3 @@ a.desc {
     color: var(--nav-color);
     font-weight: 600;
 }
-
-#resources-filter-panel .simple-search {
-    background-color: #fff !important;
-}
