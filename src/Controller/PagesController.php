@@ -91,54 +91,7 @@ class PagesController extends AppController
      */
     public function home(): void
     {
-        // $cliniciansQuery = $this->fetchTable('Clinicians')->find()
-        //     ->contain(['Users'])
-        //     ->select([
-        //         'Clinicians.description',
-        //         'Clinicians.created',
-        //         'Users.first_name',
-        //         'Users.last_name',
-        //         'Users.image_path',
-        //     ])
-        //     ->orderBy(['Clinicians.created' => 'ASC'])
-        //     ->limit(3)
-        //     ->all();
 
-        // $specialists = [];
-        // foreach ($cliniciansQuery as $index => $clinician) {
-        //     $specialists[] = [
-        //         'name' => 'Dr. ' . $clinician->user->full_name,
-        //         'desc' => $clinician->description,
-        //         'image_url' => $clinician->user->image_path ?? null,
-        //         'delay' => ($index + 1) * 100,
-        //     ];
-        // }
-
-        // $copdSteps = [
-        //     [
-        //         'number' => '1',
-        //         'title' => 'Log Daily Vitals:',
-        //         'description' =>
-        //             'Easily record your oxygen saturation (SpO2), blood pressure,
-        //             and respiratory rate from the comfort of home.',
-        //     ],
-        //     [
-        //         'number' => '2',
-        //         'title' => 'Track Symptoms:',
-        //         'description' =>
-        //             'Confidentially update your physician on coughing,
-        //             wheezing, or shortness of breath via our secure portal.',
-        //     ],
-        //     [
-        //         'number' => '3',
-        //         'title' => 'Receive Expert Care:',
-        //         'description' =>
-        //             'Get personalised feedback, proactive
-        //             treatment adjustments, and continuous monitoring.',
-        //     ],
-        // ];
-
-        // $this->set(compact('specialists', 'copdSteps'));
     }
 
     /**
@@ -147,6 +100,15 @@ class PagesController extends AppController
      * @return void
      */
     public function about(): void
+    {
+    }
+
+    /**
+     * This function display the Help FAQ Page
+     *
+     * @return void
+     */
+    public function help(): void
     {
     }
 

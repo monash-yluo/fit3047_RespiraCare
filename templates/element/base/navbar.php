@@ -143,16 +143,22 @@ $searchableLinks = $searchableLinks ?? [];
                     <button type="button" class="flex items-center justify-center w-8 h-8 text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:focus:ring-gray-600 overflow-hidden" id="user-menu-button-2" data-dropdown-toggle="dropdown-2">
 
                         <?php if (!empty($imageUrl)): ?>
-                            <?= $this->Html->image('users/' . $imageUrl, [
-                                'alt' => $userName,
-                                'class' => 'w-full h-full object-cover',
-                                'onerror' => "this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
-                            ]) ?>
+                            <div class="relative flex items-center justify-center w-full h-full overflow-hidden bg-gray-100 rounded-lg dark:bg-gray-800">
 
-                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-300 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                            </svg>
+                                <div class="absolute inset-0 bg-gray-200 animate-pulse dark:bg-gray-700"></div>
 
+                                <?= $this->Html->image('users/' . $imageUrl, [
+                                    'alt' => $userName,
+                                    'class' => 'absolute inset-0 z-10 object-cover w-full h-full transition-opacity duration-300 opacity-0',
+                                    'onload' => "this.previousElementSibling.classList.add('hidden'); this.classList.remove('opacity-0');",
+                                    'onerror' => "this.previousElementSibling.classList.add('hidden'); this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
+                                ]) ?>
+
+                                <svg class="hidden z-0 w-1/2 h-1/2 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                </svg>
+
+                            </div>
                         <?php else: ?>
                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>

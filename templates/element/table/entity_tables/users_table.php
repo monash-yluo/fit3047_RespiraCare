@@ -48,18 +48,22 @@
                     <?= $this->Number->format($user->id) ?>
                 </td>
 
-                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+                <td class="p-4 text-sm font-medium text-gray-900 dark:text-white relative">
+
                     <?php if ($user->image_path): ?>
-                        <?= $this->Html->image('users/' . $user->image_path, [
-                            'alt' => h($user->first_name . ' ' . $user->last_name . 'Image'),
-                            'class' => 'w-8 h-8 rounded-full shadow-sm',
-                            'style' => 'object-fit: cover;',
-                            'onerror' => "this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        ]) ?>
-                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display:none;">
-                            <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                            </svg>
+                        <div class="relative w-8 h-8">
+                            <div class="absolute inset-0 bg-gray-200 rounded-full animate-pulse dark:bg-gray-700"></div>
+
+                            <?= $this->Html->image('users/' . $user->image_path, [
+                                'alt' => h($user->first_name . ' ' . $user->last_name . ' Image'),
+                                'class' => 'absolute inset-0 w-8 h-8 rounded-full shadow-sm object-cover opacity-0 transition-opacity duration-300',
+                                'onload' => "this.previousElementSibling.style.display='none'; this.classList.remove('opacity-0');",
+                                'onerror' => "this.previousElementSibling.style.display='none'; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            ]) ?>
+
+                            <div style="display: none;" class="absolute inset-0 items-center justify-center w-8 h-8 font-medium text-gray-600 bg-gray-100 rounded-full text-xs dark:bg-gray-600 dark:text-gray-300">
+                                <?= h(substr($user->first_name, 0, 1) . substr($user->last_name, 0, 1)) ?>
+                            </div>
                         </div>
                     <?php else: ?>
                         <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">

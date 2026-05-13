@@ -44,16 +44,20 @@ $this->assign('title', 'User Profile');
             <div class="flex items-start justify-between gap-4">
                 <div class="flex-shrink-0">
                     <?php if ($user->image_path): ?>
-                        <?= $this->Html->image('users/' . $user->image_path, [
-                            'alt' => h($user->first_name . ' ' . $user->last_name),
-                            'class' => 'w-24 h-24 rounded-full shadow-sm',
-                            'style' => 'object-fit: cover;',
-                            'onerror' => "this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        ]) ?>
-                        <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center" style="display: none">
-                            <svg class="w-12 h-12 text-gray-500 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                            </svg>
+                        <div class="relative overflow-hidden bg-gray-100 rounded-full shadow-sm w-24 h-24 dark:bg-gray-800">
+
+                            <div class="absolute inset-0 bg-gray-200 animate-pulse dark:bg-gray-700"></div>
+
+                            <?= $this->Html->image('users/' . $user->image_path, [
+                                'alt' => h($user->first_name . ' ' . $user->last_name),
+                                'class' => 'absolute inset-0 z-10 object-cover w-full h-full transition-opacity duration-300 opacity-0',
+                                'onload' => "this.previousElementSibling.classList.add('hidden'); this.classList.remove('opacity-0');",
+                                'onerror' => "this.previousElementSibling.classList.add('hidden'); this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
+                            ]) ?>
+
+                            <div class="absolute inset-0 z-0 hidden flex items-center justify-center font-medium text-gray-600 bg-gray-200 text-3xl dark:bg-gray-700 dark:text-gray-300">
+                                <?= h(strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name, 0, 1))) ?>
+                            </div>
                         </div>
                     <?php else: ?>
                         <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
