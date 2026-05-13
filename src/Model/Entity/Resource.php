@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property string $title
  * @property \Cake\I18n\Date|null $published_date
  * @property string $type
+ * @property string|null $content
  * @property string|null $url_link
  * @property string $status
  * @property \Cake\I18n\DateTime|null $created
@@ -32,6 +33,7 @@ class Resource extends Entity
         'title' => true,
         'published_date' => true,
         'type' => true,
+        'content' => true,
         'url_link' => true,
         'status' => true,
         'created' => true,

@@ -64,13 +64,16 @@ class ResourcesTable extends Table
             ->date('published_date')
             ->allowEmptyDate('published_date');
 
-
         $validator
             ->scalar('type')
             ->maxLength('type', 50)
             ->requirePresence('type', 'create')
             ->notEmptyString('type')
             ->inList('type', ['Article', 'Video', 'PDF Document', 'External Link', 'Guide'], 'Please select a valid type.');
+
+        $validator
+            ->scalar('content')
+            ->allowEmptyString('content');
 
         $validator
             ->scalar('url_link')

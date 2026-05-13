@@ -21,12 +21,13 @@ class ResourcesFixture extends TestFixture
             [
                 'id' => 1,
                 'title' => 'Lorem ipsum dolor sit amet',
-                'published_date' => '2026-03-21',
+                'published_date' => '2026-05-13',
                 'type' => 'Lorem ipsum dolor sit amet',
+                'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'url_link' => 'Lorem ipsum dolor sit amet',
                 'status' => 'Lorem ipsum dolor sit amet',
-                'created' => '2026-03-21 04:37:46',
-                'modified' => '2026-03-21 04:37:46',
+                'created' => '2026-05-13 19:34:28',
+                'modified' => '2026-05-13 19:34:28',
             ],
         ];
         parent::init();
