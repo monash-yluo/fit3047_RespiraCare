@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2026 at 09:33 PM
+-- Generation Time: May 06, 2026 at 09:50 PM
 -- Server version: 11.8.6-MariaDB
 -- PHP Version: 8.4.16
 
@@ -324,7 +324,6 @@ CREATE TABLE `resources` (
   `title` varchar(255) NOT NULL,
   `published_date` date DEFAULT NULL,
   `type` varchar(50) NOT NULL,
-  `content` text DEFAULT NULL,
   `url_link` varchar(255) DEFAULT NULL,
   `status` varchar(50) NOT NULL,
   `created` datetime DEFAULT NULL,
@@ -335,10 +334,10 @@ CREATE TABLE `resources` (
 -- Dumping data for table `resources`
 --
 
-INSERT INTO `resources` (`id`, `title`, `published_date`, `type`, `content`, `url_link`, `status`, `created`, `modified`) VALUES
-(1, 'Asthma Management Guide', '2026-01-10', 'PDF', NULL, 'https://respiracare.com/resources/guide.pdf', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, 'How to use Peak Flow Meter', '2026-02-15', 'Video', NULL, 'https://respiracare.com/resources/video1', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(4, 'A Comprehensive Understanding of COPD', '2026-05-13', 'Article', '<p>What is COPD?</p><p>Chronic obstructive pulmonary disease (COPD) is a common, preventable, and treatable chronic lung disease. Its main characteristic is persistent airflow limitation, leading to difficulty breathing. COPD is not a single disease; it typically includes both chronic bronchitis and emphysema.</p><p>Core Symptoms</p><p>COPD often has an insidious onset and is easily mistaken for a common smoker\'s cough:</p><ol><li>Chronic cough: Usually the first symptom, worse in the morning.</li><li>Sputum production: Sputum is often white mucus or serous foam.</li><li>Shortness of breath or difficulty breathing: This is a hallmark symptom of COPD. Early on, it only occurs during physical exertion, but later, shortness of breath can be felt even at rest.</li><li>Wheezing and chest tightness: Commonly occurs in severely ill patients or during acute exacerbations.</li><li>Main Causes</li></ol><ul><li>Smoking: This is the most significant contributing factor, including exposure to secondhand smoke.</li><li>Air Pollution: Long-term inhalation of fumes from indoor cooking or outdoor air pollution.</li><li>Occupational Exposure: Long-term exposure to dust, chemicals, or exhaust fumes.</li><li>Biofuels: Cooking with firewood or crop residues in poorly ventilated homes.</li></ul><p>Home Management and Care Recommendations</p><ol><li>Quit Smoking Immediately: This is the most effective way to slow the decline in lung function.</li><li>Respiratory Function Exercises: Learn pursed-lip breathing and diaphragmatic breathing to improve ventilation efficiency.</li><li>Environmental Optimization: Maintain good indoor air circulation and avoid crowded or polluted areas.</li><li>Regular Vaccination: It is recommended to get a flu vaccine annually and a pneumococcal vaccine as prescribed by your doctor to reduce the risk of acute exacerbations.</li></ol><p>Summary</p><p>While COPD cannot be completely cured, patients can significantly improve their quality of life and reduce the frequency of exacerbations through scientific drug treatment (such as inhalers) and lifestyle changes.</p><p>&nbsp;</p><p>&nbsp;</p>', '', 'active', '2026-05-13 20:20:53', '2026-05-13 20:59:22');
+INSERT INTO `resources` (`id`, `title`, `published_date`, `type`, `url_link`, `status`, `created`, `modified`) VALUES
+(1, 'Asthma Management Guide', '2026-01-10', 'PDF', 'https://respiracare.com/resources/guide.pdf', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(2, 'How to use Peak Flow Meter', '2026-02-15', 'Video', 'https://www.youtube.com/embed/6NBeSbiqeOo?si=mj1mrr_J34cjPESl', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11');
+(3, 'A Comprehensive Understanding of COPD', '2026-05-13', 'Article', '<p>What is COPD?</p><p>Chronic obstructive pulmonary disease (COPD) is a common, preventable, and treatable chronic lung disease. Its main characteristic is persistent airflow limitation, leading to difficulty breathing. COPD is not a single disease; it typically includes both chronic bronchitis and emphysema.</p><p>Core Symptoms</p><p>COPD often has an insidious onset and is easily mistaken for a common smoker\'s cough:</p><ol><li>Chronic cough: Usually the first symptom, worse in the morning.</li><li>Sputum production: Sputum is often white mucus or serous foam.</li><li>Shortness of breath or difficulty breathing: This is a hallmark symptom of COPD. Early on, it only occurs during physical exertion, but later, shortness of breath can be felt even at rest.</li><li>Wheezing and chest tightness: Commonly occurs in severely ill patients or during acute exacerbations.</li><li>Main Causes</li></ol><ul><li>Smoking: This is the most significant contributing factor, including exposure to secondhand smoke.</li><li>Air Pollution: Long-term inhalation of fumes from indoor cooking or outdoor air pollution.</li><li>Occupational Exposure: Long-term exposure to dust, chemicals, or exhaust fumes.</li><li>Biofuels: Cooking with firewood or crop residues in poorly ventilated homes.</li></ul><p>Home Management and Care Recommendations</p><ol><li>Quit Smoking Immediately: This is the most effective way to slow the decline in lung function.</li><li>Respiratory Function Exercises: Learn pursed-lip breathing and diaphragmatic breathing to improve ventilation efficiency.</li><li>Environmental Optimization: Maintain good indoor air circulation and avoid crowded or polluted areas.</li><li>Regular Vaccination: It is recommended to get a flu vaccine annually and a pneumococcal vaccine as prescribed by your doctor to reduce the risk of acute exacerbations.</li></ol><p>Summary</p><p>While COPD cannot be completely cured, patients can significantly improve their quality of life and reduce the frequency of exacerbations through scientific drug treatment (such as inhalers) and lifestyle changes.</p><p>&nbsp;</p><p>&nbsp;</p>', '', 'active', '2026-05-13 20:20:53', '2026-05-13 20:59:22');
 
 -- --------------------------------------------------------
 
