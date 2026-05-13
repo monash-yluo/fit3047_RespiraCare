@@ -17,6 +17,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <?= $this->Html->css('admin-app') ?>
+    <?= $this->Html->css('ckeditor') ?>
     <?= $this->fetch('css') ?>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 min-w-[300px]">
