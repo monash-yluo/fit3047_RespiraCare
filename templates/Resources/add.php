@@ -12,6 +12,19 @@ $this->assign('title', 'Add Resource');
 
 <?php $this->start('css'); ?>
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css" />
+<style>
+    .ck-content ul {
+        list-style-type: disc;
+        list-style-position: outside;
+        margin-left: 1.25rem;
+    }
+
+    .ck-content ol {
+        list-style-type: decimal;
+        list-style-position: outside;
+        margin-left: 1.25rem;
+    }
+</style>
 <?php $this->end(); ?>
 
 <div class="px-4 pt-6">
