@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2026 at 09:50 PM
+-- Generation Time: May 13, 2026 at 09:33 PM
 -- Server version: 11.8.6-MariaDB
 -- PHP Version: 8.4.16
 
@@ -67,11 +67,11 @@ CREATE TABLE `bookings` (
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `patient_id`, `clinician_id`, `notes`, `scheduled_date`, `status`, `created`, `modified`) VALUES
-(1, 1, 1, 'Initial consultation.', '2026-04-01 10:00:00', 'confirmed', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, 2, 1, 'Lung function test.', '2026-04-02 14:30:00', 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(3, 3, 2, 'Routine follow-up.', '2026-04-03 09:15:00', 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(6, 1, 1, '123', '2026-05-23 17:23:00', 'confirmed', '2026-05-06 09:24:00', '2026-05-06 10:20:08');
+INSERT INTO `bookings` (`id`, `patient_id`, `clinician_id`, `notes`, `scheduled_date`, `duration`, `status`, `created`, `modified`) VALUES
+(1, 1, 1, 'Initial consultation.', '2026-04-01 10:00:00', 30, 'confirmed', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(2, 2, 1, 'Lung function test.', '2026-04-02 14:30:00', 30, 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(3, 3, 2, 'Routine follow-up.', '2026-04-03 09:15:00', 30, 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(6, 1, 1, '123', '2026-05-23 17:23:00', 30, 'confirmed', '2026-05-06 09:24:00', '2026-05-06 10:20:08');
 
 -- --------------------------------------------------------
 
@@ -324,6 +324,7 @@ CREATE TABLE `resources` (
   `title` varchar(255) NOT NULL,
   `published_date` date DEFAULT NULL,
   `type` varchar(50) NOT NULL,
+  `content` text DEFAULT NULL,
   `url_link` varchar(255) DEFAULT NULL,
   `status` varchar(50) NOT NULL,
   `created` datetime DEFAULT NULL,
@@ -334,9 +335,10 @@ CREATE TABLE `resources` (
 -- Dumping data for table `resources`
 --
 
-INSERT INTO `resources` (`id`, `title`, `published_date`, `type`, `url_link`, `status`, `created`, `modified`) VALUES
-(1, 'Asthma Management Guide', '2026-01-10', 'PDF', 'https://respiracare.com/resources/guide.pdf', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, 'How to use Peak Flow Meter', '2026-02-15', 'Video', 'https://respiracare.com/resources/video1', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11');
+INSERT INTO `resources` (`id`, `title`, `published_date`, `type`, `content`, `url_link`, `status`, `created`, `modified`) VALUES
+(1, 'Asthma Management Guide', '2026-01-10', 'PDF', NULL, 'https://respiracare.com/resources/guide.pdf', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(2, 'How to use Peak Flow Meter', '2026-02-15', 'Video', NULL, 'https://respiracare.com/resources/video1', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(4, 'A Comprehensive Understanding of COPD', '2026-05-13', 'Article', '<p>What is COPD?</p><p>Chronic obstructive pulmonary disease (COPD) is a common, preventable, and treatable chronic lung disease. Its main characteristic is persistent airflow limitation, leading to difficulty breathing. COPD is not a single disease; it typically includes both chronic bronchitis and emphysema.</p><p>Core Symptoms</p><p>COPD often has an insidious onset and is easily mistaken for a common smoker\'s cough:</p><ol><li>Chronic cough: Usually the first symptom, worse in the morning.</li><li>Sputum production: Sputum is often white mucus or serous foam.</li><li>Shortness of breath or difficulty breathing: This is a hallmark symptom of COPD. Early on, it only occurs during physical exertion, but later, shortness of breath can be felt even at rest.</li><li>Wheezing and chest tightness: Commonly occurs in severely ill patients or during acute exacerbations.</li><li>Main Causes</li></ol><ul><li>Smoking: This is the most significant contributing factor, including exposure to secondhand smoke.</li><li>Air Pollution: Long-term inhalation of fumes from indoor cooking or outdoor air pollution.</li><li>Occupational Exposure: Long-term exposure to dust, chemicals, or exhaust fumes.</li><li>Biofuels: Cooking with firewood or crop residues in poorly ventilated homes.</li></ul><p>Home Management and Care Recommendations</p><ol><li>Quit Smoking Immediately: This is the most effective way to slow the decline in lung function.</li><li>Respiratory Function Exercises: Learn pursed-lip breathing and diaphragmatic breathing to improve ventilation efficiency.</li><li>Environmental Optimization: Maintain good indoor air circulation and avoid crowded or polluted areas.</li><li>Regular Vaccination: It is recommended to get a flu vaccine annually and a pneumococcal vaccine as prescribed by your doctor to reduce the risk of acute exacerbations.</li></ol><p>Summary</p><p>While COPD cannot be completely cured, patients can significantly improve their quality of life and reduce the frequency of exacerbations through scientific drug treatment (such as inhalers) and lifestyle changes.</p><p>&nbsp;</p><p>&nbsp;</p>', '', 'active', '2026-05-13 20:20:53', '2026-05-13 20:59:22');
 
 -- --------------------------------------------------------
 
@@ -435,7 +437,7 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `role
 (3, 'Emily', 'Rostova', 'emily@dev.u26s1188.iedev.org', '$2y$12$LYk3Ruf6E/TQBF9X0WAVIe0dtXc5hG4ScUPuS1UoBnAN3HV3avVBS', 'clinician', 'emily_rostova.jpg', '+61 403 550 202', '2026-03-21 15:02:11', '2026-03-21 07:06:26'),
 (4, 'John', 'Doe', 'john@dev.u26s1188.iedev.org', '$2y$12$e93jRs2CLEXx04rOdkReHeHupteYNcGM2X9V9wqi7tHUTdwL0aCu2', 'patient', '/img/john.jpg', '+61 404 550 101', '2026-03-21 15:02:11', '2026-04-23 09:19:51'),
 (5, 'Jane', 'Miller', 'jane@dev.u26s1188.iedev.org', '$2y$12$iz8dw4sRv5aitqjWtvExaeJoFeU1xtyDsmnuF9epf9yv8UmzD3RRC', 'patient', '/img/jane.jpg', '+61 405 550 102', '2026-03-21 15:02:11', '2026-03-21 07:06:43'),
-(6, 'Charlie', 'Brown', 'charlie@dev.u26s1188.iedev.org', '$2y$12$IXRC5eBFM2ZzeC2jj1SpyOkiyHEUm5tEZz9827kiqfGux38Yagvau', 'patient', '/img/charlie.jpg', '+61 406 550 103', '2026-03-21 15:02:11', '20２６-０３-２１ ０７:０６:５０');
+(6, 'Charlie', 'Brown', 'charlie@dev.u26s1188.iedev.org', '$2y$12$IXRC5eBFM2ZzeC2jj1SpyOkiyHEUm5tEZz9827kiqfGux38Yagvau', 'patient', '/img/charlie.jpg', '+61 406 550 103', '2026-03-21 15:02:11', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -613,7 +615,7 @@ ALTER TABLE `patients`
 -- AUTO_INCREMENT for table `patient_measurements`
 --
 ALTER TABLE `patient_measurements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `reminders`
@@ -625,7 +627,7 @@ ALTER TABLE `reminders`
 -- AUTO_INCREMENT for table `resources`
 --
 ALTER TABLE `resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `symptom_logs`

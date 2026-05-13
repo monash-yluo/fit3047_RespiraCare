@@ -92,12 +92,21 @@ class ResourcesController extends AppController
         $resource = $this->Resources->newEmptyEntity();
         if ($this->request->is('post')) {
             $resource = $this->Resources->patchEntity($resource, $this->request->getData());
-            if ($this->Resources->save($resource)) {
-                $this->Flash->success(__('The resource has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+            // Trim whitespace from content
+            if (!empty($resource->content)) {
+                $resource->content = trim($resource->content);
             }
-            $this->Flash->error(__('The resource could not be saved. Please, try again.'));
+
+            // Validate that PDF and Video types must have a URL link / 验证PDF和视频类型必须有URL链接
+            if (in_array($resource->type, ['PDF', 'Video', 'External Link']) && empty($resource->url_link)) {
+                $this->Flash->error(__('PDF, Video, and External Link resources must have a URL link.'));
+            } elseif ($this->Resources->save($resource)) {
+                $this->Flash->success(__('The resource has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The resource could not be saved. Please, try again.'));
+            }
         }
         $this->set(compact('resource'));
     }
@@ -116,12 +125,21 @@ class ResourcesController extends AppController
         $resource = $this->Resources->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $resource = $this->Resources->patchEntity($resource, $this->request->getData());
-            if ($this->Resources->save($resource)) {
-                $this->Flash->success(__('The resource has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            
+            // Trim whitespace from content
+            if (!empty($resource->content)) {
+                $resource->content = trim($resource->content);
             }
-            $this->Flash->error(__('The resource could not be saved. Please, try again.'));
+
+            // Validate that PDF and Video types must have a URL link / 验证PDF和视频类型必须有URL链接
+            if (in_array($resource->type, ['PDF', 'Video', 'External Link']) && empty($resource->url_link)) {
+                $this->Flash->error(__('PDF, Video, and External Link resources must have a URL link.'));
+            } elseif ($this->Resources->save($resource)) {
+                $this->Flash->success(__('The resource has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The resource could not be saved. Please, try again.'));
+            }
         }
         $this->set(compact('resource'));
     }

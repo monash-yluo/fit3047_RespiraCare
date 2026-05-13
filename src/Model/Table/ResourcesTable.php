@@ -69,7 +69,7 @@ class ResourcesTable extends Table
             ->maxLength('type', 50)
             ->requirePresence('type', 'create')
             ->notEmptyString('type')
-            ->inList('type', ['Article', 'Video', 'PDF Document', 'External Link', 'Guide'], 'Please select a valid type.');
+            ->inList('type', ['Article', 'Video', 'PDF', 'External Link', 'Guide'], 'Please select a valid type.');
 
         $validator
             ->scalar('content')
