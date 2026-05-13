@@ -8,15 +8,17 @@
 
 $this->setLayout($identity->role ?? 'default');
 $this->assign('title', 'Manage Resources');
+
+$has_privilege = $identity->role === 'admin' || $identity->role === 'clinician';
 ?>
 
 <div class="px-4 pt-6">
 
     <?= $this->element('table/page_header', [
-        'title' => $identity->role === 'admin' ? 'Manage Resources' : 'Resources',
+        'title' => $has_privilege ? 'Manage Resources' : 'Resources',
         'description' => $identity->role === 'admin' ? 'View, add, and manage educational resources.' : 'View available educational resources.',
         'actionLabel' => __('New Resource'),
-        'actionUrl' => $identity->role === 'admin' ? ['action' => 'add'] : null,
+        'actionUrl' => $has_privilege ? ['action' => 'add'] : null,
     ]) ?>
 
     <div class="flex flex-row gap-3 mb-1 items-center">
@@ -35,7 +37,7 @@ $this->assign('title', 'Manage Resources');
             ]) ?>
         </div>
 
-        <?php if ($identity->role === 'admin') : ?>
+        <?php if ($has_privilege) : ?>
             <div class="w-48">
                 <?= $this->element('table/filter_dropdown', [
                     'paramName' => 'status',

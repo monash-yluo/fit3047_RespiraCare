@@ -72,6 +72,7 @@ $this->assign('title', 'Dashboard Overview');
     <?= $this->element('table/table_wrapper', [
         'tableElement' => 'table/entity_tables/admin_dashboard_table',
         'hasDateFilter' => true,
+        'target' => 'contactMessages'
     ]) ?>
 </div>
 

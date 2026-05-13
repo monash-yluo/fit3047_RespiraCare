@@ -20,9 +20,11 @@ $this->assign('title', 'System Reminders');
     ]) ?>
 
     <?= $this->element('table/table_wrapper', [
+        'target' => 'reminders',
         'tableElement' => 'table/entity_tables/reminders_table',
         'hasDateFilter' => true,
         'filterConfig' => [
+            'target' => 'reminders',
             'paramName' => 'is_read',
             'options' => [
                 '' => 'All',
