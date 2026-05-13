@@ -140,7 +140,7 @@ $searchableLinks = $searchableLinks ?? [];
                 </button>
 
                 <div class="flex items-center">
-                    <button type="button" class="flex items-center justify-center w-8 h-8 text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:focus:ring-gray-600 overflow-hidden" id="user-menu-button-2" data-dropdown-toggle="dropdown-2">
+                    <button type="button" class="flex items-center justify-center w-10 h-10 text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:focus:ring-gray-600 overflow-hidden border-2 border-gray-200" id="user-menu-button-2" data-dropdown-toggle="dropdown-2">
 
                         <?php if (!empty($imageUrl)): ?>
                             <div class="relative flex items-center justify-center w-full h-full overflow-hidden bg-gray-100 rounded-lg dark:bg-gray-800">
