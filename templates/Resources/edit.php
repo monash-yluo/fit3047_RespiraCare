@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Resource $resource
@@ -8,6 +9,10 @@
 $this->setLayout($identity->role ?? 'default');
 $this->assign('title', 'Edit Resource');
 ?>
+
+<?php $this->start('css'); ?>
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css" />
+<?php $this->end(); ?>
 
 <div class="px-4 pt-6">
 
@@ -48,7 +53,7 @@ $this->assign('title', 'Edit Resource');
                             'options' => [
                                 'Article' => 'Article',
                                 'Video' => 'Video',
-                                'PDF Document' => 'PDF Document',
+                                'PDF' => 'PDF',
                                 'External Link' => 'External Link',
                                 'Guide' => 'Guide'
                             ],
@@ -68,6 +73,16 @@ $this->assign('title', 'Edit Resource');
                             ],
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
                             'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
+                        ]) ?>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <?= $this->Form->control('content', [
+                            'type' => 'textarea',
+                            'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
+                            'placeholder' => 'Enter resource content or description',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 placeholder-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 js-rich-text',
+                            'rows' => 8,
                         ]) ?>
                     </div>
 
@@ -107,3 +122,53 @@ $this->assign('title', 'Edit Resource');
 
     <?= $this->Form->end() ?>
 </div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
+        }
+    }
+</script>
+<script type="module">
+    import {
+        ClassicEditor,
+        Essentials,
+        Paragraph,
+        Bold,
+        Italic,
+        Underline,
+        Link,
+        List,
+        BlockQuote,
+        RemoveFormat,
+        Code
+    } from 'ckeditor5';
+
+    document.querySelectorAll('.js-rich-text').forEach((element) => {
+        ClassicEditor.create(element, {
+            plugins: [
+                Essentials,
+                Paragraph,
+                Bold,
+                Italic,
+                Underline,
+                Link,
+                List,
+                BlockQuote,
+                RemoveFormat,
+                Code
+            ],
+            toolbar: [
+                'undo', 'redo', '|',
+                'bold', 'italic', 'underline', '|',
+                'bulletedList', 'numberedList', '|',
+                'link', 'blockQuote', '|',
+                'removeFormat', 'code'
+            ]
+        }).catch((error) => {
+            console.error(error);
+        });
+    });
+</script>
