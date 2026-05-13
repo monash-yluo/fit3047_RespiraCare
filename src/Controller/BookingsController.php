@@ -250,8 +250,6 @@ class BookingsController extends AppController
 
         $booking->status = $status;
         if ($this->Bookings->save($booking)) {
-            $this->Flash->success(__('The booking status has been updated to {0}.', h(ucfirst($status))));
-
             // 如果确认预约，发送确认邮件给患者
             if ($status === 'confirmed') {
                 $booking = $this->Bookings->get($id, contain: ['Patients.Users', 'Clinicians.Users']);
@@ -274,10 +272,10 @@ class BookingsController extends AppController
 
                     $this->Flash->success(__('The booking status has been updated and a confirmation email has been sent to the patient.'));
                 } catch (Exception $e) {
-                    // Log the error and show a flash message, but don't fail the booking update
-                    Log::error('Failed to send booking confirmation email: ' . $e->getMessage());
                     $this->Flash->error(__('Booking status updated, but failed to send confirmation email. Please contact support.'));
                 }
+            } else {
+                $this->Flash->success(__('The booking status has been updated to {0}.', h(ucfirst($status))));
             }
         } else {
             $this->Flash->error(__('The booking status could not be updated. Please, try again.'));
@@ -296,13 +294,37 @@ class BookingsController extends AppController
     public function delete(?string $id = null)
     {
         $this->checkRole(['admin', 'patient']); // Only admins and patients can delete bookings
-
         $this->request->allowMethod(['post', 'delete']);
-        $booking = $this->Bookings->get($id);
+
+        $booking = $this->Bookings->get($id, ['contain' => ['Patients.Clinicians']]);
+
         if ($this->Bookings->delete($booking)) {
-            $this->Flash->success(__('The booking has been deleted.'));
+            $isUpcoming =
+                $booking->scheduled_date &&
+                $booking->scheduled_date->isFuture() &&
+                $booking->status === 'confirmed';
+
+            if ($isUpcoming && !empty($booking->patient->clinician) && !empty($booking->patient->clinician->user_id)) {
+                $remindersTable = $this->fetchTable('Reminders');
+
+                // Format the booking date/time
+                $bookingTime = $booking->scheduled_date->format('M d, Y g:i A');
+
+                $reminder = $remindersTable->newEmptyEntity();
+                $reminder->set([
+                    'receiver_id' => $booking->patient->clinician->user_id,
+                    'message' => sprintf(
+                        'Booking Cancelled: A booking scheduled for %s has been cancelled.',
+                        $bookingTime,
+                    ),
+                ]);
+
+                $remindersTable->save($reminder);
+            }
+
+            $this->Flash->success(__('The booking has been cancelled.'));
         } else {
-            $this->Flash->error(__('The booking could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The booking could not be cancelled. Please, try again.'));
         }
 
         if ($this->Authentication->getIdentity()->role === 'admin') {
