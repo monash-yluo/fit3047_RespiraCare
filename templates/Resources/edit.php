@@ -10,10 +10,6 @@ $this->setLayout($identity->role ?? 'default');
 $this->assign('title', 'Edit Resource');
 ?>
 
-<?php $this->start('css'); ?>
-<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css" />
-<?php $this->end(); ?>
-
 <div class="px-4 pt-6">
 
     <?= $this->element('table/page_header', [
@@ -81,8 +77,9 @@ $this->assign('title', 'Edit Resource');
                             'type' => 'textarea',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
                             'placeholder' => 'Enter resource content or description',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 placeholder-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 js-rich-text',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 placeholder-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
                             'rows' => 8,
+                            'id' => 'content-value-input'
                         ]) ?>
                     </div>
 
@@ -123,52 +120,31 @@ $this->assign('title', 'Edit Resource');
     <?= $this->Form->end() ?>
 </div>
 
-<script type="importmap">
-    {
-        "imports": {
-            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
-            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
-        }
-    }
-</script>
-<script type="module">
+<script>
     import {
         ClassicEditor,
         Essentials,
-        Paragraph,
         Bold,
         Italic,
-        Underline,
-        Link,
-        List,
-        BlockQuote,
-        RemoveFormat,
-        Code
+        Font,
+        Paragraph
     } from 'ckeditor5';
 
-    document.querySelectorAll('.js-rich-text').forEach((element) => {
-        ClassicEditor.create(element, {
-            plugins: [
-                Essentials,
-                Paragraph,
-                Bold,
-                Italic,
-                Underline,
-                Link,
-                List,
-                BlockQuote,
-                RemoveFormat,
-                Code
-            ],
+    import 'ckeditor5/ckeditor5.css';
+
+    ClassicEditor
+        .create({
+            attachTo: document.querySelector('#content-value-input'),
+            licenseKey: 'GPL', // Or 'GPL'.
+            plugins: [Essentials, Bold, Italic, Font, Paragraph],
             toolbar: [
-                'undo', 'redo', '|',
-                'bold', 'italic', 'underline', '|',
-                'bulletedList', 'numberedList', '|',
-                'link', 'blockQuote', '|',
-                'removeFormat', 'code'
-            ]
-        }).catch((error) => {
-            console.error(error);
-        });
-    });
+                'undo', 'redo', '|', 'bold', 'italic', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+            ],
+            root: {
+                placeholder: 'Type here...'
+            }
+        })
+        .then( /* ... */ )
+        .catch( /* ... */ );
 </script>
