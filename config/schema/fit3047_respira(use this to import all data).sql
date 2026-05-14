@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2026 at 09:50 PM
+-- Generation Time: May 14, 2026 at 05:26 PM
 -- Server version: 11.8.6-MariaDB
 -- PHP Version: 8.4.16
 
@@ -68,10 +68,13 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`id`, `patient_id`, `clinician_id`, `notes`, `scheduled_date`, `duration`, `status`, `created`, `modified`) VALUES
-(1, 1, 1, 'Initial consultation.', '2026-04-01 10:00:00', 30, 'confirmed', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(1, 1, 1, 'Initial consultation.', '2026-04-01 10:00:00', 30, 'declined', '2026-03-21 15:02:11', '2026-05-14 16:45:36'),
 (2, 2, 1, 'Lung function test.', '2026-04-02 14:30:00', 30, 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
 (3, 3, 2, 'Routine follow-up.', '2026-04-03 09:15:00', 30, 'declined', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(6, 1, 1, '123', '2026-05-23 17:23:00', 30, 'confirmed', '2026-05-06 09:24:00', '2026-05-06 10:20:08');
+(6, 1, 1, '123', '2026-05-23 17:23:00', 30, 'confirmed', '2026-05-06 09:24:00', '2026-05-06 10:20:08'),
+(7, 2, 2, 'Follow-up consultation on recent measurements', '2026-05-16 10:30:00', 30, 'pending', '2026-05-14 10:00:00', '2026-05-14 10:00:00'),
+(8, 3, 1, 'Assessment of cough severity', '2026-05-17 14:00:00', 45, 'confirmed', '2026-05-14 10:05:00', '2026-05-14 10:05:00'),
+(9, 1, 2, 'Monthly check-up and treatment adjustment', '2026-05-20 11:00:00', 30, 'pending', '2026-05-14 10:10:00', '2026-05-14 10:10:00');
 
 -- --------------------------------------------------------
 
@@ -281,7 +284,13 @@ INSERT INTO `patient_measurements` (`id`, `patient_id`, `measured_at`, `spo2`, `
 (10, 1, '2026-05-10 08:00:00', 98, 73, 36.6, 16, 450, 120, 80, 'Headache gone, feeling better', '2026-05-10 08:05:00', '2026-05-10 08:05:00'),
 (11, 1, '2026-05-10 20:15:00', 98, 71, 36.5, 15, 455, 119, 79, NULL, '2026-05-10 20:20:00', '2026-05-10 20:20:00'),
 (12, 1, '2026-05-11 07:45:00', 99, 69, 36.4, 15, 465, 117, 77, NULL, '2026-05-11 07:50:00', '2026-05-11 07:50:00'),
-(13, 1, '2026-05-12 08:10:00', 98, 72, 36.6, 16, 450, 120, 80, 'Routine morning check', '2026-05-12 08:15:00', '2026-05-12 08:15:00');
+(13, 1, '2026-05-12 08:10:00', 98, 72, 36.6, 16, 450, 120, 80, 'Routine morning check', '2026-05-12 08:15:00', '2026-05-12 08:15:00'),
+(14, 2, '2026-05-13 08:00:00', 95, 80, 36.8, 18, 400, 128, 84, 'Morning measurement', '2026-05-13 08:05:00', '2026-05-13 08:05:00'),
+(15, 2, '2026-05-13 20:30:00', 94, 86, 37, 20, 390, 132, 86, 'Evening measurement, slight fatigue', '2026-05-13 20:35:00', '2026-05-13 20:35:00'),
+(16, 3, '2026-05-12 07:30:00', 92, 88, 37.2, 22, 380, 135, 88, 'Low SpO2 after coughing episode', '2026-05-12 07:35:00', '2026-05-12 07:35:00'),
+(17, 3, '2026-05-13 09:00:00', 94, 84, 36.9, 19, 395, 130, 85, 'Improved after rest', '2026-05-13 09:05:00', '2026-05-13 09:05:00'),
+(18, 1, '2026-05-13 08:30:00', 99, 70, 36.5, 15, 460, 118, 76, 'Excellent readings', '2026-05-13 08:35:00', '2026-05-13 08:35:00'),
+(19, 1, '2026-05-13 19:45:00', 98, 72, 36.6, 16, 455, 120, 78, 'Evening routine check', '2026-05-13 19:50:00', '2026-05-13 19:50:00');
 
 -- --------------------------------------------------------
 
@@ -324,6 +333,7 @@ CREATE TABLE `resources` (
   `title` varchar(255) NOT NULL,
   `published_date` date DEFAULT NULL,
   `type` varchar(50) NOT NULL,
+  `content` text DEFAULT NULL,
   `url_link` varchar(255) DEFAULT NULL,
   `status` varchar(50) NOT NULL,
   `created` datetime DEFAULT NULL,
@@ -334,10 +344,14 @@ CREATE TABLE `resources` (
 -- Dumping data for table `resources`
 --
 
-INSERT INTO `resources` (`id`, `title`, `published_date`, `type`, `url_link`, `status`, `created`, `modified`) VALUES
-(1, 'Asthma Management Guide', '2026-01-10', 'PDF', 'https://respiracare.com/resources/guide.pdf', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, 'How to use Peak Flow Meter', '2026-02-15', 'Video', 'https://www.youtube.com/embed/6NBeSbiqeOo?si=mj1mrr_J34cjPESl', 'active', '2026-03-21 15:02:11', '2026-03-21 15:02:11');
-(3, 'A Comprehensive Understanding of COPD', '2026-05-13', 'Article', '<p>What is COPD?</p><p>Chronic obstructive pulmonary disease (COPD) is a common, preventable, and treatable chronic lung disease. Its main characteristic is persistent airflow limitation, leading to difficulty breathing. COPD is not a single disease; it typically includes both chronic bronchitis and emphysema.</p><p>Core Symptoms</p><p>COPD often has an insidious onset and is easily mistaken for a common smoker\'s cough:</p><ol><li>Chronic cough: Usually the first symptom, worse in the morning.</li><li>Sputum production: Sputum is often white mucus or serous foam.</li><li>Shortness of breath or difficulty breathing: This is a hallmark symptom of COPD. Early on, it only occurs during physical exertion, but later, shortness of breath can be felt even at rest.</li><li>Wheezing and chest tightness: Commonly occurs in severely ill patients or during acute exacerbations.</li><li>Main Causes</li></ol><ul><li>Smoking: This is the most significant contributing factor, including exposure to secondhand smoke.</li><li>Air Pollution: Long-term inhalation of fumes from indoor cooking or outdoor air pollution.</li><li>Occupational Exposure: Long-term exposure to dust, chemicals, or exhaust fumes.</li><li>Biofuels: Cooking with firewood or crop residues in poorly ventilated homes.</li></ul><p>Home Management and Care Recommendations</p><ol><li>Quit Smoking Immediately: This is the most effective way to slow the decline in lung function.</li><li>Respiratory Function Exercises: Learn pursed-lip breathing and diaphragmatic breathing to improve ventilation efficiency.</li><li>Environmental Optimization: Maintain good indoor air circulation and avoid crowded or polluted areas.</li><li>Regular Vaccination: It is recommended to get a flu vaccine annually and a pneumococcal vaccine as prescribed by your doctor to reduce the risk of acute exacerbations.</li></ol><p>Summary</p><p>While COPD cannot be completely cured, patients can significantly improve their quality of life and reduce the frequency of exacerbations through scientific drug treatment (such as inhalers) and lifestyle changes.</p><p>&nbsp;</p><p>&nbsp;</p>', '', 'active', '2026-05-13 20:20:53', '2026-05-13 20:59:22');
+INSERT INTO `resources` (`id`, `title`, `published_date`, `type`, `content`, `url_link`, `status`, `created`, `modified`) VALUES
+(1, 'COPD-X Handbook', '2026-05-14', 'PDF', '<p>Summary clinical practice guidelines for the management of chronic obstructive pulmonary disease (COPD)</p>', 'https://lungfoundation.com.au/wp-content/uploads/2025/06/COPD-X_Handbook_Version1-1.pdf', 'active', '2026-03-21 15:02:11', '2026-05-14 17:19:05'),
+(2, 'How to use Peak Flow Meter', '2026-05-14', 'Video', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ?si=hCJhOTnyPdu-5Vd8', 'active', '2026-03-21 15:02:11', '2026-05-14 17:14:29'),
+(4, 'A Comprehensive Understanding of COPD', '2026-05-13', 'Article', '<h3><strong>What is COPD?</strong></h3><p>&nbsp;</p><p>Chronic obstructive pulmonary disease (COPD) is a common, preventable, and treatable chronic lung disease. Its main characteristic is persistent airflow limitation, leading to difficulty breathing. COPD is not a single disease; it typically includes both chronic bronchitis and emphysema.</p><p>&nbsp;</p><p><strong>Core Symptoms</strong></p><p>&nbsp;</p><p>COPD often has an insidious onset and is easily mistaken for a common smoker\'s cough:</p><ol><li>Chronic cough: Usually the first symptom, worse in the morning.</li><li>Sputum production: Sputum is often white mucus or serous foam.</li><li>Shortness of breath or difficulty breathing: This is a hallmark symptom of COPD. Early on, it only occurs during physical exertion, but later, shortness of breath can be felt even at rest.</li><li><p>Wheezing and chest tightness: Commonly occurs in severely ill patients or during acute exacerbations.</p><p>&nbsp;</p></li><li>Main Causes</li></ol><ul><li>Smoking: This is the most significant contributing factor, including exposure to secondhand smoke.</li><li>Air Pollution: Long-term inhalation of fumes from indoor cooking or outdoor air pollution.</li><li>Occupational Exposure: Long-term exposure to dust, chemicals, or exhaust fumes.</li><li><p>Biofuels: Cooking with firewood or crop residues in poorly ventilated homes.</p><p>&nbsp;</p></li></ul><p><strong>Home Management and Care Recommendations</strong></p><p>&nbsp;</p><ol><li>Quit Smoking Immediately: This is the most effective way to slow the decline in lung function.</li><li>Respiratory Function Exercises: Learn pursed-lip breathing and diaphragmatic breathing to improve ventilation efficiency.</li><li>Environmental Optimization: Maintain good indoor air circulation and avoid crowded or polluted areas.</li><li>Regular Vaccination: It is recommended to get a flu vaccine annually and a pneumococcal vaccine as prescribed by your doctor to reduce the risk of acute exacerbations.</li></ol><p>&nbsp;</p><p><strong>Summary</strong></p><p>&nbsp;</p><p>While COPD cannot be completely cured, patients can significantly improve their quality of life and reduce the frequency of exacerbations through scientific drug treatment (such as inhalers) and lifestyle changes.</p><p>&nbsp;</p><p>&nbsp;</p>', '', 'active', '2026-05-13 20:20:53', '2026-05-13 23:17:22'),
+(5, 'Monash Dark Web', '2026-05-14', 'External Link', '<p>Monash Dark Web</p>', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1', 'active', '2026-05-14 17:10:22', '2026-05-14 17:10:22'),
+(6, 'Managing Stress with COPD', '2026-05-14', 'Article', '<h3><strong>What is COPD?</strong></h3><p>&nbsp;</p><p>Chronic obstructive pulmonary disease (COPD) is a common, preventable, and treatable chronic lung disease. Its main characteristic is persistent airflow limitation, leading to difficulty breathing. COPD is not a single disease; it typically includes both chronic bronchitis and emphysema.</p><p>&nbsp;</p><p><strong>Core Symptoms</strong></p><p>&nbsp;</p><p>COPD often has an insidious onset and is easily mistaken for a common smoker\'s cough:</p><ol><li>Chronic cough: Usually the first symptom, worse in the morning.</li><li>Sputum production: Sputum is often white mucus or serous foam.</li><li>Shortness of breath or difficulty breathing: This is a hallmark symptom of COPD. Early on, it only occurs during physical exertion, but later, shortness of breath can be felt even at rest.</li><li><p>Wheezing and chest tightness: Commonly occurs in severely ill patients or during acute exacerbations.</p><p>&nbsp;</p></li><li>Main Causes</li></ol><ul><li>Smoking: This is the most significant contributing factor, including exposure to secondhand smoke.</li><li>Air Pollution: Long-term inhalation of fumes from indoor cooking or outdoor air pollution.</li><li>Occupational Exposure: Long-term exposure to dust, chemicals, or exhaust fumes.</li><li><p>Biofuels: Cooking with firewood or crop residues in poorly ventilated homes.</p><p>&nbsp;</p></li></ul><p><strong>Home Management and Care Recommendations</strong></p><p>&nbsp;</p><ol><li>Quit Smoking Immediately: This is the most effective way to slow the decline in lung function.</li><li>Respiratory Function Exercises: Learn pursed-lip breathing and diaphragmatic breathing to improve ventilation efficiency.</li><li>Environmental Optimization: Maintain good indoor air circulation and avoid crowded or polluted areas.</li><li>Regular Vaccination: It is recommended to get a flu vaccine annually and a pneumococcal vaccine as prescribed by your doctor to reduce the risk of acute exacerbations.</li></ol><p>&nbsp;</p><p><strong>Summary</strong></p><p>&nbsp;</p><p>While COPD cannot be completely cured, patients can significantly improve their quality of life and reduce the frequency of exacerbations through scientific drug treatment (such as inhalers) and lifestyle changes.</p><p>&nbsp;</p><p>&nbsp;</p>', '', 'active', '2026-05-14 10:10:00', '2026-05-14 17:24:50'),
+(7, 'Daily Breathing Exercises for COPD', '2026-05-14', 'Video', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ?si=hCJhOTnyPdu-5Vd8', 'active', '2026-05-14 10:00:00', '2026-05-14 17:25:27'),
+(8, 'Nutrition Guide for Respiratory Health', '2026-05-14', 'PDF', '', 'https://lungfoundation.com.au/wp-content/uploads/2025/06/COPD-X_Handbook_Version1-1.pdf', 'active', '2026-05-14 10:05:00', '2026-05-14 17:24:07');
 
 -- --------------------------------------------------------
 
@@ -362,7 +376,14 @@ CREATE TABLE `symptom_logs` (
 
 INSERT INTO `symptom_logs` (`id`, `patient_id`, `description`, `severity`, `logged_at`, `notes`, `created`, `modified`) VALUES
 (1, 2, 'Feeling tight in the chest after climbing stairs.', 1, '2026-03-20 10:00:00', 'Symptoms resolved after rest.', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
-(2, 3, 'Continuous coughing during the night.', 1, '2026-03-20 03:00:00', 'Did not use emergency inhaler.', '2026-03-21 15:02:11', '2026-03-21 15:02:11');
+(2, 3, 'Continuous coughing during the night.', 1, '2026-03-20 03:00:00', 'Did not use emergency inhaler.', '2026-03-21 15:02:11', '2026-03-21 15:02:11'),
+(9, 1, 'Shortness of breath after mild exercise', 2, '2026-05-06 14:00:00', 'Recovered after 10 minutes rest', '2026-05-06 14:05:00', '2026-05-06 14:05:00'),
+(10, 1, 'Mild wheezing in the evening', 1, '2026-05-07 18:30:00', 'Usual pattern, no emergency medication needed', '2026-05-07 18:35:00', '2026-05-07 18:35:00'),
+(11, 1, 'Chest tightness upon waking', 3, '2026-05-08 07:45:00', 'Resolved after using inhaler', '2026-05-08 07:50:00', '2026-05-14 17:12:23'),
+(12, 2, 'Fatigue and general weakness', 1, '2026-05-09 10:00:00', 'Possibly due to weather changes', '2026-05-09 10:05:00', '2026-05-09 10:05:00'),
+(13, 2, 'Coughing with clear sputum', 2, '2026-05-10 16:20:00', 'Persistent dry cough since morning', '2026-05-10 16:25:00', '2026-05-10 16:25:00'),
+(14, 3, 'Night-time coughing episodes', 3, '2026-05-11 22:00:00', 'Interrupted sleep, moderate severity', '2026-05-11 22:10:00', '2026-05-11 22:10:00'),
+(15, 3, 'Shortness of breath with minimal exertion', 3, '2026-05-12 11:30:00', 'Concerning increase in severity', '2026-05-12 11:35:00', '2026-05-12 11:35:00');
 
 -- --------------------------------------------------------
 
@@ -383,7 +404,14 @@ CREATE TABLE `symptom_logs_symptom_types` (
 INSERT INTO `symptom_logs_symptom_types` (`id`, `symptom_log_id`, `symptom_type_id`) VALUES
 (2, 1, 1),
 (1, 1, 3),
-(3, 2, 4);
+(3, 2, 4),
+(4, 9, 1),
+(5, 10, 2),
+(6, 11, 3),
+(7, 12, 5),
+(8, 13, 4),
+(9, 14, 4),
+(10, 15, 1);
 
 -- --------------------------------------------------------
 
@@ -572,7 +600,7 @@ ALTER TABLE `ai_insights`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `cake_migrations`
@@ -614,7 +642,7 @@ ALTER TABLE `patients`
 -- AUTO_INCREMENT for table `patient_measurements`
 --
 ALTER TABLE `patient_measurements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `reminders`
@@ -626,13 +654,13 @@ ALTER TABLE `reminders`
 -- AUTO_INCREMENT for table `resources`
 --
 ALTER TABLE `resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `symptom_logs`
 --
 ALTER TABLE `symptom_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `symptom_logs_symptom_types`
