@@ -299,7 +299,18 @@ $this->assign('title', 'Request New Booking');
             form.addEventListener('submit', function(e) {
                 if (!hiddenDateInput.value) {
                     e.preventDefault();
+
+                    // Show the alert to the user
                     alert('Please select an available time slot before confirming your booking.');
+
+                    // After the alert is dismissed, restore the submit button
+                    setTimeout(() => {
+                        const submitBtn = form.querySelector('button[type="submit"]');
+                        if (submitBtn) {
+                            submitBtn.classList.remove('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
+                            submitBtn.style.filter = '';
+                        }
+                    }, 20); // 20ms ensures this runs AFTER the global 10ms disable script
                 }
             });
 
