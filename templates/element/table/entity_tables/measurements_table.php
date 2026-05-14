@@ -96,6 +96,8 @@
                                     <span class="text-xs text-gray-500 dark:text-gray-400 italic">
                                         &mdash; <?= h($measurement->notes) ?> &mdash;
                                     </span>
+                                <?php else: ?>
+                                    <span class="text-xs text-gray-500 italic">-- Measurement skipped --</span>
                                 <?php endif; ?>
                             </div>
                         </td>

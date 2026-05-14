@@ -180,6 +180,21 @@ class PatientMeasurementsController extends AppController
             $patientMeasurement = $this->PatientMeasurements->patchEntity($patientMeasurement, $this->request->getData());
             $patientMeasurement->set('patient_id', $actualPatientId);
 
+            # 检查是否至少填了一个数据字段 / Check that at least one data field is filled
+            if (
+                empty($patientMeasurement->spo2) &&
+                empty($patientMeasurement->heart_rate) &&
+                empty($patientMeasurement->blood_pressure_systolic) &&
+                empty($patientMeasurement->blood_pressure_diastolic) &&
+                empty($patientMeasurement->temperature) &&
+                empty($patientMeasurement->respiratory_rate) &&
+                empty($patientMeasurement->peak_flow)
+            ) {
+                $this->Flash->error(__('You must enter at least one measurement value.'));
+                $this->set(compact('patientMeasurement'));
+                return;
+            }
+
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
             # 先检查是否有 血压数据，再比较，避免空值导致的错误 / Check if blood pressure data is present before comparing to avoid errors from null values
             if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
