@@ -17,7 +17,7 @@ $this->assign('title', 'Administrator Sign In | RespiraCare');
             <div class="col-lg-5 pe-lg-5 pt-5" data-aos="fade-right">
 
                 <h2 class="fw-bold mb-4 login-title">
-                    RespiraCare Administrator <br>Sign In
+                    RespiraCare <br>Sign In
                 </h2>
 
                 <!-- TEMP -->
