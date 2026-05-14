@@ -37,7 +37,7 @@ $this->assign('title', 'Edit User');
                         <?= $this->Form->control('first_name', [
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
                             'placeholder' => 'Enter first name',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                         ]) ?>
                     </div>
 
@@ -45,7 +45,7 @@ $this->assign('title', 'Edit User');
                         <?= $this->Form->control('last_name', [
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
                             'placeholder' => 'Enter last name',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                         ]) ?>
                     </div>
 
@@ -54,7 +54,7 @@ $this->assign('title', 'Edit User');
                             'type' => 'email',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Email Address'],
                             'placeholder' => 'Enter email address',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                         ]) ?>
                     </div>
 
@@ -64,7 +64,7 @@ $this->assign('title', 'Edit User');
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'escape' => false, 'text' => 'Password <span class="text-gray-500 font-normal">(optional)</span>'],
                             'placeholder' => 'Leave blank to keep current password',
                             'value' => '', // Always clear password field on edit load
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500 ',
                         ]) ?>
                     </div>
 
@@ -72,7 +72,7 @@ $this->assign('title', 'Edit User');
                         <?= $this->Form->control('phone', [
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
                             'placeholder' => '04XX XXX XXX',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                         ]) ?>
                     </div>
 
@@ -80,7 +80,7 @@ $this->assign('title', 'Edit User');
                         <?= $this->Form->control('image_path', [
                             'type' => 'file',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Avatar Image'],
-                            'class' => 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400',
+                            'class' => 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder-gray-500',
                             'templates' => [
                                 'fileContainer' => '<div class="input file flex-1">{{content}}</div>'
                             ]
@@ -118,7 +118,7 @@ $this->assign('title', 'Edit User');
                                     <?= $this->Form->control('patient.dob', [
                                         'type' => 'date',
                                         'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Date of Birth'],
-                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                                         'max' => date('Y-m-d'),
                                         'min' => date('Y-m-d', strtotime('-120 years'))
                                     ]) ?>
@@ -129,7 +129,7 @@ $this->assign('title', 'Edit User');
                                         'options' => ['Male' => 'Male', 'Female' => 'Female'],
                                         'empty' => '-- Select Gender --',
                                         'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Gender'],
-                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                                     ]) ?>
                                 </div>
                                 <div class="sm:col-span-2">
@@ -138,7 +138,7 @@ $this->assign('title', 'Edit User');
                                         'options' => $clinicians,
                                         'empty' => '-- No Clinician Assigned --',
                                         'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Assigned Clinician'],
-                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                                     ]) ?>
                                 </div>
                                 <div class="sm:col-span-2">
@@ -146,7 +146,7 @@ $this->assign('title', 'Edit User');
                                         'type' => 'textarea',
                                         'rows' => 4,
                                         'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Notes'],
-                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
+                                        'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-500',
                                     ]) ?>
                                 </div>
                             </div>

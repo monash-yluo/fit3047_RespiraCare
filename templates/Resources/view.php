@@ -140,6 +140,14 @@ if (in_array($resource->type, ['Article', 'Guide']) && !empty($resource->content
                                     <?php endif; ?>
                                 </dd>
                             </div>
+                            <?php if (!$content_first): ?>
+                                <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                                    <dt class="font-medium text-gray-500 dark:text-gray-400">Description</dt>
+                                    <dd class="sm:col-span-2">
+                                        <?= !empty($resource->content) ? $resource->content : '<span class="italic text-gray-400">No description provided</span>' ?>
+                                    </dd>
+                                </div>
+                            <?php endif; ?>
                             <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
                                 <dt class="font-medium text-gray-500 dark:text-gray-400">Published Date</dt>
                                 <dd class="sm:col-span-2">

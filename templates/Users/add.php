@@ -39,7 +39,7 @@ $this->assign('title', 'Add New User');
                         <?= $this->Form->control('first_name', [
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'First Name'],
                             'placeholder' => 'Enter first name',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -48,7 +48,7 @@ $this->assign('title', 'Add New User');
                         <?= $this->Form->control('last_name', [
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Last Name'],
                             'placeholder' => 'Enter last name',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -58,7 +58,7 @@ $this->assign('title', 'Add New User');
                             'type' => 'email',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Email Address'],
                             'placeholder' => 'Enter email address',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -68,7 +68,7 @@ $this->assign('title', 'Add New User');
                             'type' => 'password',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Password'],
                             'placeholder' => 'Enter password',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -77,7 +77,7 @@ $this->assign('title', 'Add New User');
                         <?= $this->Form->control('phone', [
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Phone Number'],
                             'placeholder' => '04XX XXX XXX',
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -87,7 +87,7 @@ $this->assign('title', 'Add New User');
                             'type' => 'file',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Avatar Image'],
                             'accept' => 'image/*',
-                            'class' => 'block w-full text-sm text-gray-500 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:placeholder-gray-400',
+                            'class' => 'block w-full text-sm text-gray-500 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -102,7 +102,7 @@ $this->assign('title', 'Add New User');
                             ],
                             'id' => 'roleSelect',
                             'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Role'],
-                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                            'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                             'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                         ]) ?>
                     </div>
@@ -115,7 +115,7 @@ $this->assign('title', 'Add New User');
                                 <?= $this->Form->control('patient_dob', [
                                     'type' => 'date',
                                     'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Date of Birth'],
-                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                                     'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>'],
                                     'max' => date('Y-m-d'),
                                     'min' => date('Y-m-d', strtotime('-120 years'))
@@ -128,7 +128,7 @@ $this->assign('title', 'Add New User');
                                     'options' => ['Male' => 'Male', 'Female' => 'Female'],
                                     'empty' => '-- Select Gender --',
                                     'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Gender'],
-                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                                     'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                                 ]) ?>
                             </div>
@@ -139,7 +139,7 @@ $this->assign('title', 'Add New User');
                                     'options' => $clinicians,
                                     'empty' => '-- No Clinician Assigned --',
                                     'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Assigned Clinician'],
-                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                                     'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                                 ]) ?>
                             </div>
@@ -150,7 +150,7 @@ $this->assign('title', 'Add New User');
                                     'rows' => 4,
                                     'placeholder' => 'Enter additional notes...',
                                     'label' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white', 'text' => 'Notes'],
-                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400',
+                                    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 placeholder-gray-400',
                                     'templates' => ['error' => '<div class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{{content}}</div>']
                                 ]) ?>
                             </div>
