@@ -39,7 +39,7 @@ class ResourcesController extends AppController
         if (!empty($status)) {
             $query->where(['Resources.status' => $status]);
         } else {
-            if ($identity->role !== 'admin') {
+            if ($identity->role !== 'admin' && $identity->role !== 'clinician') {
                 $query->where(['Resources.status' => 'active']);
             }
         }
