@@ -44,13 +44,13 @@
             <!--                            呼吸流量-->
             <th
                 scope="col"
-                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden xl:table-cell">
+                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                 <?= $this->Paginator->sort('peak_flow', 'Peak Flow L/min') ?>
             </th>
             <!--                            备注-->
             <th
                 scope="col"
-                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 hidden 2xl:table-cell">
+                class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                 <?= $this->Paginator->sort('note', 'Note') ?>
             </th>
             <th
@@ -74,7 +74,10 @@
                 $isSkipped = empty($measurement->spo2) &&
                     empty($measurement->heart_rate) &&
                     empty($measurement->blood_pressure_systolic) &&
-                    empty($measurement->temperature);
+                    empty($measurement->blood_pressure_diastolic) &&
+                    empty($measurement->temperature) &&
+                    empty($measurement->respiratory_rate) &&
+                    empty($measurement->peak_flow);
                 ?>
                 <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     <td class="p-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap border-r">
@@ -145,7 +148,7 @@
                             <?php endif; ?>
                         </td>
 
-                        <td class="p-4 text-base font-semibold text-gray-900 dark:text-white hidden xl:table-cell">
+                        <td class="p-4 text-base font-semibold text-gray-900 dark:text-white">
                             <?php if ($measurement->peak_flow !== null) : ?>
                                 <?= h($measurement->peak_flow) ?>
                                 <span class="ml-1 text-xs font-normal text-gray-500 dark:text-gray-400 uppercase">L/min</span>
@@ -154,7 +157,7 @@
                             <?php endif; ?>
                         </td>
 
-                        <td class="p-4 text-sm text-gray-500 dark:text-gray-400 max-w-[120px] truncate hidden 2xl:table-cell">
+                        <td class="p-4 text-sm text-gray-500 dark:text-gray-400 max-w-[120px] truncate">
                             <?= !empty($measurement->notes) ? h($measurement->notes) : '<span class="text-gray-300">—</span>' ?>
                         </td>
                     <?php endif; ?>
