@@ -274,8 +274,32 @@ class BookingsController extends AppController
                 } catch (Exception $e) {
                     $this->Flash->error(__('Booking status updated, but failed to send confirmation email. Please contact support.'));
                 }
-            } else {
-                $this->Flash->success(__('The booking status has been updated to {0}.', h(ucfirst($status))));
+            }
+
+            // 如果拒绝预约，发送拒绝邮件给患者
+            if ($status === 'declined') {
+                $booking = $this->Bookings->get($id, contain: ['Patients.Users', 'Clinicians.Users']);
+
+                try {
+                    $mailer = new Mailer();
+                    $mailer->setTo($booking->patient->user->email)
+                        ->setEmailFormat('both')
+                        ->setSubject('Booking Declined - RespiraCare')
+                        ->setReplyTo($booking->clinician->user->email);
+
+                    $mailer->viewBuilder()
+                        ->setVar('booking', $booking)
+                        ->setVar('patientName', $booking->patient->user->first_name)
+                        ->setVar('clinicianName', $booking->clinician->user->first_name . ' ' . $booking->clinician->user->last_name)
+                        ->setTemplate('booking_decline')
+                        ->setLayout('email');
+
+                    $mailer->send();
+
+                    $this->Flash->success(__('The booking status has been updated and a decline email has been sent to the patient.'));
+                } catch (Exception $e) {
+                    $this->Flash->error(__('Booking status updated, but failed to send decline email. Please contact support.'));
+                }
             }
         } else {
             $this->Flash->error(__('The booking status could not be updated. Please, try again.'));
