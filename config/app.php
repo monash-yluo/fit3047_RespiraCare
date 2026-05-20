@@ -461,10 +461,4 @@ return [
         'errorLevel' => null,
         'fixtureStrategy' => null,
     ],
-
-    //    Yijiang's cloudflare turnstile siteKey and secretKey. shared among all apps. for convenience this time.
-    'Turnstile' => [
-        'siteKey' => '0x4AAAAAACttq_ebhR-MSuoO',
-        'secretKey' => '0x4AAAAAACttq11bgl0OXrW3WF-5K9Viu-k',
-    ]
 ];
