@@ -265,7 +265,7 @@ class BookingsController extends AppController
                         ->setVar('booking', $booking)
                         ->setVar('patientName', $booking->patient->user->first_name)
                         ->setVar('clinicianName', $booking->clinician->user->first_name . ' ' . $booking->clinician->user->last_name)
-                        ->setTemplate('booking_comfirm')
+                        ->setTemplate('booking_confirm')
                         ->setLayout('email');
 
                     $mailer->send();
