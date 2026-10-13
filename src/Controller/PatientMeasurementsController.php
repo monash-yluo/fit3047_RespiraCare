@@ -89,7 +89,9 @@ class PatientMeasurementsController extends AppController
 
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
             # 先检查是否有 血压数据，再比较，避免空值导致的错误 / Check if blood pressure data is present before comparing to avoid errors from null values
-            if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
+            $systolic = $patientMeasurement->blood_pressure_systolic;
+            $diastolic = $patientMeasurement->blood_pressure_diastolic;
+            if ($systolic !== null && $diastolic !== null && $diastolic >= $systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
                 $this->set(compact('patientMeasurement'));
 
@@ -197,7 +199,9 @@ class PatientMeasurementsController extends AppController
 
             # 检查舒张压必须小于收缩压 / Check that diastolic is less than systolic
             # 先检查是否有 血压数据，再比较，避免空值导致的错误 / Check if blood pressure data is present before comparing to avoid errors from null values
-            if ($patientMeasurement->diastolic && $patientMeasurement->systolic && $patientMeasurement->diastolic >= $patientMeasurement->systolic) {
+            $systolic = $patientMeasurement->blood_pressure_systolic;
+            $diastolic = $patientMeasurement->blood_pressure_diastolic;
+            if ($systolic !== null && $diastolic !== null && $diastolic >= $systolic) {
                 $this->Flash->error(__('Diastolic pressure must be less than systolic pressure.'));
                 $this->set(compact('patientMeasurement'));
 
